@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>例3.3 三重积分计算</title>
+    
+    <!-- MathJax 配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                packages: {'[+]': ['ams']}
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea']
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Times New Roman", serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            color: #000000;
+            line-height: 1.9;
+            padding: 30px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.2em;
+            margin: 30px 0;
+            color: #1a237e;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            font-size: 1.5em;
+            margin: 35px 0 18px 0;
+            color: #283593;
+            border-left: 5px solid #3f51b5;
+            padding-left: 15px;
+            background: linear-gradient(90deg, rgba(63,81,181,0.1) 0%, transparent 100%);
+        }
+        
+        h3 {
+            font-size: 1.2em;
+            margin: 22px 0 12px 0;
+            color: #303f9f;
+        }
+        
+        p {
+            margin: 14px 0;
+            text-align: justify;
+        }
+        
+        .problem-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left: 5px solid #f57c00;
+            border-radius: 0 12px 12px 0;
+            padding: 22px;
+            margin: 22px 0;
+            box-shadow: 0 4px 15px rgba(245,124,0,0.15);
+        }
+        
+        .solution-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left: 5px solid #4caf50;
+            border-radius: 0 12px 12px 0;
+            padding: 22px;
+            margin: 22px 0;
+            box-shadow: 0 4px 15px rgba(76,175,80,0.12);
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+            border-left: 5px solid #c2185b;
+            border-radius: 0 12px 12px 0;
+            padding: 18px 22px;
+            margin: 18px 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(194,24,91,0.12);
+        }
+        
+        .geo-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border: 2px solid #1976d2;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 18px 0;
+            box-shadow: 0 4px 15px rgba(25,118,210,0.12);
+        }
+        
+        .chart-container {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .chart-wrapper {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        
+        .chart-main {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        #chart3d, #chartSection, #chartSlice {
+            width: 100%;
+            height: 450px;
+            border-radius: 12px;
+        }
+        
+        .interactive-controls {
+            background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+            border-radius: 10px;
+            padding: 15px;
+            width: 280px;
+            flex-shrink: 0;
+        }
+        
+        .control-group {
+            margin: 12px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .control-group label {
+            font-weight: bold;
+            color: #333;
+            font-size: 0.95em;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3f51b5;
+            cursor: pointer;
+        }
+        
+        .animation-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #3f51b5 0%, #303f9f 100%);
+            color: #ffffff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px 0;
+        }
+        
+        .animation-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(63,81,181,0.3);
+        }
+        
+        .animation-btn.secondary {
+            background: linear-gradient(135deg, #757575 0%, #616161 100%);
+        }
+        
+        .value-display {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #7c4dff 0%, #651fff 100%);
+            color: #ffffff;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(101,31,255,0.3);
+        }
+        
+        .step-box {
+            background: #ffffff;
+            border-left: 4px solid #3f51b5;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .step-num {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #3f51b5 0%, #303f9f 100%);
+            color: #ffffff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .highlight-red { color: #c62828; font-weight: bold; }
+        .highlight-blue { color: #1565c0; font-weight: bold; }
+        .highlight-green { color: #2e7d32; font-weight: bold; }
+        .highlight-purple { color: #7b1fa2; font-weight: bold; }
+        .highlight-orange { color: #e65100; font-weight: bold; }
+        
+        .result-box {
+            background: linear-gradient(135deg, #d1c4e9 0%, #b39ddb 100%);
+            border: 2px solid #7e57c2;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .result-box h3 {
+            color: #4527a0;
+            margin-bottom: 10px;
+        }
+        
+        .coord-info {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .integral-limits {
+            background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+            border: 2px solid #8e24aa;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin: 15px 0;
+        }
+        
+        .integral-limits h4 {
+            color: #6a1b9a;
+            margin-bottom: 10px;
+        }
+        
+        .header {
+            position: relative;
+            background: linear-gradient(135deg, #1a365d 0%, #2b4c8c 60%, #3182ce 100%);
+            color: #fff;
+            padding: 52px 48px 44px;
+            text-align: center;
+            border-radius: 14px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.6em;
+            letter-spacing: 4px;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            color: #fff;
+        }
+        .header-logo {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            width: 210px;
+            height: auto;
+            opacity: 0.95;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <img class="header-logo" src="吉林大学校徽_透明.png" alt="吉林大学校徽" />
+    <h1>三重积分的计算</h1>
+</div>
+
+<div class="problem-box">
+     <p>例3.3  计算三重积分</p>
+    <div class="formula-box">
+        $$I = \iiint_\Omega \frac{\mathrm{d}x\,\mathrm{d}y\,\mathrm{d}z}{x^2 + y^2},$$
+    </div>
+    <p>其中 $\Omega$ 是由平面 <span class="highlight-blue">$x = 1$</span>、<span class="highlight-blue">$x = 2$</span>、<span class="highlight-green">$z = 0$</span>、<span class="highlight-red">$y = x$</span> 及 <span class="highlight-orange">$z = y$</span> 围成的区域.</p>
+</div>
+
+<h2>一、积分区域的几何分析</h2>
+
+<div class="geo-box">
+    <h3>区域 $\Omega$ 的边界</h3>
+    <ul>
+        <li><span class="highlight-blue">$x = 1$</span> 和 <span class="highlight-blue">$x = 2$</span>：两个平行于 $yOz$ 平面的平面，限制 $x$ 的范围.</li>
+        <li><span class="highlight-green">$z = 0$</span>：$xOy$ 平面，作为下边界.</li>
+        <li><span class="highlight-red">$y = x$</span>：过原点且与 $x$ 轴成 $45°$ 的平面.</li>
+        <li><span class="highlight-orange">$z = y$</span>：斜平面，作为上边界.</li>
+    </ul>
+    <p>这是一个<span class="highlight-purple">柱形区域</span>，在 $x$ 方向延伸，适合先对 $z$ 积分，再对 $y$ 积分，最后对 $x$ 积分.</p>
+</div>
+
+<div class="chart-container">
+    <h3>交互式3D可视化：积分区域</h3>
+    <div class="chart-wrapper">
+        <div class="chart-main">
+            <div id="chart3d"></div>
+        </div>
+        <div class="interactive-controls">
+            <div class="control-group">
+                <label>观察角度:</label>
+                <button class="animation-btn" id="viewXY">俯视(x-y)</button>
+                <button class="animation-btn" id="viewXZ">侧视(x-z)</button>
+                <button class="animation-btn" id="view3D">3D视角</button>
+            </div>
+            <div class="control-group">
+                <button class="animation-btn secondary" id="animateRotate">自动旋转</button>
+                <button class="animation-btn secondary" id="stopRotate">停止</button>
+            </div>
+            <div class="control-group">
+                <label>当前 $x$ 值:</label>
+                <input type="range" id="sliceX" min="100" max="200" value="150">
+                <span id="sliceXVal">1.50</span>
+            </div>
+            <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                <strong>说明：</strong>蓝色平面 $x=1$、$x=2$；红色平面 $y=x$；绿色平面 $z=0$；橙色平面 $z=y$
+            </p>
+        </div>
+    </div>
+</div>
+
+<h2>二、确定积分限</h2>
+
+<div class="step-box">
+    <span class="step-num">1</span>
+    <strong>分析各变量的范围</strong>
+    <div class="integral-limits">
+        <h4>积分限确定</h4>
+        <p><span class="highlight-blue">$x$</span>：由 $x = 1$ 和 $x = 2$ 直接给出，$1 \leqslant x \leqslant 2$.</p>
+        <p><span class="highlight-red">$y$</span>：由 $z = 0$ 和 $z = y$，且 $z \geqslant 0$，得 $y \geqslant 0$；又由 $y = x$，得 $0 \leqslant y \leqslant x$.</p>
+        <p><span class="highlight-green">$z$</span>：由 $z = 0$ 到 $z = y$，即 $0 \leqslant z \leqslant y$.</p>
+    </div>
+</div>
+
+<div class="chart-container">
+    <h3>可视化：$x$-$y$ 平面投影区域</h3>
+    <div class="chart-wrapper">
+        <div class="chart-main">
+            <div id="chartSection"></div>
+        </div>
+        <div class="interactive-controls">
+            <div class="control-group">
+                <label>当前 $x$:</label>
+                <input type="range" id="projX" min="100" max="200" value="150">
+                <span id="projXVal">1.50</span>
+            </div>
+            <div class="control-group">
+                <label>当前 $y$:</label>
+                <input type="range" id="projY" min="0" max="200" value="100">
+                <span id="projYVal">1.00</span>
+            </div>
+            <div class="control-group">
+                <button class="animation-btn" id="playProj">播放动画</button>
+                <button class="animation-btn secondary" id="resetProj">重置</button>
+            </div>
+            <span class="value-display">积分限: $0 \leqslant z \leqslant y$</span>
+            <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                <strong>说明：</strong>阴影区域为投影区域，红色直线为 $y = x$
+            </p>
+        </div>
+    </div>
+</div>
+
+<h2>三、建立累次积分</h2>
+
+<div class="step-box">
+    <span class="step-num">2</span>
+    <strong>将三重积分化为累次积分</strong>
+    <div class="formula-box">
+        $$I = \int_1^2 \mathrm{d}x \int_0^x \mathrm{d}y \int_0^y \frac{1}{x^2 + y^2}\,\mathrm{d}z.$$
+    </div>
+    <p>注意：被积函数 $\dfrac{1}{x^2 + y^2}$ 与 $z$ 无关，对 $z$ 积分时可视为常数.</p>
+</div>
+
+<div class="chart-container">
+    <h3>可视化：沿 $z$ 方向积分</h3>
+    <div class="chart-wrapper">
+        <div class="chart-main">
+            <div id="chartSlice"></div>
+        </div>
+        <div class="interactive-controls">
+            <div class="control-group">
+                <label>固定 $x$:</label>
+                <input type="range" id="fixX" min="100" max="200" value="150">
+                <span id="fixXVal">1.50</span>
+            </div>
+            <div class="control-group">
+                <label>固定 $y$:</label>
+                <input type="range" id="fixY" min="0" max="150" value="75">
+                <span id="fixYVal">0.75</span>
+            </div>
+            <div class="control-group">
+                <label>积分变量 $z$:</label>
+                <input type="range" id="varZ" min="0" max="100" value="50">
+                <span id="varZVal">0.50</span>
+            </div>
+            <div class="control-group">
+                <button class="animation-btn" id="playSlice">播放动画</button>
+                <button class="animation-btn secondary" id="resetSlice">重置</button>
+            </div>
+            <span class="value-display">当前被积函数值: <span id="funcVal">0.640</span></span>
+        </div>
+    </div>
+</div>
+
+<h2>四、逐步计算</h2>
+
+<div class="step-box">
+    <span class="step-num">3</span>
+    <strong>计算最内层积分（对 $z$）</strong>
+    <p>由于被积函数与 $z$ 无关：</p>
+    <div class="formula-box">
+        $$\int_0^y \frac{1}{x^2 + y^2}\,\mathrm{d}z = \frac{1}{x^2 + y^2} \cdot \left[z\right]_0^y = \frac{y}{x^2 + y^2}.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">4</span>
+    <strong>计算中层积分（对 $y$）</strong>
+    <div class="formula-box">
+        $$\int_0^x \frac{y}{x^2 + y^2}\,\mathrm{d}y.$$
+    </div>
+    <p>令 $u = x^2 + y^2$，则 $\mathrm{d}u = 2y\,\mathrm{d}y$，即 $y\,\mathrm{d}y = \dfrac{1}{2}\mathrm{d}u$</p>
+    <p>当 $y = 0$ 时，$u = x^2$；当 $y = x$ 时，$u = 2x^2$</p>
+    <div class="formula-box">
+        $$= \frac{1}{2} \int_{x^2}^{2x^2} \frac{1}{u}\,\mathrm{d}u = \frac{1}{2} \left[\ln u\right]_{x^2}^{2x^2} = \frac{1}{2} \left(\ln 2x^2 - \ln x^2\right) = \frac{1}{2} \ln 2.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">5</span>
+    <strong>计算最外层积分（对 $x$）</strong>
+    <div class="formula-box">
+        $$I = \int_1^2 \frac{1}{2} \ln 2\,\mathrm{d}x = \frac{1}{2} \ln 2 \cdot \left[x\right]_1^2 = \frac{1}{2} \ln 2 \cdot (2 - 1) = \frac{1}{2} \ln 2.$$
+    </div>
+</div>
+
+<h2>五、最终结果</h2>
+
+<div class="result-box">
+    <h3>最终答案</h3>
+    <div class="formula-box" style="font-size: 1.4em;">
+        $$I = \iiint_\Omega \frac{\mathrm{d}x\,\mathrm{d}y\,\mathrm{d}z}{x^2 + y^2} = \frac{1}{2} \ln 2.$$
+    </div>
+    <p style="margin-top: 15px; color: #4527a0;">
+        数值近似值：$\dfrac{1}{2} \ln 2 \approx 0.347.$
+    </p>
+</div>
+
+
+
+<h2>六、总结</h2>
+
+<div class="solution-box">
+    <h3>解题要点</h3>
+    <ul>
+        <li><span class="highlight-blue">积分限确定</span>：根据边界平面确定各变量的积分限，关键是理解区域的几何形状.</li>
+        <li><span class="highlight-green">积分顺序</span>：选择先对 $z$ 积分，因为被积函数与 $z$ 无关，可简化计算.</li>
+        <li><span class="highlight-purple">换元法</span>：对 $y$ 积分时使用换元 $u = x^2 + y^2$，将积分转化为对数形式.</li>
+        <li>最终结果：$I = \dfrac{1}{2} \ln 2 \approx 0.347$.</li>
+    </ul>
+</div>
+
+<script>
+    // 全局变量
+    let rotateAnimationId = null;
+    let projAnimationId = null;
+    let sliceAnimationId = null;
+    
+    // ========== 3D区域可视化 ==========
+    function draw3DRegion() {
+        const traces = [];
+        const xSlice = parseInt(document.getElementById('sliceX').value) / 100;
+        
+        // 平面 x=1 (蓝色)
+        const x1_x = [], x1_y = [], x1_z = [];
+        for (let i = 0; i <= 20; i++) {
+            const row_x = [], row_y = [], row_z = [];
+            for (let j = 0; j <= 20; j++) {
+                row_x.push(1);
+                row_y.push(i / 20 * 2);
+                row_z.push(j / 20 * 2);
+            }
+            x1_x.push(row_x);
+            x1_y.push(row_y);
+            x1_z.push(row_z);
+        }
+        traces.push({
+            x: x1_x, y: x1_y, z: x1_z,
+            type: 'surface',
+            colorscale: [[0, '#1976d2'], [1, '#42a5f5']],
+            showscale: false,
+            opacity: 0.5,
+            name: 'x=1'
+        });
+        
+        // 平面 x=2 (蓝色)
+        const x2_x = [], x2_y = [], x2_z = [];
+        for (let i = 0; i <= 20; i++) {
+            const row_x = [], row_y = [], row_z = [];
+            for (let j = 0; j <= 20; j++) {
+                row_x.push(2);
+                row_y.push(i / 20 * 2);
+                row_z.push(j / 20 * 2);
+            }
+            x2_x.push(row_x);
+            x2_y.push(row_y);
+            x2_z.push(row_z);
+        }
+        traces.push({
+            x: x2_x, y: x2_y, z: x2_z,
+            type: 'surface',
+            colorscale: [[0, '#1976d2'], [1, '#42a5f5']],
+            showscale: false,
+            opacity: 0.5,
+            name: 'x=2'
+        });
+        
+        // 平面 y=x (红色)
+        const yx_x = [], yx_y = [], yx_z = [];
+        for (let i = 0; i <= 20; i++) {
+            const row_x = [], row_y = [], row_z = [];
+            const x = 1 + i / 20;
+            for (let j = 0; j <= 20; j++) {
+                row_x.push(x);
+                row_y.push(x);
+                row_z.push(j / 20 * x);
+            }
+            yx_x.push(row_x);
+            yx_y.push(row_y);
+            yx_z.push(row_z);
+        }
+        traces.push({
+            x: yx_x, y: yx_y, z: yx_z,
+            type: 'surface',
+            colorscale: [[0, '#c62828'], [1, '#e53935']],
+            showscale: false,
+            opacity: 0.6,
+            name: 'y=x'
+        });
+        
+        // 平面 z=0 (绿色)
+        const z0_x = [], z0_y = [], z0_z = [];
+        for (let i = 0; i <= 20; i++) {
+            const row_x = [], row_y = [], row_z = [];
+            const x = 1 + i / 20;
+            for (let j = 0; j <= 20; j++) {
+                const y = j / 20 * x;
+                row_x.push(x);
+                row_y.push(y);
+                row_z.push(0);
+            }
+            z0_x.push(row_x);
+            z0_y.push(row_y);
+            z0_z.push(row_z);
+        }
+        traces.push({
+            x: z0_x, y: z0_y, z: z0_z,
+            type: 'surface',
+            colorscale: [[0, '#2e7d32'], [1, '#4caf50']],
+            showscale: false,
+            opacity: 0.6,
+            name: 'z=0'
+        });
+        
+        // 平面 z=y (橙色)
+        const zy_x = [], zy_y = [], zy_z = [];
+        for (let i = 0; i <= 20; i++) {
+            const row_x = [], row_y = [], row_z = [];
+            const x = 1 + i / 20;
+            for (let j = 0; j <= 20; j++) {
+                const y = j / 20 * x;
+                row_x.push(x);
+                row_y.push(y);
+                row_z.push(y);
+            }
+            zy_x.push(row_x);
+            zy_y.push(row_y);
+            zy_z.push(row_z);
+        }
+        traces.push({
+            x: zy_x, y: zy_y, z: zy_z,
+            type: 'surface',
+            colorscale: [[0, '#e65100'], [1, '#ff9800']],
+            showscale: false,
+            opacity: 0.6,
+            name: 'z=y'
+        });
+        
+        // 当前x截面
+        const cx_x = [], cx_y = [], cx_z = [];
+        for (let i = 0; i <= 20; i++) {
+            const row_x = [], row_y = [], row_z = [];
+            for (let j = 0; j <= 20; j++) {
+                row_x.push(xSlice);
+                row_y.push(i / 20 * xSlice);
+                row_z.push(j / 20 * i / 20 * xSlice);
+            }
+            cx_x.push(row_x);
+            cx_y.push(row_y);
+            cx_z.push(row_z);
+        }
+        traces.push({
+            x: cx_x, y: cx_y, z: cx_z,
+            type: 'surface',
+            colorscale: [[0, '#7c4dff'], [1, '#b388ff']],
+            showscale: false,
+            opacity: 0.4,
+            name: `x=${xSlice.toFixed(2)}`
+        });
+        
+        const layout = {
+            title: {
+                text: '积分区域：由五个平面围成的柱形区域',
+                font: { size: 16, color: '#1a237e', family: 'Times New Roman' }
+            },
+            scene: {
+                xaxis: { title: 'x', range: [0.5, 2.5], gridcolor: '#e0e0e0' },
+                yaxis: { title: 'y', range: [-0.5, 2.5], gridcolor: '#e0e0e0' },
+                zaxis: { title: 'z', range: [-0.5, 2.5], gridcolor: '#e0e0e0' },
+                camera: { eye: { x: 2, y: 2, z: 1.5 } },
+                aspectmode: 'cube'
+            },
+            margin: { t: 60, l: 0, r: 0, b: 0 }
+        };
+        
+        Plotly.newPlot('chart3d', traces, layout, {responsive: true});
+    }
+    
+    // ========== x-y投影可视化 ==========
+    function drawProjection() {
+        const xVal = parseInt(document.getElementById('projX').value) / 100;
+        const yVal = parseInt(document.getElementById('projY').value) / 100;
+        
+        const traces = [];
+        
+        // 区域边界 y=x
+        const xLine = [1, 2];
+        const yLine = [1, 2];
+        traces.push({
+            x: xLine, y: yLine,
+            type: 'scatter', mode: 'lines',
+            line: { color: '#c62828', width: 3 },
+            name: 'y=x'
+        });
+        
+        // 填充区域
+        const xFill = [1, 2, 2, 1];
+        const yFill = [0, 0, 2, 1];
+        traces.push({
+            x: xFill, y: yFill,
+            type: 'scatter', mode: 'lines',
+            fill: 'toself',
+            fillcolor: 'rgba(63, 81, 181, 0.2)',
+            line: { color: '#3f51b5', width: 2 },
+            name: '投影区域'
+        });
+        
+        // 当前点
+        if (yVal <= xVal && yVal >= 0 && xVal >= 1 && xVal <= 2) {
+            traces.push({
+                x: [xVal], y: [yVal],
+                type: 'scatter', mode: 'markers',
+                marker: { size: 12, color: '#7c4dff' },
+                name: '当前点'
+            });
+        }
+        
+        const layout = {
+            title: {
+                text: `x-y 投影区域: x=${xVal.toFixed(2)}, y=${yVal.toFixed(2)}`,
+                font: { size: 16, color: '#1a237e' }
+            },
+            xaxis: { title: 'x', range: [0.5, 2.5], gridcolor: '#e0e0e0' },
+            yaxis: { title: 'y', range: [-0.5, 2.5], gridcolor: '#e0e0e0', scaleanchor: 'x' },
+            showlegend: true
+        };
+        
+        Plotly.newPlot('chartSection', traces, layout, {responsive: true});
+    }
+    
+    // ========== z方向切片可视化 ==========
+    function drawSlice() {
+        const xVal = parseInt(document.getElementById('fixX').value) / 100;
+        const yVal = parseInt(document.getElementById('fixY').value) / 100;
+        const zVal = parseInt(document.getElementById('varZ').value) / 100 * yVal;
+        
+        const traces = [];
+        
+        // z从0到y的范围
+        const zRange = [0, yVal];
+        const yConst = [yVal, yVal];
+        traces.push({
+            x: zRange, y: yConst,
+            type: 'scatter', mode: 'lines',
+            line: { color: '#4caf50', width: 4 },
+            name: 'z积分范围 [0, y]'
+        });
+        
+        // 当前z位置
+        traces.push({
+            x: [zVal], y: [yVal],
+            type: 'scatter', mode: 'markers',
+            marker: { size: 14, color: '#7c4dff' },
+            name: `z=${zVal.toFixed(2)}`
+        });
+        
+        // 计算被积函数值
+        const funcVal = 1 / (xVal * xVal + yVal * yVal);
+        
+        const layout = {
+            title: {
+                text: `z方向积分: x=${xVal.toFixed(2)}, y=${yVal.toFixed(2)}, f=${funcVal.toFixed(3)}`,
+                font: { size: 16, color: '#1a237e' }
+            },
+            xaxis: { title: 'z', range: [-0.2, 2.5], gridcolor: '#e0e0e0' },
+            yaxis: { title: 'y (固定)', range: [-0.5, 2.5], gridcolor: '#e0e0e0' },
+            showlegend: true
+        };
+        
+        Plotly.newPlot('chartSlice', traces, layout, {responsive: true});
+        document.getElementById('funcVal').textContent = funcVal.toFixed(3);
+    }
+    
+    // ========== 蒙特卡洛模拟 ==========
+    function runMonteCarlo() {
+        const n = parseInt(document.getElementById('mcSamples').value);
+        let sum = 0;
+        let count = 0;
+        
+        // 在包含区域 Ω 的最小长方体内均匀采样
+        // x ∈ [1, 2], y ∈ [0, 2], z ∈ [0, 2]
+        for (let i = 0; i < n; i++) {
+            const x = 1 + Math.random();           // [1, 2]
+            const y = 2 * Math.random();           // [0, 2]
+            const z = 2 * Math.random();           // [0, 2]
+            
+            // 检查点是否落在积分区域 Ω 内
+            if (z >= 0 && z <= y && y >= 0 && y <= x && x >= 1 && x <= 2) {
+                sum += 1 / (x * x + y * y);
+                count++;
+            }
+        }
+        
+        // 长方体体积 = 1 × 2 × 2 = 4
+        const volumeBox = 4;
+        const result = (sum / count) * volumeBox;
+        const theory = 0.5 * Math.log(2);
+        const error = Math.abs(result - theory) / theory * 100;
+        
+        document.getElementById('mcResult').textContent = result.toFixed(4);
+        document.getElementById('mcError').textContent = error.toFixed(2) + '%';
+        document.getElementById('mcInfo').textContent = `有效采样: ${count}/${n} (${(count/n*100).toFixed(1)}%)`;
+    }
+    
+    // ========== 事件监听 ==========
+    document.getElementById('viewXY').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 0, y: 0, z: 3 } } });
+    });
+    
+    document.getElementById('viewXZ').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 3, y: 0, z: 0 } } });
+    });
+    
+    document.getElementById('view3D').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 2, y: 2, z: 1.5 } } });
+    });
+    
+    document.getElementById('animateRotate').addEventListener('click', function() {
+        let angle = 0;
+        rotateAnimationId = setInterval(() => {
+            angle += 0.05;
+            Plotly.relayout('chart3d', {
+                'scene.camera': {
+                    eye: { x: 3 * Math.cos(angle), y: 3 * Math.sin(angle), z: 1.5 }
+                }
+            });
+        }, 50);
+    });
+    
+    document.getElementById('stopRotate').addEventListener('click', function() {
+        if (rotateAnimationId) {
+            clearInterval(rotateAnimationId);
+            rotateAnimationId = null;
+        }
+    });
+    
+    document.getElementById('sliceX').addEventListener('input', function() {
+        document.getElementById('sliceXVal').textContent = (this.value / 100).toFixed(2);
+        draw3DRegion();
+    });
+    
+    document.getElementById('projX').addEventListener('input', function() {
+        document.getElementById('projXVal').textContent = (this.value / 100).toFixed(2);
+        drawProjection();
+    });
+    
+    document.getElementById('projY').addEventListener('input', function() {
+        document.getElementById('projYVal').textContent = (this.value / 100).toFixed(2);
+        drawProjection();
+    });
+    
+    // 投影动画
+    let projAnimX = 150, projAnimY = 50;
+    document.getElementById('playProj').addEventListener('click', function() {
+        const btn = document.getElementById('playProj');
+        if (projAnimationId) {
+            clearInterval(projAnimationId);
+            projAnimationId = null;
+            btn.textContent = '播放动画';
+        } else {
+            btn.textContent = '暂停动画';
+            projAnimationId = setInterval(() => {
+                projAnimX += 1;
+                if (projAnimX > 200) {
+                    projAnimX = 100;
+                    projAnimY = Math.random() * 150;
+                }
+                document.getElementById('projX').value = projAnimX;
+                document.getElementById('projY').value = projAnimY;
+                document.getElementById('projXVal').textContent = (projAnimX / 100).toFixed(2);
+                document.getElementById('projYVal').textContent = (projAnimY / 100).toFixed(2);
+                drawProjection();
+            }, 100);
+        }
+    });
+    
+    document.getElementById('resetProj').addEventListener('click', function() {
+        if (projAnimationId) {
+            clearInterval(projAnimationId);
+            projAnimationId = null;
+            document.getElementById('playProj').textContent = '播放动画';
+        }
+        projAnimX = 150;
+        projAnimY = 75;
+        document.getElementById('projX').value = 150;
+        document.getElementById('projY').value = 75;
+        document.getElementById('projXVal').textContent = '1.50';
+        document.getElementById('projYVal').textContent = '0.75';
+        drawProjection();
+    });
+    
+    document.getElementById('fixX').addEventListener('input', function() {
+        document.getElementById('fixXVal').textContent = (this.value / 100).toFixed(2);
+        drawSlice();
+    });
+    
+    document.getElementById('fixY').addEventListener('input', function() {
+        document.getElementById('fixYVal').textContent = (this.value / 100).toFixed(2);
+        drawSlice();
+    });
+    
+    document.getElementById('varZ').addEventListener('input', function() {
+        const yVal = parseInt(document.getElementById('fixY').value) / 100;
+        const zVal = this.value / 100 * yVal;
+        document.getElementById('varZVal').textContent = zVal.toFixed(2);
+        drawSlice();
+    });
+    
+    // z切片动画
+    let sliceAnimZ = 0;
+    document.getElementById('playSlice').addEventListener('click', function() {
+        const btn = document.getElementById('playSlice');
+        if (sliceAnimationId) {
+            clearInterval(sliceAnimationId);
+            sliceAnimationId = null;
+            btn.textContent = '播放动画';
+        } else {
+            btn.textContent = '暂停动画';
+            sliceAnimationId = setInterval(() => {
+                sliceAnimZ += 2;
+                if (sliceAnimZ > 100) sliceAnimZ = 0;
+                document.getElementById('varZ').value = sliceAnimZ;
+                const yVal = parseInt(document.getElementById('fixY').value) / 100;
+                document.getElementById('varZVal').textContent = (sliceAnimZ / 100 * yVal).toFixed(2);
+                drawSlice();
+            }, 50);
+        }
+    });
+    
+    document.getElementById('resetSlice').addEventListener('click', function() {
+        if (sliceAnimationId) {
+            clearInterval(sliceAnimationId);
+            sliceAnimationId = null;
+            document.getElementById('playSlice').textContent = '播放动画';
+        }
+        sliceAnimZ = 50;
+        document.getElementById('varZ').value = 50;
+        document.getElementById('fixX').value = 150;
+        document.getElementById('fixY').value = 75;
+        document.getElementById('fixXVal').textContent = '1.50';
+        document.getElementById('fixYVal').textContent = '0.75';
+        document.getElementById('varZVal').textContent = '0.38';
+        drawSlice();
+    });
+    
+    // 初始化
+    draw3DRegion();
+    drawProjection();
+    drawSlice();
+</script>
+
+</body>
+</html>
