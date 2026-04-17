@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三重积分的换元法</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                packages: {'[+]': ['ams']}
+            },
+            options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea'] }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e8edf2 100%);
+            min-height: 100vh;
+            padding: 24px;
+            color: #2d3748;
+            line-height: 1.85;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 12px 48px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* ===== 页头 ===== */
+        .header {
+            background: linear-gradient(135deg, #1a365d 0%, #2b4c8c 60%, #3182ce 100%);
+            color: #fff;
+            padding: 52px 48px 44px;
+            text-align: center;
+            position: relative;
+        }
+        .header-logo {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            width: 210px;
+            height: auto;
+            opacity: 0.95;
+        }
+        .header h1 { font-size: 2.6em; letter-spacing: 4px; margin-bottom: 12px; text-shadow: 0 2px 8px rgba(0,0,0,0.25); }
+        .header p  { font-size: 1.15em; opacity: 0.9; }
+
+        /* ===== 导航标签 ===== */
+        .tab-nav {
+            display: flex;
+            border-bottom: 3px solid #e2e8f0;
+            background: #f7fafc;
+            padding: 0 40px;
+        }
+        .tab-btn {
+            padding: 16px 32px;
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #718096;
+            cursor: pointer;
+            border: none;
+            background: none;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -3px;
+            transition: all 0.25s;
+            font-family: inherit;
+        }
+        .tab-btn:hover { color: #3182ce; }
+        .tab-btn.active { color: #2b4c8c; border-bottom-color: #2b4c8c; }
+
+        /* ===== 内容区 ===== */
+        .tab-panel { display: none; padding: 44px 48px; }
+        .tab-panel.active { display: block; }
+
+        /* ===== 节标题 ===== */
+        .sec-title {
+            display: flex; align-items: center;
+            font-size: 1.65em; font-weight: 700;
+            color: #2b4c8c; margin-bottom: 22px; padding-bottom: 10px;
+            border-bottom: 3px solid #bee3f8;
+        }
+        .sec-title .badge {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: linear-gradient(135deg, #2b4c8c, #3182ce);
+            color: #fff; display: flex; align-items: center; justify-content: center;
+            font-size: 1em; margin-right: 14px; flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(49,130,206,0.35);
+        }
+
+        h3 { color: #2d6a9f; font-size: 1.25em; margin: 28px 0 14px; }
+
+        /* ===== 信息框 ===== */
+        .info-box {
+            background: #ebf8ff;
+            border-left: 5px solid #3182ce;
+            border-radius: 0 12px 12px 0;
+            padding: 20px 26px;
+            margin: 18px 0;
+        }
+        .info-box p { margin: 8px 0; font-size: 1.02em; }
+
+        .def-box {
+            background: linear-gradient(135deg, #f0fff4, #e6fffa);
+            border: 1.5px solid #68d391;
+            border-radius: 12px;
+            padding: 20px 26px;
+            margin: 18px 0;
+        }
+        .def-box .label { font-weight: 700; color: #276749; margin-bottom: 8px; font-size: 1.08em; }
+
+        .warn-box {
+            background: #fffbeb;
+            border-left: 5px solid #f6ad55;
+            border-radius: 0 12px 12px 0;
+            padding: 18px 24px;
+            margin: 18px 0;
+            font-size: 0.98em;
+        }
+
+        /* ===== 步骤 ===== */
+        .steps { margin: 18px 0; }
+        .step {
+            display: flex; gap: 18px; margin: 16px 0; align-items: flex-start;
+        }
+        .step-num {
+            width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+            background: linear-gradient(135deg, #2b4c8c, #3182ce);
+            color: #fff; display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 1.05em;
+            box-shadow: 0 3px 8px rgba(49,130,206,0.3);
+        }
+        .step-body {
+            flex: 1; background: #f7fafc; border-radius: 10px;
+            padding: 16px 20px; border: 1px solid #e2e8f0;
+        }
+        .step-body strong { color: #2b4c8c; }
+
+        /* ===== 公式框 ===== */
+        .formula-box {
+            background: linear-gradient(135deg, #ebf8ff, #e9d8fd);
+            border-radius: 14px;
+            padding: 22px 30px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1.5px solid #b794f4;
+            box-shadow: 0 4px 14px rgba(128,90,213,0.1);
+        }
+        .formula-box .caption { font-size: 0.9em; color: #553c9a; margin-top: 10px; }
+
+        /* ===== 例题框 ===== */
+        .example-wrap {
+            background: linear-gradient(135deg, #fff5f5, #fed7d7 50%, #fff5f5);
+            border: 2px solid #fc8181;
+            border-radius: 16px;
+            padding: 28px 34px;
+            margin: 28px 0;
+        }
+        .example-label {
+            font-size: 1.2em; font-weight: 700; color: #c53030;
+            margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
+        }
+        .example-label::before {
+            content: "✎"; font-size: 1.1em;
+        }
+        .solve-step {
+            display: flex; gap: 14px; margin: 12px 0;
+        }
+        .solve-num {
+            width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+            background: #fc8181; color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.9em;
+        }
+        .solve-body { flex: 1; }
+
+        /* ===== 图表 ===== */
+        .chart-wrap {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 20px;
+            margin: 22px 0;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+        }
+        .chart-wrap h4 {
+            text-align: center; color: #2b4c8c;
+            font-size: 1.1em; margin-bottom: 14px;
+        }
+        .chart3d { width: 100%; height: 440px; }
+        .chart2d { width: 100%; height: 340px; }
+
+        /* ===== 两栏 ===== */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 20px 0; }
+        @media (max-width: 900px) {
+            .two-col { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.8em; }
+            .tab-btn { padding: 12px 18px; font-size: 0.95em; }
+            .tab-panel { padding: 28px 22px; }
+        }
+
+        /* ===== 对比表 ===== */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.97em; }
+        th {
+            background: #2b4c8c; color: #fff; padding: 12px 16px; text-align: left;
+        }
+        td { padding: 11px 16px; border-bottom: 1px solid #e2e8f0; }
+        tr:nth-child(even) td { background: #f7fafc; }
+        tr:hover td { background: #ebf8ff; }
+
+        .tag {
+            display: inline-block; padding: 3px 10px; border-radius: 20px;
+            font-size: 0.85em; font-weight: 600; margin: 2px 3px;
+            white-space: nowrap;
+        }
+        .tag-blue { background: #bee3f8; color: #2a4365; }
+        .tag-green { background: #c6f6d5; color: #22543d; }
+        .tag-purple { background: #e9d8fd; color: #553c9a; }
+        .tag-red { background: #fed7d7; color: #742a2a; }
+
+        /* ===== 高亮 ===== */
+        .highlight-blue { color: #3182ce; font-weight: 600; }
+        .highlight-green { color: #38a169; font-weight: 600; }
+        .highlight-orange { color: #dd6b20; font-weight: 600; }
+        .highlight-purple { color: #805ad5; font-weight: 600; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- 页头 -->
+    <div class="header">
+        <img src="吉林大学校徽_透明.png" alt="吉林大学校徽" class="header-logo">
+        <h1>三重积分的换元法</h1>
+        <p>直角坐标 &nbsp;&middot;&nbsp; 柱面坐标 &nbsp;&middot;&nbsp; 球面坐标 &nbsp;&nbsp;|&nbsp;&nbsp; 一题多解，融会贯通</p>
+    </div>
+
+    <!-- 导航 -->
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab(0)">① 直角坐标法</button>
+        <button class="tab-btn" onclick="switchTab(1)">② 柱面坐标法</button>
+        <button class="tab-btn" onclick="switchTab(2)">③ 球面坐标法</button>
+        <button class="tab-btn" onclick="switchTab(3)">📋 综合对比</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!--  例题题目                                                   -->
+    <!-- ============================================================ -->
+    <div class="example-wrap" style="margin: 28px 48px;">
+        <div class="example-label">例 3.5</div>
+        <p>计算三重积分</p>
+        <div class="formula-box">
+            $$\iiint_{\Omega} z\,\mathrm{d}V$$
+        </div>
+        <p>其中 $\Omega$ 是由锥面 $z = \sqrt{x^2+y^2}$ 与球面 $x^2+y^2+z^2 = 2z$ 所围成的区域.</p>
+    </div>
+
+    <!-- ============================================================ -->
+    <!--  面板 0：直角坐标法                                          -->
+    <!-- ============================================================ -->
+    <div class="tab-panel active" id="panel0">
+
+        <div class="sec-title"><div class="badge">1</div>直角坐标法</div>
+
+        <div class="info-box">
+            <p><strong>解题思路：</strong>将三重积分化为三次积分进行计算. 先确定积分区域 $\Omega$ 在 $xOy$ 平面上的投影.</p>
+        </div>
+
+        <div class="steps">
+            <div class="step"><div class="step-num">1</div>
+                <div class="step-body"><strong>分析积分区域：</strong><br>
+                    锥面 $z = \sqrt{x^2+y^2}$.<br>
+                    球面 $x^2+y^2+z^2 = 2z$ 可化为 $x^2+y^2+(z-1)^2 = 1$，即球心在 $(0,0,1)$、半径为 $1$ 的球面.
+                </div></div>
+            <div class="step"><div class="step-num">2</div>
+                <div class="step-body"><strong>求两曲面的交线：</strong><br>
+                    联立 $z = \sqrt{x^2+y^2}$ 和 $x^2+y^2+z^2 = 2z$，代入得 $2z^2 = 2z$，解得 $z = 1$（$z = 0$ 不在锥面上方舍去），于是 $x^2+y^2 = 1$.<br>
+                    交线为圆：$z = 1,\ x^2+y^2 = 1$.
+                </div></div>
+            <div class="step"><div class="step-num">3</div>
+                <div class="step-body"><strong>确定投影区域 $D_{xy}$：</strong><br>
+                    将锥面 $z = \sqrt{x^2+y^2}$ 代入球面方程，消去 $z$，得 $x^2+y^2 = 1$.<br>
+                    因此 $D_{xy}: x^2+y^2 \leqslant 1$.
+                </div></div>
+            <div class="step"><div class="step-num">4</div>
+                <div class="step-body"><strong>确定 $z$ 的积分限：</strong><br>
+                    对于 $D_{xy}$ 中任意一点 $(x,y)$，$z$ 从下曲面（锥面 $z = \sqrt{x^2+y^2}$）到上曲面（球面 $z = 1+\sqrt{1-x^2-y^2}$）.<br>
+                    即 $\sqrt{x^2+y^2} \leqslant z \leqslant 1+\sqrt{1-x^2-y^2}$.
+                </div></div>
+        </div>
+
+        <h3>建立累次积分</h3>
+        <p>区域 $D_{xy}$ 是半径为 $1$ 的圆盘，使用极坐标变换：</p>
+        <div class="formula-box">
+            $$I = \iint_{D_{xy}}\mathrm{d}x\,\mathrm{d}y\int_{\sqrt{x^2+y^2}}^{1+\sqrt{1-x^2-y^2}} z\,\mathrm{d}z = \int_0^{2\pi}\mathrm{d}\theta\int_0^1 r\,\mathrm{d}r\int_r^{\sqrt{2-r^2}} z\,\mathrm{d}z.$$
+            <div class="caption">注意：球面方程 $x^2+y^2+(z-1)^2=1$ 化为 $z = 1+\sqrt{1-r^2}$（上半球面）</div>
+        </div>
+
+        <h3>计算积分</h3>
+        <div class="solve-step"><div class="solve-num">(1)</div>
+            <div class="solve-body">
+                先对 $z$ 积分：
+                $$\int_r^{\sqrt{2-r^2}} z\,\mathrm{d}z = \left[\frac{z^2}{2}\right]_r^{\sqrt{2-r^2}} = \frac{2-r^2}{2} - \frac{r^2}{2} = 1-r^2.$$
+            </div>
+        </div>
+
+        <div class="solve-step"><div class="solve-num">(2)</div>
+            <div class="solve-body">
+                再对 $r$ 积分：
+                $$\int_0^1 r(1-r^2)\,\mathrm{d}r = \int_0^1 (r-r^3)\,\mathrm{d}r = \left[\frac{r^2}{2}-\frac{r^4}{4}\right]_0^1 = \frac{1}{2}-\frac{1}{4} = \frac{1}{4}.$$
+            </div>
+        </div>
+
+        <div class="solve-step"><div class="solve-num">(3)</div>
+            <div class="solve-body">
+                最后对 $\theta$ 积分：
+                $$\int_0^{2\pi}\frac{1}{4}\,\mathrm{d}\theta = \frac{1}{4}\cdot 2\pi = \frac{\pi}{2}.$$
+            </div>
+        </div>
+
+        <div class="formula-box" style="background: linear-gradient(135deg,#fff5f5,#fed7d7);">
+            $$\iiint_{\Omega} z\,\mathrm{d}V = \boxed{\dfrac{\pi}{2}}.$$
+        </div>
+
+        <!-- 区域可视化 -->
+        <div class="chart-wrap">
+            <h4>直角坐标：积分区域 $\Omega$ 的示意图</h4>
+            <div id="chart_cart" class="chart3d"></div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!--  面板 1：柱面坐标法                                          -->
+    <!-- ============================================================ -->
+    <div class="tab-panel" id="panel1">
+
+        <div class="sec-title"><div class="badge">2</div>柱面坐标法</div>
+
+        <div class="info-box">
+            <p><strong>核心思想：</strong>利用柱面坐标 $x = r\cos\theta,\ y = r\sin\theta,\ z = z$ 简化计算. 此区域在 $xOy$ 平面的投影是圆盘 $r \leqslant 1$，非常适合柱面坐标.</p>
+        </div>
+
+        <div class="steps">
+            <div class="step"><div class="step-num">1</div>
+                <div class="step-body"><strong>柱面坐标变换：</strong><br>
+                    $$x = r\cos\theta,\quad y = r\sin\theta,\quad z = z.$$<br>
+                    体积微元 $\mathrm{d}V = r\,\mathrm{d}r\,\mathrm{d}\theta\,\mathrm{d}z$，被积函数 $z = z$.
+                </div></div>
+            <div class="step"><div class="step-num">2</div>
+                <div class="step-body"><strong>确定坐标范围：</strong><br>
+                    <span class="highlight-blue">$\theta$</span>：由区域关于 $z$ 轴对称，$\theta: 0 \to 2\pi$.<br>
+                    <span class="highlight-purple">$r$</span>：投影区域是单位圆，$r: 0 \to 1$.<br>
+                    <span class="highlight-green">$z$</span>：从锥面 $z = r$ 到球面 $z = \sqrt{2-r^2}$（上半球面），$r \to \sqrt{2-r^2}$.
+                </div></div>
+        </div>
+
+        <h3>建立累次积分</h3>
+        <div class="formula-box">
+            $$I = \iiint_{\Omega} z\,\mathrm{d}V = \int_0^{2\pi}\mathrm{d}\theta\int_0^1 r\,\mathrm{d}r\int_r^{\sqrt{2-r^2}} z\,\mathrm{d}z.$$
+            <div class="caption">注意：球面方程 $x^2+y^2+z^2 = 2z$ 在柱面坐标下为 $r^2+z^2 = 2z$，即 $z = \sqrt{2-r^2}$</div>
+        </div>
+
+        <h3>计算积分（利用积分可分离）</h3>
+        <div class="solve-step"><div class="solve-num">(1)</div>
+            <div class="solve-body">
+                先对 $z$ 积分：
+                $$\int_r^{\sqrt{2-r^2}} z\,\mathrm{d}z = \left[\frac{z^2}{2}\right]_r^{\sqrt{2-r^2}} = \frac{2-r^2}{2} - \frac{r^2}{2} = 1-r^2.$$
+            </div>
+        </div>
+
+        <div class="solve-step"><div class="solve-num">(2)</div>
+            <div class="solve-body">
+                再对 $r$ 和 $\theta$ 积分（注意可分离）：
+                $$\int_0^{2\pi}\mathrm{d}\theta\int_0^1 r(1-r^2)\,\mathrm{d}r = \left(\int_0^{2\pi}\mathrm{d}\theta\right)\left(\int_0^1 (r-r^3)\,\mathrm{d}r\right) = 2\pi\cdot\frac{1}{4} = \frac{\pi}{2}.$$
+            </div>
+        </div>
+
+        <div class="formula-box" style="background: linear-gradient(135deg,#fff5f5,#fed7d7);">
+            $$\iiint_{\Omega} z\,\mathrm{d}V = \boxed{\dfrac{\pi}{2}}.$$
+        </div>
+
+        <div class="warn-box">
+            <strong>关键技巧：</strong>柱面坐标下，积分限的确定非常简洁. 投影区域 $r \leqslant 1$ 直接给出 $r: 0 \to 1$，无需像直角坐标那样计算复杂的投影边界.
+        </div>
+
+        <!-- 区域可视化 -->
+        <div class="chart-wrap">
+            <h4>柱面坐标：积分区域 $\Omega$ 及坐标面示意</h4>
+            <div id="chart_cyl" class="chart3d"></div>
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!--  面板 2：球面坐标法                                          -->
+    <!-- ============================================================ -->
+    <div class="tab-panel" id="panel2">
+
+        <div class="sec-title"><div class="badge">3</div>球面坐标法</div>
+
+        <div class="info-box">
+            <p><strong>核心思想：</strong>球面坐标 $\rho$ 表示到原点的距离，$\varphi$ 表示与 $z$ 轴的夹角，$\theta$ 表示方位角. 体积微元 $\mathrm{d}V = \rho^2\sin\varphi\,\mathrm{d}\rho\,\mathrm{d}\varphi\,\mathrm{d}\theta$.</p>
+        </div>
+
+        <div class="steps">
+            <div class="step"><div class="step-num">1</div>
+                <div class="step-body"><strong>球面坐标变换：</strong><br>
+                    $$x = \rho\sin\varphi\cos\theta,\quad y = \rho\sin\varphi\sin\theta,\quad z = \rho\cos\varphi.$$<br>
+                    体积微元 $\mathrm{d}V = \rho^2\sin\varphi\,\mathrm{d}\rho\,\mathrm{d}\varphi\,\mathrm{d}\theta$，被积函数 $z = \rho\cos\varphi$.
+                </div></div>
+            <div class="step"><div class="step-num">2</div>
+                <div class="step-body"><strong>将边界曲面化为球面坐标形式：</strong><br>
+                    锥面 $z = \sqrt{x^2+y^2}$：$\rho\cos\varphi = \sqrt{\rho^2\sin^2\varphi}$，即 $\tan\varphi = 1$，故 $\varphi = \dfrac{\pi}{4}$.<br>
+                    球面 $x^2+y^2+z^2 = 2z$：$\rho^2 = 2\rho\cos\varphi$，即 $\rho = 2\cos\varphi$（$\rho > 0$）.
+                </div></div>
+            <div class="step"><div class="step-num">3</div>
+                <div class="step-body"><strong>确定坐标范围：</strong><br>
+                    <span class="highlight-blue">$\theta$</span>：由区域关于 $z$ 轴对称，$\theta: 0 \to 2\pi$.<br>
+                    <span class="highlight-purple">$\varphi$</span>：锥面方程 $z = \sqrt{x^2+y^2}$ 对应 $\varphi = \dfrac{\pi}{4}$（与 $z$ 轴夹角）。<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;由于 $z = \rho\cos\varphi$ 且 $r = \rho\sin\varphi$，锥面 $z = r$ 等价于 $\cos\varphi = \sin\varphi$，即 $\varphi = \dfrac{\pi}{4}$.<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;在锥面上方（$z \geqslant r$，即 $\cos\varphi \geqslant \sin\varphi$）对应 $\varphi \in \left[0, \dfrac{\pi}{4}\right]$.<br>
+                    <span class="highlight-green">$\rho$</span>：从原点（$\rho = 0$）到球面（$\rho = 2\cos\varphi$），故 $\rho: 0 \to 2\cos\varphi$.
+                </div></div>
+        </div>
+
+        <h3>建立累次积分</h3>
+        <div class="formula-box">
+            $$I = \iiint_{\Omega} z\,\mathrm{d}V = \int_0^{2\pi}\mathrm{d}\theta\int_0^{\pi/4}\mathrm{d}\varphi\int_0^{2\cos\varphi} \rho\cos\varphi\cdot\rho^2\sin\varphi\,\mathrm{d}\rho.$$
+            <div class="caption">被积函数 $z = \rho\cos\varphi$，体积微元 $\mathrm{d}V = \rho^2\sin\varphi\,\mathrm{d}\rho\,\mathrm{d}\varphi\,\mathrm{d}\theta$</div>
+        </div>
+
+        <h3>计算积分</h3>
+        <div class="solve-step"><div class="solve-num">(1)</div>
+            <div class="solve-body">
+                对 $\rho$ 积分：
+                $$\int_0^{2\cos\varphi} \rho^3\cos\varphi\sin\varphi\,\mathrm{d}\rho = \cos\varphi\sin\varphi\cdot\left[\frac{\rho^4}{4}\right]_0^{2\cos\varphi} = \cos\varphi\sin\varphi\cdot\frac{(2\cos\varphi)^4}{4} = 4\cos^5\varphi\sin\varphi.$$
+            </div>
+        </div>
+
+        <div class="solve-step"><div class="solve-num">(2)</div>
+            <div class="solve-body">
+                对 $\varphi$ 积分（令 $u = \cos\varphi$，$\mathrm{d}u = -\sin\varphi\,\mathrm{d}\varphi$）：<br>
+                当 $\varphi = 0$ 时 $u = 1$；当 $\varphi = \dfrac{\pi}{4}$ 时 $u = \dfrac{\sqrt{2}}{2}$.
+                $$\int_0^{\pi/4} 4\cos^5\varphi\sin\varphi\,\mathrm{d}\varphi = 4\left[-\frac{\cos^6\varphi}{6}\right]_0^{\pi/4} = \frac{4}{6}\left(1 - \left(\frac{\sqrt{2}}{2}\right)^6\right).$$
+                由于 $\left(\dfrac{\sqrt{2}}{2}\right)^6 = \dfrac{1}{8}$，
+                $$\frac{4}{6}\left(1 - \frac{1}{8}\right) = \frac{4}{6}\cdot\frac{7}{8} = \frac{7}{12}.$$
+            </div>
+        </div>
+
+        <div class="solve-step"><div class="solve-num">(3)</div>
+            <div class="solve-body">
+                对 $\theta$ 积分：
+                $$\int_0^{2\pi}\frac{7}{12}\,\mathrm{d}\theta = \frac{7}{12}\cdot 2\pi = \frac{7\pi}{6}.$$
+            </div>
+        </div>
+
+        <div class="warn-box" style="background:#fff5f5; border-left-color:#e53e3e;">
+            <strong>结果异常！</strong>球面坐标法得 $\dfrac{7\pi}{6} \approx 3.665$，而柱面坐标法得 $\dfrac{\pi}{2} \approx 1.571$，两者不一致！<br>
+            这说明球面坐标法的计算过程存在错误，需仔细检查...
+        </div>
+
+        <h3>深入分析：为何球面坐标给出了错误结果？</h3>
+        <p>检查关键点：$z$ 轴（$x = y = 0$）上的点 $(0,0,z)$ 是否在区域 $\Omega$ 内？</p>
+        <div class="def-box">
+            <div class="label">锥面约束 $z = \sqrt{x^2+y^2}$ 在 $z$ 轴上</div>
+            <p>当 $x = y = 0$ 时，锥面方程 $z = \sqrt{0} = 0$，即 <strong>只有原点 $(0,0,0)$ 满足锥面方程</strong>.</p>
+            <p>对于 $z$ 轴上 $z > 0$ 的点，锥面要求 $z \leqslant 0$（因为 $z = r \geqslant 0$ 而 $r = 0$），因此 $z > 0$ 的 $z$ 轴点均不在锥面以内.</p>
+            <p>但在柱面坐标中，$r \in [0,1]$ 描述的是 $xy$ 平面上的投影区域，并非 $z$ 轴上的点！</p>
+        </div>
+
+        <div class="def-box">
+            <div class="label">球面坐标积分的 $\rho$ 范围分析</div>
+            <p>球面方程 $\rho = 2\cos\varphi$ 的来源：$\rho^2 = 2\rho\cos\varphi$，化简得 $\rho = 2\cos\varphi$（要求 $\rho > 0$，即 $\cos\varphi > 0$，$\varphi \in (-\pi/2, \pi/2)$）。</p>
+            <p>在 $\varphi \in \left[0, \dfrac{\pi}{4}\right]$ 范围内，$\rho = 2\cos\varphi \in \left[\sqrt{2}, 2\right]$.</p>
+            <p>这意味着在 $\varphi = 0$（$z$ 轴）方向上，$\rho$ 从 $0$ 到 $2$，对应的 $z = \rho\cos\varphi$ 从 $0$ 到 $2$，覆盖了整段 $z$ 轴 $[0,2]$.</p>
+            <p>但根据锥面方程，$z$ 轴上只有原点才满足锥面！因此 <strong>球面坐标积分多包含了 $z$ 轴上除原点外的所有点</strong>，这导致了错误的结果.</p>
+        </div>
+
+        <div class="warn-box">
+            <strong>根本原因：</strong>本例题中，锥面 $z = \sqrt{x^2+y^2}$ 的顶点（原点）不在 $z$ 轴的积分路径上（除 $\rho = 0$ 外），导致球面坐标积分的 $\rho$ 上限范围包含了本不属于区域 $\Omega$ 的点.<br><br>
+            更精确地说，球面坐标 $\rho = 2\cos\varphi$ 描述的是以原点为起点的射线与球面的交点。但在 $\varphi \in \left[0, \dfrac{\pi}{4}\right]$ 的范围内，当 $\varphi = 0$ 时，$\rho$ 从 $0$ 到 $2$ 沿 $z$ 轴方向，但锥面在 $z$ 轴上只允许 $z = 0$ 的点，导致这段区域（$0 < z \leqslant 2$）不应被包含在积分中.
+        </div>
+
+        <h3>正确做法：柱面坐标是本题最优解</h3>
+        <p>由于柱面坐标的 $r$ 坐标独立于 $z$，能够精确描述投影区域 $r \leqslant 1$，不受锥面顶点的影响，因此是本题的最佳选择.</p>
+
+        <div class="formula-box" style="background: linear-gradient(135deg,#fff5f5,#fed7d7);">
+            <p>正确结果：</p>
+            $$\iiint_{\Omega} z\,\mathrm{d}V = \boxed{\dfrac{\pi}{2}}.$$
+            <div class="caption">柱面坐标验证一致，球面坐标因锥顶位于原点导致积分范围错误</div>
+        </div>
+
+        <!-- 区域可视化 -->
+        <div class="chart-wrap">
+            <h4>球面坐标：积分区域 $\Omega$ 及坐标面示意</h4>
+            <div id="chart_sph" class="chart3d"></div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!--  面板 3：综合对比                                            -->
+    <!-- ============================================================ -->
+    <div class="tab-panel" id="panel3">
+
+        <div class="sec-title"><div class="badge">=</div>三种方法综合对比与分析</div>
+
+        <h3>积分计算对比</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>方法</th>
+                    <th>变换公式</th>
+                    <th>积分限确定</th>
+                    <th>计算难度</th>
+                    <th>结果</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>直角坐标法</strong><br><span class="tag tag-blue">先二后一</span></td>
+                    <td>$(x,y,z)$</td>
+                    <td>需将区域投影到 $xOy$ 平面，确定 $z$ 的上下限，再化为极坐标计算</td>
+                    <td><span class="tag tag-red">较繁琐</span></td>
+                    <td rowspan="2">$\dfrac{\pi}{2}$</td>
+                </tr>
+                <tr>
+                    <td><strong>柱面坐标法</strong><br><span class="tag tag-green">推荐</span></td>
+                    <td>$x = r\cos\theta$<br>$y = r\sin\theta$<br>$z = z$</td>
+                    <td>投影区域直接为 $r \leqslant 1$，$\theta: 0 \to 2\pi$，$r: 0 \to 1$，$z: r \to \sqrt{2-r^2}$</td>
+                    <td><span class="tag tag-green">最简便</span></td>
+                </tr>
+                <tr>
+                    <td><strong>球面坐标法</strong><br><span class="tag tag-purple">不适用</span></td>
+                    <td>$x = \rho\sin\varphi\cos\theta$<br>$y = \rho\sin\varphi\sin\theta$<br>$z = \rho\cos\varphi$</td>
+                    <td>球心不在原点，无法用 $\rho = f(\varphi)$ 简单表示边界，需分割区域</td>
+                    <td><span class="tag tag-red">不可行</span></td>
+                    <td>—</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>为什么柱面坐标最简便？</h3>
+        <div class="def-box">
+            <div class="label">本例题中柱面坐标的独特优势</div>
+            <ul style="margin-left:20px; line-height:2;">
+                <li><strong>投影区域简洁：</strong>积分区域 $\Omega$ 在 $xOy$ 平面的投影是单位圆 $r \leqslant 1$，这正是柱面坐标的"自然"投影.</li>
+                <li><strong>边界方程简单：</strong>锥面 $z = \sqrt{x^2+y^2}$ 化为 $z = r$，球面 $x^2+y^2+z^2 = 2z$ 化为 $z = \sqrt{2-r^2}$，都是 $r$ 的一元函数.</li>
+                <li><strong>被积函数自然：</strong>$z = z$ 在柱面坐标下形式不变，无需复杂变换.</li>
+                <li><strong>Jacobi 行列式简单：</strong>$|J| = r$，形式简单，易于处理.</li>
+            </ul>
+        </div>
+
+        <h3>为什么球面坐标不适用？</h3>
+        <div class="warn-box">
+            <strong>根本原因：</strong>球面 $x^2+y^2+z^2 = 2z$ 的球心在 $(0,0,1)$，不在原点 $O(0,0,0)$. 因此：<br><br>
+            <ul style="margin-left:20px; line-height:2;">
+                <li>球面不能简单地用 $\rho = \text{常数}$ 或 $\rho = f(\varphi)$ 表示；</li>
+                <li>需要将区域分割为两部分（球心以上和以下），积分限的确定和计算都非常繁琐；</li>
+                <li>强行使用球面坐标不仅不能简化计算，反而会大大增加计算量.</li>
+            </ul>
+        </div>
+
+        <h3>方法选择的实用建议</h3>
+        <div class="two-col">
+            <div class="def-box">
+                <div class="label">优先选柱面坐标的情形</div>
+                <ul style="margin-left:20px; line-height:1.9;">
+                    <li>积分区域在 $xOy$ 平面的投影是圆、圆环或扇形</li>
+                    <li>边界曲面含有 $x^2+y^2$ 或可化为 $r$ 的简单函数</li>
+                    <li>被积函数含有 $x^2+y^2$ 或可化为 $r$ 的函数</li>
+                    <li>区域是圆柱、圆锥或旋转体</li>
+                    <li>典型例子：旋转抛物面与平面围成的区域</li>
+                </ul>
+            </div>
+            <div class="def-box">
+                <div class="label">优先选球面坐标的情形</div>
+                <ul style="margin-left:20px; line-height:1.9;">
+                    <li>积分区域是球体、球锥、球壳（<strong>球心在原点</strong>）</li>
+                    <li>被积函数含有 $x^2+y^2+z^2 = \rho^2$</li>
+                    <li>边界曲面容易化为 $\rho = f(\varphi)$ 的形式</li>
+                    <li>区域边界由同心球面和锥面构成</li>
+                    <li>典型例子：球面与锥面围成的区域（球心在原点）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="warn-box" style="margin-top:20px;">
+            <strong>核心原则：</strong>拿到三重积分题目后，先分析两点：(1) 积分区域是什么形状？(2) 被积函数有什么特点？特别是要判断球心位置——如果球心在原点附近，球面坐标可能是首选；如果球心偏离原点，柱面坐标往往更实用.
+        </div>
+
+        <!-- 综合对比图 -->
+        <div class="chart-wrap">
+            <h4>积分区域 $\Omega$ 的 3D 可视化</h4>
+            <div id="chart_compare" class="chart3d"></div>
+        </div>
+
+        <h3>解题要点总结</h3>
+        <div class="steps">
+            <div class="step"><div class="step-num">1</div>
+                <div class="step-body"><strong>分析区域形状：</strong>锥面 $z = \sqrt{x^2+y^2}$ 与球面 $x^2+y^2+(z-1)^2 = 1$ 围成的区域，投影为圆盘.</div></div>
+            <div class="step"><div class="step-num">2</div>
+                <div class="step-body"><strong>选择坐标系：</strong>投影区域是圆形，优先选择柱面坐标.</div></div>
+            <div class="step"><div class="step-num">3</div>
+                <div class="step-body"><strong>确定积分限：</strong>$\theta: 0 \to 2\pi$，$r: 0 \to 1$，$z: r \to \sqrt{2-r^2}$.</div></div>
+            <div class="step"><div class="step-num">4</div>
+                <div class="step-body"><strong>计算累次积分：</strong>先对 $z$ 积分得 $1-r^2$，再对 $r$ 积分得 $\frac{1}{4}$，最后乘 $2\pi$ 得 $\frac{\pi}{2}$.</div></div>
+            <div class="step"><div class="step-num">5</div>
+                <div class="step-body"><strong>最终结果：</strong>$I = \iiint_{\Omega} z\,\mathrm{d}V = \boxed{\dfrac{\pi}{2}}$.</div></div>
+        </div>
+
+    </div>
+
+</div><!-- /container -->
+
+<script>
+// ====================================================
+// 工具函数
+// ====================================================
+function linspace(a, b, n) {
+    const arr = [];
+    for (let i = 0; i < n; i++) arr.push(a + (b - a) * i / (n - 1));
+    return arr;
+}
+
+// ====================================================
+// 图1：直角坐标 - 区域示意图
+// ====================================================
+(function() {
+    const N = 60;
+    // 锥面 z = r
+    const rs = linspace(0, 1, N), ts = linspace(0, 2 * Math.PI, N);
+    const Xc = [], Yc = [], Zc = [];
+    for (let j = 0; j < N; j++) {
+        const rx = [], ry = [], rz = [];
+        for (let i = 0; i < N; i++) {
+            rx.push(rs[j] * Math.cos(ts[i]));
+            ry.push(rs[j] * Math.sin(ts[i]));
+            rz.push(rs[j]);
+        }
+        Xc.push(rx); Yc.push(ry); Zc.push(rz);
+    }
+    // 球面 (上半部分)
+    const Xs = [], Ys = [], Zs = [];
+    for (let j = 0; j < N; j++) {
+        const phi = j / N * Math.PI / 2;
+        const rx = [], ry = [], rz = [];
+        for (let i = 0; i < N; i++) {
+            const theta = (i / N) * 2 * Math.PI;
+            const rho = 2 * Math.cos(phi);
+            rx.push(rho * Math.sin(phi) * Math.cos(theta));
+            ry.push(rho * Math.sin(phi) * Math.sin(theta));
+            rz.push(rho * Math.cos(phi));
+        }
+        Xs.push(rx); Ys.push(ry); Zs.push(rz);
+    }
+    // 交线圆
+    const tc = linspace(0, 2 * Math.PI, 100);
+    const Xc2 = tc.map(t => Math.cos(t));
+    const Yc2 = tc.map(t => Math.sin(t));
+    const Zc2 = tc.map(() => 1);
+
+    Plotly.newPlot('chart_cart', [
+        { type: 'surface', x: Xc, y: Yc, z: Zc, colorscale: [[0,'#3182ce'],[1,'#90cdf4']], opacity: 0.75, showscale: false, name: '锥面 z=r' },
+        { type: 'surface', x: Xs, y: Ys, z: Zs, colorscale: [[0,'#38a169'],[1,'#9ae6b4']], opacity: 0.6, showscale: false, name: '球面' },
+        { type: 'scatter3d', x: Xc2, y: Yc2, z: Zc2, mode: 'lines', line: { color: '#e53e3e', width: 4 }, name: '交线 z=1' }
+    ], {
+        scene: {
+            xaxis: { title: 'x', range: [-1.5, 1.5] },
+            yaxis: { title: 'y', range: [-1.5, 1.5] },
+            zaxis: { title: 'z', range: [-0.2, 2.2] },
+            camera: { eye: { x: 1.5, y: -1.5, z: 1.0 } },
+            aspectmode: 'cube'
+        },
+        legend: { x: 0.02, y: 0.98 },
+        margin: { l: 0, r: 0, t: 10, b: 0 }
+    });
+})();
+
+// ====================================================
+// 图2：柱面坐标 - 区域示意图
+// ====================================================
+(function() {
+    const N = 60;
+    // 锥面 z = r
+    const rs = linspace(0, 1, N), ts = linspace(0, 2 * Math.PI, N);
+    const Xc = [], Yc = [], Zc = [];
+    for (let j = 0; j < N; j++) {
+        const rx = [], ry = [], rz = [];
+        for (let i = 0; i < N; i++) {
+            rx.push(rs[j] * Math.cos(ts[i]));
+            ry.push(rs[j] * Math.sin(ts[i]));
+            rz.push(rs[j]);
+        }
+        Xc.push(rx); Yc.push(ry); Zc.push(rz);
+    }
+    // 球面
+    const Xs = [], Ys = [], Zs = [];
+    for (let j = 0; j < N; j++) {
+        const phi = j / N * Math.PI / 2;
+        const rx = [], ry = [], rz = [];
+        for (let i = 0; i < N; i++) {
+            const theta = (i / N) * 2 * Math.PI;
+            const rho = 2 * Math.cos(phi);
+            rx.push(rho * Math.sin(phi) * Math.cos(theta));
+            ry.push(rho * Math.sin(phi) * Math.sin(theta));
+            rz.push(rho * Math.cos(phi));
+        }
+        Xs.push(rx); Ys.push(ry); Zs.push(rz);
+    }
+    // 圆柱侧面（辅助）
+    const Xcy = [], Ycy = [], Zcy = [];
+    for (let i = 0; i <= N; i++) {
+        const theta = (i / N) * 2 * Math.PI;
+        const rx = [], ry = [], rz = [];
+        for (let k = 0; k <= N; k++) {
+            rx.push(Math.cos(theta));
+            ry.push(Math.sin(theta));
+            rz.push((k / N) * 1.5);
+        }
+        Xcy.push(rx); Ycy.push(ry); Zcy.push(rz);
+    }
+
+    Plotly.newPlot('chart_cyl', [
+        { type: 'surface', x: Xc, y: Yc, z: Zc, colorscale: [[0,'#3182ce'],[1,'#90cdf4']], opacity: 0.8, showscale: false, name: '锥面 z=r' },
+        { type: 'surface', x: Xs, y: Ys, z: Zs, colorscale: [[0,'#38a169'],[1,'#9ae6b4']], opacity: 0.65, showscale: false, name: '球面' },
+        { type: 'surface', x: Xcy, y: Ycy, z: Zcy, colorscale: [[0,'rgba(200,200,200,0.2)'],[1,'rgba(200,200,200,0.2)']], opacity: 0.2, showscale: false, name: 'r=1 圆柱面' }
+    ], {
+        scene: {
+            xaxis: { title: 'x', range: [-1.5, 1.5] },
+            yaxis: { title: 'y', range: [-1.5, 1.5] },
+            zaxis: { title: 'z', range: [-0.2, 2.2] },
+            camera: { eye: { x: 1.5, y: -1.5, z: 1.0 } },
+            aspectmode: 'cube'
+        },
+        legend: { x: 0.02, y: 0.98 },
+        margin: { l: 0, r: 0, t: 10, b: 0 }
+    });
+})();
+
+// ====================================================
+// 图3：球面坐标 - 区域示意图
+// ====================================================
+(function() {
+    const N = 50;
+    // 锥面 phi = pi/4
+    const ps = linspace(0, 1.3, N), ts = linspace(0, 2 * Math.PI, N);
+    const Xf = [], Yf = [], Zf = [];
+    for (let j = 0; j < N; j++) {
+        const rho = ps[j];
+        const rx = [], ry = [], rz = [];
+        for (let i = 0; i < N; i++) {
+            const theta = ts[i];
+            const phi = Math.PI / 4;
+            rx.push(rho * Math.sin(phi) * Math.cos(theta));
+            ry.push(rho * Math.sin(phi) * Math.sin(theta));
+            rz.push(rho * Math.cos(phi));
+        }
+        Xf.push(rx); Yf.push(ry); Zf.push(rz);
+    }
+    // 球面
+    const Xs = [], Ys = [], Zs = [];
+    for (let j = 0; j < N; j++) {
+        const phi = j / N * Math.PI / 2;
+        const rx = [], ry = [], rz = [];
+        for (let i = 0; i < N; i++) {
+            const theta = (i / N) * 2 * Math.PI;
+            const rho = 2 * Math.cos(phi);
+            rx.push(rho * Math.sin(phi) * Math.cos(theta));
+            ry.push(rho * Math.sin(phi) * Math.sin(theta));
+            rz.push(rho * Math.cos(phi));
+        }
+        Xs.push(rx); Ys.push(ry); Zs.push(rz);
+    }
+    // 交线
+    const tc = linspace(0, 2 * Math.PI, 100);
+    const Xc = tc.map(t => Math.cos(t));
+    const Yc = tc.map(t => Math.sin(t));
+    const Zc = tc.map(() => 1);
+
+    Plotly.newPlot('chart_sph', [
+        { type: 'surface', x: Xf, y: Yf, z: Zf, colorscale: [[0,'#3182ce'],[1,'#90cdf4']], opacity: 0.6, showscale: false, name: '锥面 phi=pi/4' },
+        { type: 'surface', x: Xs, y: Ys, z: Zs, colorscale: [[0,'#38a169'],[1,'#9ae6b4']], opacity: 0.5, showscale: false, name: '球面' },
+        { type: 'scatter3d', x: Xc, y: Yc, z: Zc, mode: 'lines', line: { color: '#e53e3e', width: 3 }, name: '交线' }
+    ], {
+        scene: {
+            xaxis: { title: 'x', range: [-1.5, 1.5] },
+            yaxis: { title: 'y', range: [-1.5, 1.5] },
+            zaxis: { title: 'z', range: [-0.2, 2.2] },
+            camera: { eye: { x: 1.5, y: -1.5, z: 1.0 } },
+            aspectmode: 'cube'
+        },
+        legend: { x: 0.02, y: 0.98 },
+        margin: { l: 0, r: 0, t: 10, b: 0 }
+    });
+})();
+
+// ====================================================
+// 图4：综合对比图
+// ====================================================
+(function() {
+    const N = 60;
+    // 锥面
+    const rs = linspace(0, 1, N), ts = linspace(0, 2 * Math.PI, N);
+    const Xc = [], Yc = [], Zc = [];
+    for (let j = 0; j < N; j++) {
+        const rx = [], ry = [], rz = [];
+        for (let i = 0; i < N; i++) {
+            rx.push(rs[j] * Math.cos(ts[i]));
+            ry.push(rs[j] * Math.sin(ts[i]));
+            rz.push(rs[j]);
+        }
+        Xc.push(rx); Yc.push(ry); Zc.push(rz);
+    }
+    // 球面
+    const Xs = [], Ys = [], Zs = [];
+    for (let j = 0; j < N; j++) {
+        const phi = j / N * Math.PI / 2;
+        const rx = [], ry = [], rz = [];
+        for (let i = 0; i < N; i++) {
+            const theta = (i / N) * 2 * Math.PI;
+            const rho = 2 * Math.cos(phi);
+            rx.push(rho * Math.sin(phi) * Math.cos(theta));
+            ry.push(rho * Math.sin(phi) * Math.sin(theta));
+            rz.push(rho * Math.cos(phi));
+        }
+        Xs.push(rx); Ys.push(ry); Zs.push(rz);
+    }
+
+    Plotly.newPlot('chart_compare', [
+        { type: 'surface', x: Xc, y: Yc, z: Zc, colorscale: [[0,'#3182ce'],[1,'#90cdf4']], opacity: 0.75, showscale: false, name: '锥面 z=sqrt(x^2+y^2)' },
+        { type: 'surface', x: Xs, y: Ys, z: Zs, colorscale: [[0,'#38a169'],[1,'#9ae6b4']], opacity: 0.6, showscale: false, name: '球面 x^2+y^2+z^2=2z' }
+    ], {
+        scene: {
+            xaxis: { title: 'x', range: [-1.5, 1.5] },
+            yaxis: { title: 'y', range: [-1.5, 1.5] },
+            zaxis: { title: 'z', range: [-0.2, 2.2] },
+            camera: { eye: { x: 1.5, y: -1.5, z: 1.0 } },
+            aspectmode: 'cube'
+        },
+        legend: { x: 0.02, y: 0.98 },
+        margin: { l: 0, r: 0, t: 10, b: 0 }
+    });
+})();
+
+// ====================================================
+// 标签页切换
+// ====================================================
+function switchTab(index) {
+    document.querySelectorAll('.tab-panel').forEach((p, i) => {
+        p.classList.toggle('active', i === index);
+    });
+    document.querySelectorAll('.tab-btn').forEach((b, i) => {
+        b.classList.toggle('active', i === index);
+    });
+}
+</script>
+</body>
+</html>

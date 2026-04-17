@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三重积分的计算 - 锥面区域</title>
+    
+    <!-- MathJax 配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                packages: {'[+]': ['ams']}
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea']
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Times New Roman", serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            color: #000000;
+            line-height: 1.9;
+            padding: 30px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            position: relative;
+            background: linear-gradient(135deg, #1a365d 0%, #2b4c8c 60%, #3182ce 100%);
+            color: #fff;
+            padding: 52px 48px 44px;
+            text-align: center;
+            border-radius: 14px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.6em;
+            letter-spacing: 4px;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            color: #fff;
+        }
+        .header-logo {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            width: 210px;
+            height: auto;
+            opacity: 0.95;
+        }
+        
+        h2 {
+            font-size: 1.5em;
+            margin: 35px 0 18px 0;
+            color: #283593;
+            border-left: 5px solid #3f51b5;
+            padding-left: 15px;
+            background: linear-gradient(90deg, rgba(63,81,181,0.1) 0%, transparent 100%);
+        }
+        
+        h3 {
+            font-size: 1.2em;
+            margin: 22px 0 12px 0;
+            color: #303f9f;
+        }
+        
+        p {
+            margin: 14px 0;
+            text-align: justify;
+        }
+        
+        .problem-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left: 5px solid #f57c00;
+            border-radius: 0 12px 12px 0;
+            padding: 22px;
+            margin: 22px 0;
+            box-shadow: 0 4px 15px rgba(245,124,0,0.15);
+        }
+        
+        .solution-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left: 5px solid #4caf50;
+            border-radius: 0 12px 12px 0;
+            padding: 22px;
+            margin: 22px 0;
+            box-shadow: 0 4px 15px rgba(76,175,80,0.12);
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+            border-left: 5px solid #c2185b;
+            border-radius: 0 12px 12px 0;
+            padding: 18px 22px;
+            margin: 18px 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(194,24,91,0.12);
+        }
+        
+        .geo-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border: 2px solid #1976d2;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 18px 0;
+            box-shadow: 0 4px 15px rgba(25,118,210,0.12);
+        }
+        
+        .chart-container {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .chart-wrapper {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        
+        .chart-main {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        #chart3d, #chartCylindrical, #chartSection {
+            width: 100%;
+            height: 450px;
+            border-radius: 12px;
+        }
+        
+        .interactive-controls {
+            background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+            border-radius: 10px;
+            padding: 15px;
+            width: 280px;
+            flex-shrink: 0;
+        }
+        
+        .control-group {
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .control-group label {
+            font-weight: bold;
+            color: #333;
+            min-width: 120px;
+        }
+        
+        input[type="range"] {
+            width: 200px;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3f51b5;
+            cursor: pointer;
+        }
+        
+        .animation-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #3f51b5 0%, #303f9f 100%);
+            color: #ffffff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .animation-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(63,81,181,0.3);
+        }
+        
+        .animation-btn.secondary {
+            background: linear-gradient(135deg, #757575 0%, #616161 100%);
+        }
+        
+        .value-display {
+            display: inline-block;
+            margin-left: 20px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #7c4dff 0%, #651fff 100%);
+            color: #ffffff;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(101,31,255,0.3);
+        }
+        
+        .step-box {
+            background: #ffffff;
+            border-left: 4px solid #3f51b5;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .step-num {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #3f51b5 0%, #303f9f 100%);
+            color: #ffffff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .highlight-red { color: #c62828; font-weight: bold; }
+        .highlight-blue { color: #1565c0; font-weight: bold; }
+        .highlight-green { color: #2e7d32; font-weight: bold; }
+        .highlight-purple { color: #7b1fa2; font-weight: bold; }
+        
+        .result-box {
+            background: linear-gradient(135deg, #d1c4e9 0%, #b39ddb 100%);
+            border: 2px solid #7e57c2;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .result-box h3 {
+            color: #4527a0;
+            margin-bottom: 10px;
+        }
+        
+        .method-box {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 18px 0;
+        }
+        
+        .coord-info {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <img class="header-logo" src="吉林大学校徽_透明.png" alt="吉林大学校徽" />
+    <h1>三重积分的计算</h1>
+</div>
+
+<div class="problem-box">
+   
+    <p>例 3.6 计算三重积分</p>
+    <div class="formula-box">
+        $$I = \iiint\limits_\Omega (1 + x^2 + y^2)z\,\mathrm{d}V.$$
+    </div>
+    <p>其中 $\Omega$ 是由锥面 $z = \sqrt{x^2 + y^2}$ 和平面 $z = 1$ 围成的闭区域.</p>
+</div>
+
+<h2>一、积分区域的几何分析</h2>
+
+<div class="geo-box">
+    <h3>区域 $\Omega$ 的边界</h3>
+    <ul>
+        <li><span class="highlight-blue">下边界</span>：锥面 $z = \sqrt{x^2 + y^2}$（顶点在原点，开口向上的圆锥）</li>
+        <li><span class="highlight-green">上边界</span>：平面 $z = 1$（水平平面）</li>
+        <li><span class="highlight-red">交线</span>：锥面与平面的交线为 $x^2 + y^2 = 1$，$z = 1$（半径为1的圆）</li>
+    </ul>
+    <p>这是一个<span class="highlight-purple">旋转体</span>区域，关于 $z$ 轴对称，适合使用<span class="highlight-purple">柱坐标</span>计算.</p>
+</div>
+
+<div class="chart-container">
+    <h3>交互式3D可视化：积分区域</h3>
+    <div class="chart-wrapper">
+        <div class="chart-main">
+            <div id="chart3d"></div>
+        </div>
+        <div class="interactive-controls">
+            <div class="control-group">
+                <label>观察角度:</label>
+                <button class="animation-btn" id="viewXY">俯视(x-y)</button>
+                <button class="animation-btn" id="viewXZ">侧视(x-z)</button>
+                <button class="animation-btn" id="view3D">3D视角</button>
+            </div>
+            <div class="control-group">
+                <button class="animation-btn secondary" id="animateRotate">自动旋转</button>
+                <button class="animation-btn secondary" id="stopRotate">停止</button>
+            </div>
+            <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                <strong>说明：</strong>橙色曲面为锥面 $z = \sqrt{x^2 + y^2}$，蓝色为顶面 $z = 1$，绿色为底面投影.
+            </p>
+        </div>
+    </div>
+</div>
+
+<h2>二、柱坐标变换</h2>
+
+<div class="method-box">
+    <h3>为什么选择柱坐标？</h3>
+    <p>由于区域关于 $z$ 轴对称，且边界涉及 $x^2 + y^2$，使用柱坐标可以大大简化计算.</p>
+    <div class="formula-box">
+        $$x = r\cos\theta, \quad y = r\sin\theta, \quad z = z.$$
+    </div>
+    <div class="formula-box">
+        $$\mathrm{d}V = r\,\mathrm{d}r\,\mathrm{d}\theta\,\mathrm{d}z, \quad x^2 + y^2 = r^2.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">1</span>
+    <strong>确定柱坐标下的积分限</strong>
+    <ul>
+        <li>$\theta$：绕 $z$ 轴一周，$0 \leqslant \theta \leqslant 2\pi$.</li>
+        <li>$r$：从中心到交线处，$0 \leqslant r \leqslant 1$.</li>
+        <li>$z$：从锥面到顶面，$r \leqslant z \leqslant 1$（因为锥面 $z = r$）.</li>
+    </ul>
+</div>
+
+<div class="chart-container">
+    <h3>可视化：柱坐标系下的截面</h3>
+    <div class="chart-wrapper">
+        <div class="chart-main">
+            <div id="chartCylindrical"></div>
+        </div>
+        <div class="interactive-controls">
+            <div class="control-group">
+                <label>半径 $r$:</label>
+                <input type="range" id="radiusR" min="0" max="100" value="50">
+                <span id="radiusRVal">0.50</span>
+            </div>
+            <div class="control-group">
+                <label>角度 $\theta$:</label>
+                <input type="range" id="angleTheta" min="0" max="360" value="0">
+                <span id="angleThetaVal">0°</span>
+            </div>
+            <div class="control-group">
+                <button class="animation-btn" id="playCyl">播放动画</button>
+                <button class="animation-btn secondary" id="resetCyl">重置</button>
+            </div>
+            <span class="value-display">当前高度: <span id="heightZ">0.500</span></span>
+            <div class="coord-info">
+                直角坐标: $(<span id="coordX">0.50</span>, <span id="coordY">0.00</span>, <span id="coordZ">0.50</span>)$
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2>三、建立累次积分</h2>
+
+<div class="step-box">
+    <span class="step-num">2</span>
+    <strong>将被积函数转换为柱坐标</strong>
+    <div class="formula-box">
+        $$(1 + x^2 + y^2)z = (1 + r^2)z.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">3</span>
+    <strong>建立三重积分</strong>
+    <div class="formula-box">
+        $$I = \iiint_\Omega (1 + x^2 + y^2)z\,\mathrm{d}V = \int_0^{2\pi} \mathrm{d}\theta \int_0^1 \mathrm{d}r \int_r^1 (1 + r^2)z \cdot r\,\mathrm{d}z.$$
+    </div>
+    <p>注意：体积元 $\mathrm{d}V = r\,\mathrm{d}r\,\mathrm{d}\theta\,\mathrm{d}z$，所以被积函数变为 $(1 + r^2)z \cdot r = r(1 + r^2)z$.</p>
+</div>
+
+<h2>四、逐步计算</h2>
+
+<div class="step-box">
+    <span class="step-num">4</span>
+    <strong>计算最内层积分（对 $z$）</strong>
+    <div class="formula-box">
+        $$\int_r^1 r(1 + r^2)z\,\mathrm{d}z = r(1 + r^2) \cdot \left[\frac{z^2}{2}\right]_r^1 = r(1 + r^2) \cdot \frac{1 - r^2}{2} = \frac{r(1 - r^4)}{2}.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">5</span>
+    <strong>计算中层积分（对 $r$）</strong>
+    <div class="formula-box">
+        $$\int_0^1 \frac{r(1 - r^4)}{2}\,\mathrm{d}r = \frac{1}{2} \int_0^1 (r - r^5)\,\mathrm{d}r = \frac{1}{2} \cdot \left[\frac{r^2}{2} - \frac{r^6}{6}\right]_0^1.$$
+    </div>
+    <div class="formula-box">
+        $$= \frac{1}{2} \cdot \left(\frac{1}{2} - \frac{1}{6}\right) = \frac{1}{2} \cdot \frac{1}{3} = \frac{1}{6}.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">6</span>
+    <strong>计算最外层积分（对 $\theta$）</strong>
+    <div class="formula-box">
+        $$\int_0^{2\pi} \frac{1}{6}\,\mathrm{d}\theta = \frac{1}{6} \cdot 2\pi = \frac{\pi}{3}.$$
+    </div>
+</div>
+
+<h2>五、截面法验证</h2>
+
+<div class="solution-box">
+    <h3>思路</h3>
+    <p>用平行于 $xOy$ 平面的平面 $z = z_0$ 截取区域，得到圆盘形截面，先计算截面积分，再对 $z$ 积分.</p>
+</div>
+
+<div class="chart-container">
+    <h3>可视化：截面法验证</h3>
+    <div class="chart-wrapper">
+        <div class="chart-main">
+            <div id="chartSection"></div>
+        </div>
+        <div class="interactive-controls">
+            <div class="control-group">
+                <label>截面高度 $z$:</label>
+                <input type="range" id="sectionZ" min="0" max="100" value="50">
+                <span id="sectionZVal">0.50</span>
+            </div>
+            <div class="control-group">
+                <button class="animation-btn" id="playSection">播放动画</button>
+                <button class="animation-btn secondary" id="resetSection">重置</button>
+            </div>
+            <span class="value-display">截面内积分值: <span id="sectionInt">0.196</span></span>
+            <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                <strong>说明：</strong>在高度 $z$ 处，截面为圆盘 $r \leqslant z$，即 $x^2 + y^2 \leqslant z^2$.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">1</span>
+    <strong>确定截面区域</strong>
+    <p>固定 $z$，由锥面 $z = r$，得 $r = z$.</p>
+    <p>截面为圆盘：$0 \leqslant r \leqslant z$，$0 \leqslant \theta \leqslant 2\pi$.</p>
+    <p>$z$ 的范围：从 $0$ 到 $1$.</p>
+</div>
+
+<div class="step-box">
+    <span class="step-num">2</span>
+    <strong>计算截面积分</strong>
+    <div class="formula-box">
+        $$\iint_{D_z} (1 + x^2 + y^2)z\,\mathrm{d}x\mathrm{d}y = \int_0^{2\pi} \mathrm{d}\theta \int_0^z (1 + r^2)z \cdot r\,\mathrm{d}r.$$
+    </div>
+    <p>内层积分：</p>
+    <div class="formula-box">
+        $$\int_0^z z(r + r^3)\,\mathrm{d}r = z \cdot \left[\frac{r^2}{2} + \frac{r^4}{4}\right]_0^z = z \cdot \left(\frac{z^2}{2} + \frac{z^4}{4}\right) = \frac{z^3}{2} + \frac{z^5}{4}.$$
+    </div>
+    <p>外层积分：</p>
+    <div class="formula-box">
+        $$\int_0^{2\pi} \left(\frac{z^3}{2} + \frac{z^5}{4}\right)\,\mathrm{d}\theta = 2\pi\left(\frac{z^3}{2} + \frac{z^5}{4}\right).$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">3</span>
+    <strong>对 $z$ 积分</strong>
+    <div class="formula-box">
+        $$I = \int_0^1 2\pi\left(\frac{z^3}{2} + \frac{z^5}{4}\right)\,\mathrm{d}z = 2\pi \left[\frac{z^4}{8} + \frac{z^6}{24}\right]_0^1.$$
+    </div>
+    <div class="formula-box">
+        $$= 2\pi \cdot \left(\frac{1}{8} + \frac{1}{24}\right) = 2\pi \cdot \frac{4}{24} = 2\pi \cdot \frac{1}{6} = \frac{\pi}{3}.$$
+    </div>
+</div>
+
+<h2>六、最终结果</h2>
+
+<div class="result-box">
+    <h3>最终答案</h3>
+    <div class="formula-box" style="font-size: 1.4em;">
+        $$I = \iiint\limits_\Omega (1 + x^2 + y^2)z\,\mathrm{d}V = \frac{\pi}{3}.$$
+    </div>
+    <p style="margin-top: 15px; color: #4527a0;">
+        数值近似值：$\dfrac{\pi}{3} \approx 1.047$.
+    </p>
+</div>
+
+<h2>七、数值验证</h2>
+
+<div class="geo-box">
+    <h3>蒙特卡洛方法简介</h3>
+    <p><strong>基本原理：</strong>蒙特卡洛方法是一种基于随机采样的数值计算方法. 其核心思想是：通过在积分区域内随机撒点，用样本的平均值来估计积分的值.</p>
+    <p><strong>具体步骤：</strong></p>
+    <ol style="margin-left: 20px; line-height: 2;">
+        <li>确定一个包含积分区域 $\Omega$ 的简单区域（如圆柱体），计算其体积 $V_{box}$.</li>
+        <li>在该区域内随机生成 $N$ 个均匀分布的采样点.</li>
+        <li>统计落在积分区域 $\Omega$ 内的点数 $N_{in}$，并计算这些点上的函数值之和.</li>
+        <li>积分估计值：$\displaystyle I \approx V_{box} \cdot \frac{1}{N_{in}} \sum_{i=1}^{N_{in}} f(x_i, y_i, z_i)$.</li>
+    </ol>
+    <p><strong>特点：</strong>采样点数越多，估计精度越高，误差以 $1/\sqrt{N}$ 的速度收敛.</p>
+</div>
+
+<div class="chart-container">
+    <h3>蒙特卡洛数值验证</h3>
+    <div class="chart-wrapper">
+        <div class="chart-main">
+            <div id="chartMonteCarlo"></div>
+        </div>
+        <div class="interactive-controls">
+            <div class="control-group">
+                <label>采样点数:</label>
+                <input type="range" id="mcSamples" min="1000" max="50000" value="10000" step="1000">
+                <span id="mcSamplesVal">10000</span>
+            </div>
+            <div class="control-group">
+                <button class="animation-btn" id="runMC">运行模拟</button>
+                <button class="animation-btn secondary" id="resetMC">重置</button>
+            </div>
+            <div class="result-box" style="margin-top: 15px;">
+                <p>理论值：$\dfrac{\pi}{3} \approx 1.0472$</p>
+                <p>蒙特卡洛估计值：<span id="mcResult" style="font-size: 1.3em; color: #c62828; font-weight: bold;">--</span></p>
+                <p>相对误差：<span id="mcError" style="color: #666;">--</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2>八、总结</h2>
+
+<div class="solution-box">
+    <h3>解题要点</h3>
+    <ul>
+        <li><span class="highlight-blue">柱坐标法</span>：对于旋转对称区域，柱坐标是首选方法，可大大简化计算.</li>
+        <li><span class="highlight-green">截面法</span>：作为验证手段，两种方法得到相同结果.</li>
+        <li><span class="highlight-purple">对称性</span>：利用关于 $z$ 轴的对称性，$\theta$ 积分直接给出 $2\pi$ 因子.</li>
+        <li>最终结果：$I = \dfrac{\pi}{3} \approx 1.047$.</li>
+    </ul>
+</div>
+
+<script>
+    // 全局变量
+    let rotateAnimationId = null;
+    let cylAnimationId = null;
+    let sectionAnimationId = null;
+    
+    // ========== 3D区域可视化 ==========
+    function draw3DRegion() {
+        const traces = [];
+        
+        // 生成锥面 z = sqrt(x^2 + y^2) (使用surface类型绘制连续曲面)
+        const n = 40;
+        const xCone = [], yCone = [], zCone = [];
+        for (let i = 0; i <= n; i++) {
+            const row = [];
+            const r = i / n;
+            for (let j = 0; j <= n; j++) {
+                const theta = 2 * Math.PI * j / n;
+                row.push(r * Math.cos(theta));
+            }
+            xCone.push(row);
+        }
+        for (let i = 0; i <= n; i++) {
+            const row = [];
+            const r = i / n;
+            for (let j = 0; j <= n; j++) {
+                const theta = 2 * Math.PI * j / n;
+                row.push(r * Math.sin(theta));
+            }
+            yCone.push(row);
+        }
+        for (let i = 0; i <= n; i++) {
+            const row = [];
+            const r = i / n;
+            for (let j = 0; j <= n; j++) {
+                row.push(r);
+            }
+            zCone.push(row);
+        }
+        
+        traces.push({
+            x: xCone, y: yCone, z: zCone,
+            type: 'surface',
+            colorscale: [[0, '#e65100'], [0.5, '#ff9800'], [1, '#ffb74d']],
+            showscale: false,
+            opacity: 0.85,
+            name: '锥面 z=√(x²+y²)'
+        });
+        
+        // 顶面 z=1 (使用surface类型)
+        const nTop = 30;
+        const xTop = [], yTop = [], zTop = [];
+        for (let i = 0; i <= nTop; i++) {
+            const row_x = [], row_y = [], row_z = [];
+            const r = i / nTop;
+            for (let j = 0; j <= nTop; j++) {
+                const theta = 2 * Math.PI * j / nTop;
+                row_x.push(r * Math.cos(theta));
+                row_y.push(r * Math.sin(theta));
+                row_z.push(1);
+            }
+            xTop.push(row_x);
+            yTop.push(row_y);
+            zTop.push(row_z);
+        }
+        
+        traces.push({
+            x: xTop, y: yTop, z: zTop,
+            type: 'surface',
+            colorscale: [[0, '#1565c0'], [1, '#1976d2']],
+            showscale: false,
+            opacity: 0.8,
+            name: '顶面 z=1'
+        });
+        
+        // 圆柱侧面 x^2 + y^2 = 1 (从z=0到z=1)
+        const thetaVals = [];
+        const zVals = [];
+        for (let i = 0; i <= 50; i++) {
+            const theta = 2 * Math.PI * i / 50;
+            const row_theta = [], row_z = [];
+            for (let j = 0; j <= 20; j++) {
+                row_theta.push(theta);
+                row_z.push(j / 20);
+            }
+            thetaVals.push(row_theta);
+            zVals.push(row_z);
+        }
+        const xCyl = [], yCyl = [], zCylLines = [];
+        for (let i = 0; i <= 50; i++) {
+            const theta = 2 * Math.PI * i / 50;
+            const xRow = [], yRow = [], zRow = [];
+            for (let j = 0; j <= 20; j++) {
+                xRow.push(Math.cos(theta));
+                yRow.push(Math.sin(theta));
+                zRow.push(j / 20);
+            }
+            xCyl.push(xRow);
+            yCyl.push(yRow);
+            zCylLines.push(zRow);
+        }
+        
+        traces.push({
+            x: xCyl, y: yCyl, z: zCylLines,
+            type: 'surface',
+            colorscale: [[0, '#2e7d32'], [1, '#4caf50']],
+            showscale: false,
+            opacity: 0.3,
+            name: '圆柱边界 r=1'
+        });
+        
+        const layout = {
+            title: {
+                text: '积分区域：锥面与平面围成的区域',
+                font: { size: 16, color: '#1a237e', family: 'Times New Roman' }
+            },
+            scene: {
+                xaxis: { title: 'x', range: [-1.3, 1.3], gridcolor: '#e0e0e0' },
+                yaxis: { title: 'y', range: [-1.3, 1.3], gridcolor: '#e0e0e0' },
+                zaxis: { title: 'z', range: [0, 1.3], gridcolor: '#e0e0e0' },
+                camera: { eye: { x: 1.5, y: 1.5, z: 1.0 } },
+                aspectmode: 'cube'
+            },
+            margin: { t: 60, l: 0, r: 0, b: 0 }
+        };
+        
+        Plotly.newPlot('chart3d', traces, layout, {responsive: true});
+    }
+    
+    // ========== 柱坐标可视化 ==========
+    function drawCylindrical() {
+        const r = parseInt(document.getElementById('radiusR').value) / 100;
+        const theta = parseInt(document.getElementById('angleTheta').value) * Math.PI / 180;
+        const z = r;
+        
+        const x = r * Math.cos(theta);
+        const y = r * Math.sin(theta);
+        
+        // 更新坐标显示
+        document.getElementById('coordX').textContent = x.toFixed(2);
+        document.getElementById('coordY').textContent = y.toFixed(2);
+        document.getElementById('coordZ').textContent = z.toFixed(2);
+        document.getElementById('radiusRVal').textContent = r.toFixed(2);
+        document.getElementById('angleThetaVal').textContent = (theta * 180 / Math.PI).toFixed(0) + '°';
+        document.getElementById('heightZ').textContent = z.toFixed(3);
+        
+        // 绘制r-z平面截面
+        const traces = [];
+        
+        // 锥面边界 z = r
+        const rRange = [];
+        const zCone = [];
+        for (let i = 0; i <= 50; i++) {
+            const ri = i / 50;
+            rRange.push(ri);
+            zCone.push(ri);
+        }
+        
+        traces.push({
+            x: rRange, y: zCone,
+            type: 'scatter', mode: 'lines',
+            line: { color: '#ff9800', width: 3 },
+            fill: 'tozeroy',
+            fillcolor: 'rgba(255, 152, 0, 0.2)',
+            name: '锥面边界 z=r'
+        });
+        
+        // 顶面 z = 1
+        traces.push({
+            x: [0, 1, 1, 0],
+            y: [1, 1, 1, 1],
+            type: 'scatter', mode: 'lines',
+            line: { color: '#1976d2', width: 2 },
+            fill: 'tozeroy',
+            fillcolor: 'rgba(25, 118, 210, 0.1)',
+            name: '顶面 z=1'
+        });
+        
+        // 当前点
+        traces.push({
+            x: [r], y: [z],
+            type: 'scatter', mode: 'markers',
+            marker: { size: 12, color: '#c62828' },
+            name: '当前点'
+        });
+        
+        // 垂直线到顶面
+        traces.push({
+            x: [r, r], y: [z, 1],
+            type: 'scatter', mode: 'lines',
+            line: { color: '#c62828', width: 2, dash: 'dash' },
+            showlegend: false
+        });
+        
+        const layout = {
+            title: {
+                text: `柱坐标截面 (r-z平面): r=${r.toFixed(2)}, z=${z.toFixed(2)}`,
+                font: { size: 16, color: '#1a237e' }
+            },
+            xaxis: { title: 'r', range: [0, 1.1], gridcolor: '#e0e0e0' },
+            yaxis: { title: 'z', range: [0, 1.1], gridcolor: '#e0e0e0' },
+            showlegend: true
+        };
+        
+        Plotly.newPlot('chartCylindrical', traces, layout, {responsive: true});
+    }
+    
+    // ========== 截面法可视化 ==========
+    function drawSection() {
+        const z = parseInt(document.getElementById('sectionZ').value) / 100;
+        const rMax = z;
+        
+        const traces = [];
+        
+        // 外圆 r=z
+        const theta = [];
+        const xOuter = [], yOuter = [];
+        for (let i = 0; i <= 100; i++) {
+            const t = 2 * Math.PI * i / 100;
+            theta.push(t);
+            xOuter.push(rMax * Math.cos(t));
+            yOuter.push(rMax * Math.sin(t));
+        }
+        
+        traces.push({
+            x: xOuter, y: yOuter,
+            type: 'scatter', mode: 'lines',
+            line: { color: '#1976d2', width: 2 },
+            fill: 'toself',
+            fillcolor: 'rgba(25, 118, 210, 0.2)',
+            name: `圆盘边界 r=${rMax.toFixed(2)}`
+        });
+        
+        const layout = {
+            title: {
+                text: `截面法：z=${z.toFixed(2)} 处的圆盘截面`,
+                font: { size: 16, color: '#1a237e' }
+            },
+            xaxis: { title: 'x', range: [-1.2, 1.2], gridcolor: '#e0e0e0', scaleanchor: 'y' },
+            yaxis: { title: 'y', range: [-1.2, 1.2], gridcolor: '#e0e0e0' },
+            showlegend: true
+        };
+        
+        Plotly.newPlot('chartSection', traces, layout, {responsive: true});
+        
+        // 计算截面内积分值
+        const sectionInt = Math.PI * z * (z * z / 2 + Math.pow(z, 4) / 4);
+        document.getElementById('sectionInt').textContent = sectionInt.toFixed(3);
+        document.getElementById('sectionZVal').textContent = z.toFixed(2);
+    }
+    
+    // ========== 蒙特卡洛可视化 ==========
+    function drawMonteCarlo() {
+        // 生成随机采样点用于可视化
+        const n = 500;
+        const insidePoints = { x: [], y: [], z: [] };
+        const outsidePoints = { x: [], y: [], z: [] };
+        
+        for (let i = 0; i < n; i++) {
+            const r = Math.sqrt(Math.random());
+            const theta = 2 * Math.PI * Math.random();
+            const z = Math.random();
+            const x = r * Math.cos(theta);
+            const y = r * Math.sin(theta);
+            
+            // 检查是否在区域内 (z >= r)
+            if (z >= r) {
+                insidePoints.x.push(x);
+                insidePoints.y.push(y);
+                insidePoints.z.push(z);
+            } else {
+                outsidePoints.x.push(x);
+                outsidePoints.y.push(y);
+                outsidePoints.z.push(z);
+            }
+        }
+        
+        const traces = [
+            {
+                x: insidePoints.x,
+                y: insidePoints.y,
+                z: insidePoints.z,
+                type: 'scatter3d',
+                mode: 'markers',
+                marker: { size: 3, color: '#4caf50', opacity: 0.7 },
+                name: '区域内点'
+            },
+            {
+                x: outsidePoints.x,
+                y: outsidePoints.y,
+                z: outsidePoints.z,
+                type: 'scatter3d',
+                mode: 'markers',
+                marker: { size: 2, color: '#f44336', opacity: 0.4 },
+                name: '区域外点'
+            }
+        ];
+        
+        const layout = {
+            title: {
+                text: '蒙特卡洛采样可视化（绿色：区域内，红色：区域外）',
+                font: { size: 14, color: '#1a237e' }
+            },
+            scene: {
+                xaxis: { title: 'x', range: [-1.2, 1.2], gridcolor: '#e0e0e0' },
+                yaxis: { title: 'y', range: [-1.2, 1.2], gridcolor: '#e0e0e0' },
+                zaxis: { title: 'z', range: [0, 1.2], gridcolor: '#e0e0e0' },
+                camera: { eye: { x: 1.5, y: 1.5, z: 1.0 } },
+                aspectmode: 'cube'
+            },
+            margin: { t: 50, l: 0, r: 0, b: 0 },
+            showlegend: true,
+            legend: { x: 0, y: 1 }
+        };
+        
+        Plotly.newPlot('chartMonteCarlo', traces, layout, {responsive: true});
+    }
+    
+    // ========== 蒙特卡洛模拟 ==========
+    function runMonteCarlo() {
+        const n = parseInt(document.getElementById('mcSamples').value);
+        let sum = 0;
+        let count = 0;
+        
+        for (let i = 0; i < n; i++) {
+            // 在圆柱内随机采样
+            const r = Math.sqrt(Math.random());
+            const theta = 2 * Math.PI * Math.random();
+            const z = Math.random();
+            
+            // 检查是否在区域内 (z >= r)
+            if (z >= r) {
+                const x = r * Math.cos(theta);
+                const y = r * Math.sin(theta);
+                sum += (1 + r * r) * z;
+                count++;
+            }
+        }
+        
+        // 区域体积 = π/3，所以积分 = 平均值 × 体积
+        const volume = Math.PI / 3;
+        const result = (sum / count) * volume;
+        const theory = Math.PI / 3;
+        const error = Math.abs(result - theory) / theory * 100;
+        
+        document.getElementById('mcResult').textContent = result.toFixed(4);
+        document.getElementById('mcError').textContent = error.toFixed(2) + '%';
+        
+        // 更新图表中的采样点
+        drawMonteCarlo();
+    }
+    
+    // ========== 事件监听 ==========
+    document.getElementById('viewXY').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 0, y: 0, z: 2.5 } } });
+    });
+    
+    document.getElementById('viewXZ').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 2.5, y: 0, z: 0 } } });
+    });
+    
+    document.getElementById('view3D').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 1.5, y: 1.5, z: 1.0 } } });
+    });
+    
+    document.getElementById('animateRotate').addEventListener('click', function() {
+        let angle = 0;
+        rotateAnimationId = setInterval(() => {
+            angle += 0.05;
+            Plotly.relayout('chart3d', {
+                'scene.camera': {
+                    eye: { x: 2 * Math.cos(angle), y: 2 * Math.sin(angle), z: 1 }
+                }
+            });
+        }, 50);
+    });
+    
+    document.getElementById('stopRotate').addEventListener('click', function() {
+        if (rotateAnimationId) {
+            clearInterval(rotateAnimationId);
+            rotateAnimationId = null;
+        }
+    });
+    
+    document.getElementById('radiusR').addEventListener('input', function() {
+        cylAnimationR = parseInt(document.getElementById('radiusR').value);
+        drawCylindrical();
+    });
+    document.getElementById('angleTheta').addEventListener('input', drawCylindrical);
+    
+    // 柱坐标动画控制
+    let cylAnimationR = 0;
+    document.getElementById('playCyl').addEventListener('click', function() {
+        const btn = document.getElementById('playCyl');
+        if (cylAnimationId) {
+            clearInterval(cylAnimationId);
+            cylAnimationId = null;
+            btn.textContent = '播放动画';
+        } else {
+            btn.textContent = '暂停动画';
+            cylAnimationId = setInterval(() => {
+                cylAnimationR += 1;
+                if (cylAnimationR > 100) cylAnimationR = 0;
+                document.getElementById('radiusR').value = cylAnimationR;
+                drawCylindrical();
+            }, 200);
+        }
+    });
+    
+    document.getElementById('resetCyl').addEventListener('click', function() {
+        if (cylAnimationId) {
+            clearInterval(cylAnimationId);
+            cylAnimationId = null;
+            document.getElementById('playCyl').textContent = '播放动画';
+        }
+        cylAnimationR = 50;
+        document.getElementById('radiusR').value = 50;
+        document.getElementById('angleTheta').value = 0;
+        drawCylindrical();
+    });
+    
+    document.getElementById('sectionZ').addEventListener('input', function() {
+        sectionAnimationZ = parseInt(document.getElementById('sectionZ').value);
+        drawSection();
+    });
+    
+    // 截面法动画控制
+    let sectionAnimationZ = 0;
+    document.getElementById('playSection').addEventListener('click', function() {
+        const btn = document.getElementById('playSection');
+        if (sectionAnimationId) {
+            clearInterval(sectionAnimationId);
+            sectionAnimationId = null;
+            btn.textContent = '播放动画';
+        } else {
+            btn.textContent = '暂停动画';
+            sectionAnimationId = setInterval(() => {
+                sectionAnimationZ += 1;
+                if (sectionAnimationZ > 100) sectionAnimationZ = 0;
+                document.getElementById('sectionZ').value = sectionAnimationZ;
+                drawSection();
+            }, 200);
+        }
+    });
+    
+    document.getElementById('resetSection').addEventListener('click', function() {
+        if (sectionAnimationId) {
+            clearInterval(sectionAnimationId);
+            sectionAnimationId = null;
+            document.getElementById('playSection').textContent = '播放动画';
+        }
+        sectionAnimationZ = 50;
+        document.getElementById('sectionZ').value = 50;
+        drawSection();
+    });
+    
+    document.getElementById('mcSamples').addEventListener('input', function() {
+        document.getElementById('mcSamplesVal').textContent = this.value;
+    });
+    
+    document.getElementById('runMC').addEventListener('click', runMonteCarlo);
+    
+    document.getElementById('resetMC').addEventListener('click', function() {
+        document.getElementById('mcResult').textContent = '--';
+        document.getElementById('mcError').textContent = '--';
+    });
+    
+    // 初始化
+    draw3DRegion();
+    drawCylindrical();
+    drawSection();
+    drawMonteCarlo();
+</script>
+
+</body>
+</html>

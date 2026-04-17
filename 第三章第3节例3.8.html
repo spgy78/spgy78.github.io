@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三重积分的计算 - 锥面与球面围成区域</title>
+    
+    <!-- MathJax 配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                packages: {'[+]': ['ams']}
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea']
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Times New Roman", serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            color: #000000;
+            line-height: 1.9;
+            padding: 30px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            position: relative;
+            background: linear-gradient(135deg, #1a365d 0%, #2b4c8c 60%, #3182ce 100%);
+            color: #fff;
+            padding: 52px 48px 44px;
+            text-align: center;
+            border-radius: 14px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.6em;
+            letter-spacing: 4px;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            color: #fff;
+        }
+        .header-logo {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            width: 210px;
+            height: auto;
+            opacity: 0.95;
+        }
+        
+        h2 {
+            font-size: 1.5em;
+            margin: 35px 0 18px 0;
+            color: #283593;
+            border-left: 5px solid #3f51b5;
+            padding-left: 15px;
+            background: linear-gradient(90deg, rgba(63,81,181,0.1) 0%, transparent 100%);
+        }
+        
+        h3 {
+            font-size: 1.2em;
+            margin: 22px 0 12px 0;
+            color: #303f9f;
+        }
+        
+        p {
+            margin: 14px 0;
+            text-align: justify;
+        }
+        
+        .problem-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left: 5px solid #f57c00;
+            border-radius: 0 12px 12px 0;
+            padding: 22px;
+            margin: 22px 0;
+            box-shadow: 0 4px 15px rgba(245,124,0,0.15);
+        }
+        
+        .solution-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left: 5px solid #4caf50;
+            border-radius: 0 12px 12px 0;
+            padding: 22px;
+            margin: 22px 0;
+            box-shadow: 0 4px 15px rgba(76,175,80,0.12);
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+            border-left: 5px solid #c2185b;
+            border-radius: 0 12px 12px 0;
+            padding: 18px 22px;
+            margin: 18px 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(194,24,91,0.12);
+        }
+        
+        .geo-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border: 2px solid #1976d2;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 18px 0;
+            box-shadow: 0 4px 15px rgba(25,118,210,0.12);
+        }
+        
+        .chart-container {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .chart-wrapper {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        
+        .chart-main {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        #chart3d, #chartSpherical, #chartSection {
+            width: 100%;
+            height: 450px;
+            border-radius: 12px;
+        }
+        
+        .interactive-controls {
+            background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+            border-radius: 10px;
+            padding: 15px;
+            width: 280px;
+            flex-shrink: 0;
+        }
+        
+        .control-group {
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .control-group label {
+            font-weight: bold;
+            color: #333;
+            min-width: 120px;
+        }
+        
+        input[type="range"] {
+            width: 200px;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3f51b5;
+            cursor: pointer;
+        }
+        
+        .animation-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #3f51b5 0%, #303f9f 100%);
+            color: #ffffff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .animation-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(63,81,181,0.3);
+        }
+        
+        .animation-btn.secondary {
+            background: linear-gradient(135deg, #757575 0%, #616161 100%);
+        }
+        
+        .value-display {
+            display: inline-block;
+            margin-left: 20px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #7c4dff 0%, #651fff 100%);
+            color: #ffffff;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(101,31,255,0.3);
+        }
+        
+        .step-box {
+            background: #ffffff;
+            border-left: 4px solid #3f51b5;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .step-num {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #3f51b5 0%, #303f9f 100%);
+            color: #ffffff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .highlight-red { color: #c62828; font-weight: bold; }
+        .highlight-blue { color: #1565c0; font-weight: bold; }
+        .highlight-green { color: #2e7d32; font-weight: bold; }
+        .highlight-purple { color: #7b1fa2; font-weight: bold; }
+        
+        .result-box {
+            background: linear-gradient(135deg, #d1c4e9 0%, #b39ddb 100%);
+            border: 2px solid #7e57c2;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .result-box h3 {
+            color: #4527a0;
+            margin-bottom: 10px;
+        }
+        
+        .method-box {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 18px 0;
+        }
+        
+        .coord-info {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <img class="header-logo" src="吉林大学校徽_透明.png" alt="吉林大学校徽" />
+    <h1>三重积分的计算</h1>
+</div>
+
+<div class="problem-box">
+    <p>例 3.8 计算三重积分</p>
+    <div class="formula-box">
+        $$I = \iiint\limits_\Omega (x^2 + y^2 + z^2)\,\mathrm{d}V.$$
+    </div>
+    <p>其中 $\Omega$ 是由锥面 $z = \sqrt{x^2 + y^2}$ 和球面 $z = \sqrt{a^2 - x^2 - y^2}$ 围成的区域.</p>
+</div>
+
+<h2>一、积分区域的几何分析</h2>
+
+<div class="geo-box">
+    <h3>区域 $\Omega$ 的边界</h3>
+    <ul>
+        <li><span class="highlight-blue">下边界</span>：锥面 $z = \sqrt{x^2 + y^2}$（半顶角为 $\dfrac{\pi}{4}$ 的圆锥）</li>
+        <li><span class="highlight-green">上边界</span>：球面 $z = \sqrt{a^2 - x^2 - y^2}$（上半球面，半径为 $a$）</li>
+        <li><span class="highlight-red">交线</span>：联立两曲面方程，得 $x^2 + y^2 = \dfrac{a^2}{2}$，$z = \dfrac{a}{\sqrt{2}}$</li>
+    </ul>
+    <p>这是一个<span class="highlight-purple">球锥体</span>区域，关于 $z$ 轴对称，非常适合使用<span class="highlight-purple">球坐标</span>计算.</p>
+</div>
+
+<div class="chart-container">
+    <h3>交互式3D可视化：积分区域</h3>
+    <div class="chart-wrapper">
+        <div class="chart-main">
+            <div id="chart3d"></div>
+        </div>
+        <div class="interactive-controls">
+            <div class="control-group">
+                <label>球半径 $a$:</label>
+                <input type="range" id="radiusA" min="50" max="150" value="100">
+                <span id="radiusAVal">1.00</span>
+            </div>
+            <div class="control-group">
+                <label>观察角度:</label>
+                <button class="animation-btn" id="viewXY">俯视(x-y)</button>
+                <button class="animation-btn" id="viewXZ">侧视(x-z)</button>
+                <button class="animation-btn" id="view3D">3D视角</button>
+            </div>
+            <div class="control-group">
+                <button class="animation-btn secondary" id="animateRotate">自动旋转</button>
+                <button class="animation-btn secondary" id="stopRotate">停止</button>
+            </div>
+            <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                <strong>说明：</strong>橙色为锥面，蓝色为球面，绿色为交线.
+            </p>
+        </div>
+    </div>
+</div>
+
+<h2>二、球坐标变换</h2>
+
+<div class="method-box">
+    <h3>为什么选择球坐标？</h3>
+    <p>由于区域由球面和锥面围成，使用球坐标可以大大简化计算.</p>
+    <div class="formula-box">
+        $$x = r\sin\varphi\cos\theta, \quad y = r\sin\varphi\sin\theta, \quad z = r\cos\varphi.$$
+    </div>
+    <div class="formula-box">
+        $$\mathrm{d}V = r^2\sin\varphi\,\mathrm{d}r\,\mathrm{d}\varphi\,\mathrm{d}\theta, \quad x^2 + y^2 + z^2 = r^2.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">1</span>
+    <strong>确定球坐标下的积分限</strong>
+    <ul>
+        <li>$\theta$：绕 $z$ 轴一周，$0 \leqslant \theta \leqslant 2\pi$.</li>
+        <li>$\varphi$：从 $z$ 轴正方向到锥面，$0 \leqslant \varphi \leqslant \dfrac{\pi}{4}$（因为锥面 $z = \sqrt{x^2+y^2}$ 对应 $\varphi = \dfrac{\pi}{4}$）.</li>
+        <li>$r$：从原点到球面，$0 \leqslant r \leqslant a$.</li>
+    </ul>
+</div>
+
+<div class="chart-container">
+    <h3>可视化：球坐标系下的截面</h3>
+    <div class="chart-wrapper">
+        <div class="chart-main">
+            <div id="chartSpherical"></div>
+        </div>
+        <div class="interactive-controls">
+            <div class="control-group">
+                <label>极角 $\varphi$:</label>
+                <input type="range" id="anglePhi" min="0" max="785" value="392">
+                <span id="anglePhiVal">45°</span>
+            </div>
+            <div class="control-group">
+                <label>方位角 $\theta$:</label>
+                <input type="range" id="angleTheta" min="0" max="360" value="0">
+                <span id="angleThetaVal">0°</span>
+            </div>
+            <div class="control-group">
+                <button class="animation-btn" id="playSph">播放动画</button>
+                <button class="animation-btn secondary" id="resetSph">重置</button>
+            </div>
+            <span class="value-display">当前 $r$: <span id="radiusR">1.00</span></span>
+            <div class="coord-info">
+                直角坐标: $(<span id="coordX">0.71</span>, <span id="coordY">0.00</span>, <span id="coordZ">0.71</span>)$
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2>三、建立累次积分</h2>
+
+<div class="step-box">
+    <span class="step-num">2</span>
+    <strong>将被积函数转换为球坐标</strong>
+    <div class="formula-box">
+        $$x^2 + y^2 + z^2 = r^2.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">3</span>
+    <strong>建立三重积分</strong>
+    <div class="formula-box">
+        $$I = \iiint\limits_\Omega (x^2 + y^2 + z^2)\,\mathrm{d}V = \int_0^{2\pi} \mathrm{d}\theta \int_0^{\frac{\pi}{4}} \mathrm{d}\varphi \int_0^a r^2 \cdot r^2\sin\varphi\,\mathrm{d}r.$$
+    </div>
+    <p>注意：体积元 $\mathrm{d}V = r^2\sin\varphi\,\mathrm{d}r\,\mathrm{d}\varphi\,\mathrm{d}\theta$，所以被积函数变为 $r^2 \cdot r^2\sin\varphi = r^4\sin\varphi$.</p>
+</div>
+
+<h2>四、逐步计算</h2>
+
+<div class="step-box">
+    <span class="step-num">4</span>
+    <strong>计算最内层积分（对 $r$）</strong>
+    <div class="formula-box">
+        $$\int_0^a r^4\sin\varphi\,\mathrm{d}r = \sin\varphi \cdot \left[\frac{r^5}{5}\right]_0^a = \frac{a^5\sin\varphi}{5}.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">5</span>
+    <strong>计算中层积分（对 $\varphi$）</strong>
+    <div class="formula-box">
+        $$\int_0^{\frac{\pi}{4}} \frac{a^5\sin\varphi}{5}\,\mathrm{d}\varphi = \frac{a^5}{5} \cdot \left[-\cos\varphi\right]_0^{\frac{\pi}{4}}.$$
+    </div>
+    <div class="formula-box">
+        $$= \frac{a^5}{5} \cdot \left(-\cos\frac{\pi}{4} + \cos 0\right) = \frac{a^5}{5} \cdot \left(1 - \frac{\sqrt{2}}{2}\right) = \frac{a^5(2-\sqrt{2})}{10}.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">6</span>
+    <strong>计算最外层积分（对 $\theta$）</strong>
+    <div class="formula-box">
+        $$\int_0^{2\pi} \frac{a^5(2-\sqrt{2})}{10}\,\mathrm{d}\theta = \frac{a^5(2-\sqrt{2})}{10} \cdot 2\pi = \frac{\pi a^5(2-\sqrt{2})}{5}.$$
+    </div>
+</div>
+
+<h2>五、柱坐标法验证</h2>
+
+<div class="solution-box">
+    <h3>思路</h3>
+    <p>用柱坐标验证，先确定 $z$ 的范围，再计算截面.</p>
+</div>
+
+<div class="chart-container">
+    <h3>可视化：柱坐标截面验证</h3>
+    <div class="chart-wrapper">
+        <div class="chart-main">
+            <div id="chartSection"></div>
+        </div>
+        <div class="interactive-controls">
+            <div class="control-group">
+                <label>高度 $z$:</label>
+                <input type="range" id="sectionZ" min="0" max="100" value="50">
+                <span id="sectionZVal">0.50</span>
+            </div>
+            <div class="control-group">
+                <button class="animation-btn" id="playSection">播放动画</button>
+                <button class="animation-btn secondary" id="resetSection">重置</button>
+            </div>
+            <span class="value-display">截面半径: <span id="sectionRadius">0.866</span></span>
+            <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                <strong>说明：</strong>在高度 $z$ 处，截面为圆环.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">1</span>
+    <strong>确定积分限</strong>
+    <p>在柱坐标下，$z$ 的范围：从锥面 $z = r$ 到球面 $z = \sqrt{a^2 - r^2}$.</p>
+    <p>交线处：$r = \dfrac{a}{\sqrt{2}}$，$z = \dfrac{a}{\sqrt{2}}$.</p>
+    <div class="formula-box">
+        $$I = \int_0^{2\pi} \mathrm{d}\theta \int_0^{\frac{a}{\sqrt{2}}} \mathrm{d}r \int_r^{\sqrt{a^2-r^2}} (r^2 + z^2) \cdot r\,\mathrm{d}z.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">2</span>
+    <strong>计算最内层积分</strong>
+    <div class="formula-box">
+        $$\int_r^{\sqrt{a^2-r^2}} r(r^2 + z^2)\,\mathrm{d}z = r\left[r^2z + \frac{z^3}{3}\right]_r^{\sqrt{a^2-r^2}}.$$
+    </div>
+    <p>代入上限 $z = \sqrt{a^2-r^2}$ 和下限 $z = r$，经计算可得相同结果.</p>
+</div>
+
+<h2>六、最终结果</h2>
+
+<div class="result-box">
+    <h3>最终答案</h3>
+    <div class="formula-box" style="font-size: 1.4em;">
+        $$I = \iiint\limits_\Omega (x^2 + y^2 + z^2)\,\mathrm{d}V = \frac{\pi a^5(2-\sqrt{2})}{5}.$$
+    </div>
+    <p style="margin-top: 15px; color: #4527a0;">
+        数值近似值：$\dfrac{\pi a^5(2-\sqrt{2})}{5} \approx 0.368 \pi a^5$.
+    </p>
+</div>
+
+<h2>七、特殊情况验证</h2>
+
+<div class="geo-box">
+    <h3>验证</h3>
+    <ul>
+        <li><span class="highlight-blue">当锥面变为 $z = 0$（即 $\varphi = \dfrac{\pi}{2}$）</span>：
+            <div class="formula-box">
+                $$I = \int_0^{2\pi} \mathrm{d}\theta \int_0^{\frac{\pi}{2}} \mathrm{d}\varphi \int_0^a r^4\sin\varphi\,\mathrm{d}r = 2\pi \cdot 1 \cdot \frac{a^5}{5} = \frac{2\pi a^5}{5}.$$
+            </div>
+            <p>这是上半球的积分值，符合预期.</p>
+        </li>
+    </ul>
+</div>
+
+<h2>八、总结</h2>
+
+<div class="solution-box">
+    <h3>解题要点</h3>
+    <ul>
+        <li><span class="highlight-blue">球坐标法</span>：对于球面和锥面围成的区域，球坐标是首选方法.</li>
+        <li><span class="highlight-green">柱坐标法</span>：作为验证手段，两种方法得到相同结果.</li>
+        <li><span class="highlight-purple">几何直观</span>：理解锥面半顶角为 $\dfrac{\pi}{4}$ 是关键.</li>
+        <li>最终结果：$I = \dfrac{\pi a^5(2-\sqrt{2})}{5}$.</li>
+    </ul>
+</div>
+
+<script>
+    // 全局变量
+    let rotateAnimationId = null;
+    let sphAnimationId = null;
+    let sectionAnimationId = null;
+    let a = 1.0;
+    
+    // ========== 3D区域可视化 ==========
+    function draw3DRegion() {
+        a = parseInt(document.getElementById('radiusA').value) / 100;
+        const traces = [];
+        
+        // 球面 x^2 + y^2 + z^2 = a^2 (只绘制上半部分)
+        const n = 40;
+        const xSphere = [], ySphere = [], zSphere = [];
+        for (let i = 0; i <= n; i++) {
+            const row = [];
+            const theta = 2 * Math.PI * i / n;
+            for (let j = 0; j <= n/2; j++) {
+                const phi = Math.PI * j / n;
+                const r = a * Math.sin(phi);
+                row.push(r * Math.cos(theta));
+            }
+            xSphere.push(row);
+        }
+        for (let i = 0; i <= n; i++) {
+            const row = [];
+            const theta = 2 * Math.PI * i / n;
+            for (let j = 0; j <= n/2; j++) {
+                const phi = Math.PI * j / n;
+                const r = a * Math.sin(phi);
+                row.push(r * Math.sin(theta));
+            }
+            ySphere.push(row);
+        }
+        for (let i = 0; i <= n; i++) {
+            const row = [];
+            for (let j = 0; j <= n/2; j++) {
+                const phi = Math.PI * j / n;
+                row.push(a * Math.cos(phi));
+            }
+            zSphere.push(row);
+        }
+        
+        traces.push({
+            x: xSphere, y: ySphere, z: zSphere,
+            type: 'surface',
+            colorscale: [[0, '#1565c0'], [0.5, '#1976d2'], [1, '#42a5f5']],
+            showscale: false,
+            opacity: 0.7,
+            name: '球面'
+        });
+        
+        // 锥面 z = sqrt(x^2 + y^2) (只绘制到交线)
+        const xCone = [], yCone = [], zCone = [];
+        const zIntersect = a / Math.sqrt(2);
+        for (let i = 0; i <= n; i++) {
+            const row = [];
+            const theta = 2 * Math.PI * i / n;
+            for (let j = 0; j <= 20; j++) {
+                const r = j / 20 * zIntersect;
+                row.push(r * Math.cos(theta));
+            }
+            xCone.push(row);
+        }
+        for (let i = 0; i <= n; i++) {
+            const row = [];
+            const theta = 2 * Math.PI * i / n;
+            for (let j = 0; j <= 20; j++) {
+                const r = j / 20 * zIntersect;
+                row.push(r * Math.sin(theta));
+            }
+            yCone.push(row);
+        }
+        for (let i = 0; i <= n; i++) {
+            const row = [];
+            for (let j = 0; j <= 20; j++) {
+                const r = j / 20 * zIntersect;
+                row.push(r);
+            }
+            zCone.push(row);
+        }
+        
+        traces.push({
+            x: xCone, y: yCone, z: zCone,
+            type: 'surface',
+            colorscale: [[0, '#e65100'], [0.5, '#ff9800'], [1, '#ffb74d']],
+            showscale: false,
+            opacity: 0.6,
+            name: '锥面'
+        });
+        
+        // 交线圆
+        const thetaLine = [];
+        const xLine = [], yLine = [], zLine = [];
+        const rLine = a / Math.sqrt(2);
+        const zLineVal = a / Math.sqrt(2);
+        for (let i = 0; i <= 100; i++) {
+            const t = 2 * Math.PI * i / 100;
+            thetaLine.push(t);
+            xLine.push(rLine * Math.cos(t));
+            yLine.push(rLine * Math.sin(t));
+            zLine.push(zLineVal);
+        }
+        
+        traces.push({
+            x: xLine, y: yLine, z: zLine,
+            type: 'scatter3d', mode: 'lines',
+            line: { color: '#2e7d32', width: 4 },
+            name: '交线'
+        });
+        
+        document.getElementById('radiusAVal').textContent = a.toFixed(2);
+        
+        const layout = {
+            title: {
+                text: `球锥体可视化: a=${a.toFixed(2)}`,
+                font: { size: 16, color: '#1a237e', family: 'Times New Roman' }
+            },
+            scene: {
+                xaxis: { title: 'x', range: [-a*1.3, a*1.3], gridcolor: '#e0e0e0', backgroundcolor: '#f9f9f9' },
+                yaxis: { title: 'y', range: [-a*1.3, a*1.3], gridcolor: '#e0e0e0', backgroundcolor: '#f9f9f9' },
+                zaxis: { title: 'z', range: [-a*1.3, a*1.3], gridcolor: '#e0e0e0', backgroundcolor: '#f9f9f9' },
+                camera: { eye: { x: 1.5, y: 1.5, z: 1.0 } },
+                aspectmode: 'cube',
+                aspectratio: { x: 1, y: 1, z: 1 }
+            },
+            margin: { t: 60, l: 0, r: 0, b: 0 }
+        };
+        
+        Plotly.newPlot('chart3d', traces, layout, {responsive: true});
+    }
+    
+    // ========== 球坐标可视化 ==========
+    function drawSpherical() {
+        const phi = parseInt(document.getElementById('anglePhi').value) / 1000;
+        const theta = parseInt(document.getElementById('angleTheta').value) * Math.PI / 180;
+        const r = a;
+        
+        const x = r * Math.sin(phi) * Math.cos(theta);
+        const y = r * Math.sin(phi) * Math.sin(theta);
+        const z = r * Math.cos(phi);
+        
+        // 更新坐标显示
+        document.getElementById('coordX').textContent = x.toFixed(2);
+        document.getElementById('coordY').textContent = y.toFixed(2);
+        document.getElementById('coordZ').textContent = z.toFixed(2);
+        document.getElementById('anglePhiVal').textContent = (phi * 180 / Math.PI).toFixed(0) + '°';
+        document.getElementById('angleThetaVal').textContent = (theta * 180 / Math.PI).toFixed(0) + '°';
+        document.getElementById('radiusR').textContent = r.toFixed(2);
+        
+        // 绘制 r-phi 平面截面
+        const traces = [];
+        
+        // 球面边界 r = a
+        const phiRange = [];
+        const rSphere = [];
+        for (let i = 0; i <= 50; i++) {
+            const phii = i / 50 * Math.PI / 4;
+            phiRange.push(phii);
+            rSphere.push(a);
+        }
+        
+        traces.push({
+            x: phiRange, y: rSphere,
+            type: 'scatter', mode: 'lines',
+            line: { color: '#1976d2', width: 3 },
+            fill: 'tozeroy',
+            fillcolor: 'rgba(25, 118, 210, 0.2)',
+            name: '球面边界 r=a'
+        });
+        
+        // 当前点
+        traces.push({
+            x: [phi], y: [r],
+            type: 'scatter', mode: 'markers',
+            marker: { size: 12, color: '#c62828' },
+            name: '当前点'
+        });
+        
+        // 径向线
+        traces.push({
+            x: [0, phi], y: [0, r],
+            type: 'scatter', mode: 'lines',
+            line: { color: '#c62828', width: 2, dash: 'dash' },
+            showlegend: false
+        });
+        
+        const layout = {
+            title: {
+                text: `球坐标截面 (r-φ平面): φ=${(phi*180/Math.PI).toFixed(0)}°, r=${r.toFixed(2)}`,
+                font: { size: 16, color: '#1a237e' }
+            },
+            xaxis: { title: 'φ (rad)', range: [0, Math.PI/4*1.1], gridcolor: '#e0e0e0' },
+            yaxis: { title: 'r', range: [0, a*1.1], gridcolor: '#e0e0e0' },
+            showlegend: true
+        };
+        
+        Plotly.newPlot('chartSpherical', traces, layout, {responsive: true});
+    }
+    
+    // ========== 柱坐标截面可视化 ==========
+    function drawSection() {
+        const zRatio = parseInt(document.getElementById('sectionZ').value) / 100;
+        const zMax = a;
+        const z = zRatio * zMax;
+        
+        const traces = [];
+        
+        // 计算截面边界
+        const rCone = z; // 锥面边界
+        const rSphere = Math.sqrt(a*a - z*z); // 球面边界
+        
+        if (z <= a / Math.sqrt(2)) {
+            // 在交线以下，截面是圆盘 (从锥面到球面)
+            const theta = [];
+            const xInner = [], yInner = [];
+            const xOuter = [], yOuter = [];
+            
+            for (let i = 0; i <= 100; i++) {
+                const t = 2 * Math.PI * i / 100;
+                theta.push(t);
+                xInner.push(rCone * Math.cos(t));
+                yInner.push(rCone * Math.sin(t));
+                xOuter.push(rSphere * Math.cos(t));
+                yOuter.push(rSphere * Math.sin(t));
+            }
+            
+            // 外圆 (球面)
+            traces.push({
+                x: xOuter, y: yOuter,
+                type: 'scatter', mode: 'lines',
+                line: { color: '#1976d2', width: 2 },
+                fill: 'toself',
+                fillcolor: 'rgba(25, 118, 210, 0.2)',
+                name: `球面 r=${rSphere.toFixed(3)}`
+            });
+            
+            // 内圆 (锥面)
+            traces.push({
+                x: xInner, y: yInner,
+                type: 'scatter', mode: 'lines',
+                line: { color: '#e65100', width: 2, dash: 'dash' },
+                fill: 'toself',
+                fillcolor: 'rgba(255, 255, 255, 0.8)',
+                name: `锥面 r=${rCone.toFixed(3)}`
+            });
+            
+            document.getElementById('sectionRadius').textContent = `${rCone.toFixed(3)} - ${rSphere.toFixed(3)}`;
+        } else {
+            // 在交线以上，只有球面
+            const theta = [];
+            const xCircle = [], yCircle = [];
+            
+            for (let i = 0; i <= 100; i++) {
+                const t = 2 * Math.PI * i / 100;
+                theta.push(t);
+                xCircle.push(rSphere * Math.cos(t));
+                yCircle.push(rSphere * Math.sin(t));
+            }
+            
+            traces.push({
+                x: xCircle, y: yCircle,
+                type: 'scatter', mode: 'lines',
+                line: { color: '#1976d2', width: 2 },
+                fill: 'toself',
+                fillcolor: 'rgba(25, 118, 210, 0.2)',
+                name: `截面 r=${rSphere.toFixed(3)}`
+            });
+            
+            document.getElementById('sectionRadius').textContent = `0 - ${rSphere.toFixed(3)}`;
+        }
+        
+        const layout = {
+            title: {
+                text: `柱坐标截面：z=${z.toFixed(2)}`,
+                font: { size: 16, color: '#1a237e' }
+            },
+            xaxis: { title: 'x', range: [-a*1.2, a*1.2], gridcolor: '#e0e0e0', scaleanchor: 'y' },
+            yaxis: { title: 'y', range: [-a*1.2, a*1.2], gridcolor: '#e0e0e0' },
+            showlegend: true
+        };
+        
+        Plotly.newPlot('chartSection', traces, layout, {responsive: true});
+        document.getElementById('sectionZVal').textContent = zRatio.toFixed(2);
+    }
+    
+    // ========== 事件监听 ==========
+    document.getElementById('viewXY').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 0, y: 0, z: 2.5 } } });
+    });
+    
+    document.getElementById('viewXZ').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 2.5, y: 0, z: 0 } } });
+    });
+    
+    document.getElementById('view3D').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 1.5, y: 1.5, z: 1.0 } } });
+    });
+    
+    document.getElementById('animateRotate').addEventListener('click', function() {
+        let angle = 0;
+        rotateAnimationId = setInterval(() => {
+            angle += 0.05;
+            Plotly.relayout('chart3d', {
+                'scene.camera': {
+                    eye: { x: 2 * Math.cos(angle), y: 2 * Math.sin(angle), z: 1 }
+                }
+            });
+        }, 50);
+    });
+    
+    document.getElementById('stopRotate').addEventListener('click', function() {
+        if (rotateAnimationId) {
+            clearInterval(rotateAnimationId);
+            rotateAnimationId = null;
+        }
+    });
+    
+    document.getElementById('radiusA').addEventListener('input', function() {
+        draw3DRegion();
+        drawSpherical();
+        drawSection();
+    });
+    
+    document.getElementById('anglePhi').addEventListener('input', function() {
+        sphAnimationPhi = parseInt(document.getElementById('anglePhi').value);
+        drawSpherical();
+    });
+    
+    document.getElementById('angleTheta').addEventListener('input', drawSpherical);
+    
+    // 球坐标动画控制
+    let sphAnimationPhi = 392;
+    document.getElementById('playSph').addEventListener('click', function() {
+        const btn = document.getElementById('playSph');
+        if (sphAnimationId) {
+            clearInterval(sphAnimationId);
+            sphAnimationId = null;
+            btn.textContent = '播放动画';
+        } else {
+            btn.textContent = '暂停动画';
+            sphAnimationId = setInterval(() => {
+                sphAnimationPhi += 5;
+                if (sphAnimationPhi > 785) sphAnimationPhi = 0;
+                document.getElementById('anglePhi').value = sphAnimationPhi;
+                drawSpherical();
+            }, 100);
+        }
+    });
+    
+    document.getElementById('resetSph').addEventListener('click', function() {
+        if (sphAnimationId) {
+            clearInterval(sphAnimationId);
+            sphAnimationId = null;
+            document.getElementById('playSph').textContent = '播放动画';
+        }
+        sphAnimationPhi = 392;
+        document.getElementById('anglePhi').value = 392;
+        document.getElementById('angleTheta').value = 0;
+        drawSpherical();
+    });
+    
+    document.getElementById('sectionZ').addEventListener('input', function() {
+        sectionAnimationZ = parseInt(document.getElementById('sectionZ').value);
+        drawSection();
+    });
+    
+    // 截面法动画控制
+    let sectionAnimationZ = 0;
+    document.getElementById('playSection').addEventListener('click', function() {
+        const btn = document.getElementById('playSection');
+        if (sectionAnimationId) {
+            clearInterval(sectionAnimationId);
+            sectionAnimationId = null;
+            btn.textContent = '播放动画';
+        } else {
+            btn.textContent = '暂停动画';
+            sectionAnimationId = setInterval(() => {
+                sectionAnimationZ += 1;
+                if (sectionAnimationZ > 100) sectionAnimationZ = 0;
+                document.getElementById('sectionZ').value = sectionAnimationZ;
+                drawSection();
+            }, 100);
+        }
+    });
+    
+    document.getElementById('resetSection').addEventListener('click', function() {
+        if (sectionAnimationId) {
+            clearInterval(sectionAnimationId);
+            sectionAnimationId = null;
+            document.getElementById('playSection').textContent = '播放动画';
+        }
+        sectionAnimationZ = 50;
+        document.getElementById('sectionZ').value = 50;
+        drawSection();
+    });
+    
+    // 初始化
+    draw3DRegion();
+    drawSpherical();
+    drawSection();
+</script>
+
+</body>
+</html>

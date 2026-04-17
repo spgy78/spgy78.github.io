@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三重积分的计算 - 球缺体积</title>
+    
+    <!-- MathJax 配置 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                packages: {'[+]': ['ams']}
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea']
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Times New Roman", serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            color: #000000;
+            line-height: 1.9;
+            padding: 30px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            position: relative;
+            background: linear-gradient(135deg, #1a365d 0%, #2b4c8c 60%, #3182ce 100%);
+            color: #fff;
+            padding: 52px 48px 44px;
+            text-align: center;
+            border-radius: 14px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.6em;
+            letter-spacing: 4px;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            color: #fff;
+        }
+        .header-logo {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            width: 210px;
+            height: auto;
+            opacity: 0.95;
+        }
+        
+        h2 {
+            font-size: 1.5em;
+            margin: 35px 0 18px 0;
+            color: #283593;
+            border-left: 5px solid #3f51b5;
+            padding-left: 15px;
+            background: linear-gradient(90deg, rgba(63,81,181,0.1) 0%, transparent 100%);
+        }
+        
+        h3 {
+            font-size: 1.2em;
+            margin: 22px 0 12px 0;
+            color: #303f9f;
+        }
+        
+        p {
+            margin: 14px 0;
+            text-align: justify;
+        }
+        
+        .problem-box {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left: 5px solid #f57c00;
+            border-radius: 0 12px 12px 0;
+            padding: 22px;
+            margin: 22px 0;
+            box-shadow: 0 4px 15px rgba(245,124,0,0.15);
+        }
+        
+        .solution-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-left: 5px solid #4caf50;
+            border-radius: 0 12px 12px 0;
+            padding: 22px;
+            margin: 22px 0;
+            box-shadow: 0 4px 15px rgba(76,175,80,0.12);
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+            border-left: 5px solid #c2185b;
+            border-radius: 0 12px 12px 0;
+            padding: 18px 22px;
+            margin: 18px 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(194,24,91,0.12);
+        }
+        
+        .geo-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border: 2px solid #1976d2;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 18px 0;
+            box-shadow: 0 4px 15px rgba(25,118,210,0.12);
+        }
+        
+        .chart-container {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .chart-wrapper {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        
+        .chart-main {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        #chart3d, #chartCylindrical, #chartSection {
+            width: 100%;
+            height: 450px;
+            border-radius: 12px;
+        }
+        
+        .interactive-controls {
+            background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+            border-radius: 10px;
+            padding: 15px;
+            width: 280px;
+            flex-shrink: 0;
+        }
+        
+        .control-group {
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .control-group label {
+            font-weight: bold;
+            color: #333;
+            min-width: 120px;
+        }
+        
+        input[type="range"] {
+            width: 200px;
+            height: 6px;
+            border-radius: 3px;
+            background: #ddd;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3f51b5;
+            cursor: pointer;
+        }
+        
+        .animation-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #3f51b5 0%, #303f9f 100%);
+            color: #ffffff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .animation-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(63,81,181,0.3);
+        }
+        
+        .animation-btn.secondary {
+            background: linear-gradient(135deg, #757575 0%, #616161 100%);
+        }
+        
+        .value-display {
+            display: inline-block;
+            margin-left: 20px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #7c4dff 0%, #651fff 100%);
+            color: #ffffff;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(101,31,255,0.3);
+        }
+        
+        .step-box {
+            background: #ffffff;
+            border-left: 4px solid #3f51b5;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .step-num {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #3f51b5 0%, #303f9f 100%);
+            color: #ffffff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .highlight-red { color: #c62828; font-weight: bold; }
+        .highlight-blue { color: #1565c0; font-weight: bold; }
+        .highlight-green { color: #2e7d32; font-weight: bold; }
+        .highlight-purple { color: #7b1fa2; font-weight: bold; }
+        
+        .result-box {
+            background: linear-gradient(135deg, #d1c4e9 0%, #b39ddb 100%);
+            border: 2px solid #7e57c2;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .result-box h3 {
+            color: #4527a0;
+            margin-bottom: 10px;
+        }
+        
+        .method-box {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 18px 0;
+        }
+        
+        .coord-info {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <img class="header-logo" src="吉林大学校徽_透明.png" alt="吉林大学校徽" />
+    <h1>三重积分的计算</h1>
+</div>
+
+<div class="problem-box">
+    <p>例 3.7 求半径为 $R$，高为 $h$ 的球缺的体积 $(0 < h < R)$.</p>
+</div>
+
+<h2>一、问题分析</h2>
+
+<div class="geo-box">
+    <h3>球缺的几何描述</h3>
+    <ul>
+        <li><span class="highlight-blue">球缺</span>：用平面截球体所得的部分</li>
+        <li><span class="highlight-green">球半径</span>：$R$</li>
+        <li><span class="highlight-red">球缺高度</span>：$h$（从截面到球冠顶点的距离）</li>
+        <li><span class="highlight-purple">截面半径</span>：$a = \sqrt{2Rh - h^2}$（由勾股定理得到）</li>
+    </ul>
+    <p>建立坐标系：以球心为原点，使球缺位于 $z = R - h$ 到 $z = R$ 之间.</p>
+</div>
+
+<div class="chart-container">
+    <h3>交互式3D可视化：球缺区域</h3>
+    <div class="chart-wrapper">
+        <div class="chart-main">
+            <div id="chart3d"></div>
+        </div>
+        <div class="interactive-controls">
+            <div class="control-group">
+                <label>球半径 $R$:</label>
+                <input type="range" id="radiusR" min="50" max="100" value="100">
+                <span id="radiusRVal">1.00</span>
+            </div>
+            <div class="control-group">
+                <label>球缺高度 $h$:</label>
+                <input type="range" id="heightH" min="10" max="90" value="30">
+                <span id="heightHVal">0.30</span>
+            </div>
+            <div class="control-group">
+                <label>观察角度:</label>
+                <button class="animation-btn" id="viewXY">俯视(x-y)</button>
+                <button class="animation-btn" id="viewXZ">侧视(x-z)</button>
+                <button class="animation-btn" id="view3D">3D视角</button>
+            </div>
+            <div class="control-group">
+                <button class="animation-btn secondary" id="animateRotate">自动旋转</button>
+                <button class="animation-btn secondary" id="stopRotate">停止</button>
+            </div>
+            <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                <strong>说明：</strong>调整 $R$ 和 $h$ 可观察不同尺寸的球缺.
+            </p>
+        </div>
+    </div>
+</div>
+
+<h2>二、建立坐标系与积分区域</h2>
+
+<div class="method-box">
+    <h3>坐标系选择</h3>
+    <p>以球心为原点建立坐标系，球面方程为 $x^2 + y^2 + z^2 = R^2$.</p>
+    <p>球缺区域 $\Omega$：由球面 $x^2 + y^2 + z^2 = R^2$ 和平面 $z = R - h$ 围成.</p>
+    <div class="formula-box">
+        $$\Omega = \{(x, y, z) \mid x^2 + y^2 + z^2 \leqslant R^2,\ R - h \leqslant z \leqslant R\}.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">1</span>
+    <strong>确定柱坐标下的积分限</strong>
+    <p>由于区域关于 $z$ 轴对称，使用柱坐标：</p>
+    <div class="formula-box">
+        $$x = r\cos\theta, \quad y = r\sin\theta, \quad z = z, \quad \mathrm{d}V = r\,\mathrm{d}r\,\mathrm{d}\theta\,\mathrm{d}z.$$
+    </div>
+    <ul>
+        <li>$\theta$：绕 $z$ 轴一周，$0 \leqslant \theta \leqslant 2\pi$.</li>
+        <li>$z$：从 $R - h$ 到 $R$.</li>
+        <li>$r$：对于固定的 $z$，由 $x^2 + y^2 + z^2 = R^2$ 得 $r^2 = R^2 - z^2$，所以 $0 \leqslant r \leqslant \sqrt{R^2 - z^2}$.</li>
+    </ul>
+</div>
+
+<h2>三、计算体积</h2>
+
+<div class="step-box">
+    <span class="step-num">2</span>
+    <strong>建立三重积分</strong>
+    <div class="formula-box">
+        $$V = \iiint\limits_\Omega \mathrm{d}V = \int_0^{2\pi} \mathrm{d}\theta \int_{R-h}^R \mathrm{d}z \int_0^{\sqrt{R^2-z^2}} r\,\mathrm{d}r.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">3</span>
+    <strong>计算最内层积分（对 $r$）</strong>
+    <div class="formula-box">
+        $$\int_0^{\sqrt{R^2-z^2}} r\,\mathrm{d}r = \left[\frac{r^2}{2}\right]_0^{\sqrt{R^2-z^2}} = \frac{R^2 - z^2}{2}.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">4</span>
+    <strong>计算中层积分（对 $z$）</strong>
+    <div class="formula-box">
+        $$\int_{R-h}^R \frac{R^2 - z^2}{2}\,\mathrm{d}z = \frac{1}{2}\left[R^2z - \frac{z^3}{3}\right]_{R-h}^R.$$
+    </div>
+    <p>计算上限 $z = R$：</p>
+    <div class="formula-box">
+        $$R^2 \cdot R - \frac{R^3}{3} = R^3 - \frac{R^3}{3} = \frac{2R^3}{3}.$$
+    </div>
+    <p>计算下限 $z = R - h$：</p>
+    <div class="formula-box">
+        $$R^2(R-h) - \frac{(R-h)^3}{3} = R^3 - R^2h - \frac{(R-h)^3}{3}.$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">5</span>
+    <strong>化简并计算最外层积分</strong>
+    <p>差值为：</p>
+    <div class="formula-box">
+        $$\frac{2R^3}{3} - R^3 + R^2h + \frac{(R-h)^3}{3} = -\frac{R^3}{3} + R^2h + \frac{(R-h)^3}{3}.$$
+    </div>
+    <p>展开 $(R-h)^3 = R^3 - 3R^2h + 3Rh^2 - h^3$：</p>
+    <div class="formula-box">
+        $$= -\frac{R^3}{3} + R^2h + \frac{R^3 - 3R^2h + 3Rh^2 - h^3}{3} = \frac{3Rh^2 - h^3}{3} = \frac{h^2(3R - h)}{3}.$$
+    </div>
+    <p>乘以 $\dfrac{1}{2}$ 和 $\displaystyle\int_0^{2\pi}\mathrm{d}\theta = 2\pi$：</p>
+    <div class="formula-box">
+        $$V = 2\pi \cdot \frac{1}{2} \cdot \frac{h^2(3R - h)}{3} = \frac{\pi h^2(3R - h)}{3}.$$
+    </div>
+</div>
+
+<h2>四、截面法验证</h2>
+
+<div class="solution-box">
+    <h3>思路</h3>
+    <p>用平行于 $xOy$ 平面的平面 $z = z_0$ 截取球缺，得到圆形截面，利用圆盘法计算体积.</p>
+</div>
+
+<div class="chart-container">
+    <h3>可视化：截面法验证</h3>
+    <div class="chart-wrapper">
+        <div class="chart-main">
+            <div id="chartSection"></div>
+        </div>
+        <div class="interactive-controls">
+            <div class="control-group">
+                <label>截面高度 $z$:</label>
+                <input type="range" id="sectionZ" min="0" max="100" value="50">
+                <span id="sectionZVal">0.50</span>
+            </div>
+            <div class="control-group">
+                <button class="animation-btn" id="playSection">播放动画</button>
+                <button class="animation-btn secondary" id="resetSection">重置</button>
+            </div>
+            <span class="value-display">截面半径: <span id="sectionRadius">0.866</span></span>
+            <p style="margin-top: 10px; color: #666; font-size: 0.9em;">
+                <strong>说明：</strong>在高度 $z$ 处，截面为圆盘 $r = \sqrt{R^2 - z^2}$.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">1</span>
+    <strong>确定截面面积</strong>
+    <p>在高度 $z$ 处，截面为圆盘，半径为 $r = \sqrt{R^2 - z^2}$.</p>
+    <div class="formula-box">
+        $$A(z) = \pi r^2 = \pi(R^2 - z^2).$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">2</span>
+    <strong>对 $z$ 积分求体积</strong>
+    <div class="formula-box">
+        $$V = \int_{R-h}^R A(z)\,\mathrm{d}z = \int_{R-h}^R \pi(R^2 - z^2)\,\mathrm{d}z.$$
+    </div>
+    <div class="formula-box">
+        $$= \pi\left[R^2z - \frac{z^3}{3}\right]_{R-h}^R = \pi \cdot \frac{h^2(3R - h)}{3} = \frac{\pi h^2(3R - h)}{3}.$$
+    </div>
+</div>
+
+<h2>五、最终结果</h2>
+
+<div class="result-box">
+    <h3>球缺体积公式</h3>
+    <div class="formula-box" style="font-size: 1.4em;">
+        $$V = \frac{\pi h^2(3R - h)}{3}.$$
+    </div>
+    <p style="margin-top: 15px; color: #4527a0;">
+        这就是半径为 $R$、高为 $h$ 的球缺的体积公式.
+    </p>
+</div>
+
+<h2>六、特殊情况验证</h2>
+
+<div class="geo-box">
+    <h3>验证</h3>
+    <ul>
+        <li><span class="highlight-blue">当 $h = R$ 时</span>（半球）：
+            <div class="formula-box">
+                $$V = \frac{\pi R^2(3R - R)}{3} = \frac{2\pi R^3}{3}.$$
+            </div>
+            <p>这正是半球的体积，验证正确.</p>
+        </li>
+        <li><span class="highlight-green">当 $h = 2R$ 时</span>（整球）：
+            <div class="formula-box">
+                $$V = \frac{\pi (2R)^2(3R - 2R)}{3} = \frac{4\pi R^3}{3}.$$
+            </div>
+            <p>这正是球的体积，验证正确.</p>
+        </li>
+    </ul>
+</div>
+
+<h2>七、总结</h2>
+
+<div class="solution-box">
+    <h3>解题要点</h3>
+    <ul>
+        <li><span class="highlight-blue">柱坐标法</span>：对于旋转对称的球缺，柱坐标是首选方法.</li>
+        <li><span class="highlight-green">截面法</span>：作为验证手段，两种方法得到相同结果.</li>
+        <li><span class="highlight-purple">几何直观</span>：理解球缺的定义和几何特征是关键.</li>
+        <li>最终结果：$V = \dfrac{\pi h^2(3R - h)}{3}$.</li>
+    </ul>
+</div>
+
+<script>
+    // 全局变量
+    let rotateAnimationId = null;
+    let sectionAnimationId = null;
+    let R = 1.0;
+    let h = 0.3;
+    
+    // ========== 3D球缺可视化 ==========
+    function draw3DRegion() {
+        R = parseInt(document.getElementById('radiusR').value) / 100;
+        h = parseInt(document.getElementById('heightH').value) / 100 * R;
+        
+        // 限制 h < R
+        if (h >= R) {
+            h = R * 0.99;
+        }
+        
+        const zBottom = R - h;
+        const traces = [];
+        
+        // 球面 x^2 + y^2 + z^2 = R^2 (只绘制球缺部分)
+        const n = 40;
+        const xSphere = [], ySphere = [], zSphere = [];
+        for (let i = 0; i <= n; i++) {
+            const row = [];
+            const theta = 2 * Math.PI * i / n;
+            for (let j = 0; j <= n; j++) {
+                const phi = Math.PI * j / n;
+                const r = R * Math.sin(phi);
+                row.push(r * Math.cos(theta));
+            }
+            xSphere.push(row);
+        }
+        for (let i = 0; i <= n; i++) {
+            const row = [];
+            const theta = 2 * Math.PI * i / n;
+            for (let j = 0; j <= n; j++) {
+                const phi = Math.PI * j / n;
+                const r = R * Math.sin(phi);
+                row.push(r * Math.sin(theta));
+            }
+            ySphere.push(row);
+        }
+        for (let i = 0; i <= n; i++) {
+            const row = [];
+            for (let j = 0; j <= n; j++) {
+                const phi = Math.PI * j / n;
+                const z = R * Math.cos(phi);
+                // 只保留球缺部分 (z >= zBottom)
+                row.push(z >= zBottom ? z : NaN);
+            }
+            zSphere.push(row);
+        }
+        
+        traces.push({
+            x: xSphere, y: ySphere, z: zSphere,
+            type: 'surface',
+            colorscale: [[0, '#1565c0'], [0.5, '#1976d2'], [1, '#42a5f5']],
+            showscale: false,
+            opacity: 0.85,
+            name: '球面'
+        });
+        
+        // 底面圆盘 (z = zBottom)
+        const nBase = 30;
+        const xBase = [], yBase = [], zBase = [];
+        const rBase = Math.sqrt(R*R - zBottom*zBottom);
+        for (let i = 0; i <= nBase; i++) {
+            const row_x = [], row_y = [], row_z = [];
+            const r = rBase * i / nBase;
+            for (let j = 0; j <= nBase; j++) {
+                const theta = 2 * Math.PI * j / nBase;
+                row_x.push(r * Math.cos(theta));
+                row_y.push(r * Math.sin(theta));
+                row_z.push(zBottom);
+            }
+            xBase.push(row_x);
+            yBase.push(row_y);
+            zBase.push(row_z);
+        }
+        
+        traces.push({
+            x: xBase, y: yBase, z: zBase,
+            type: 'surface',
+            colorscale: [[0, '#e65100'], [1, '#ff9800']],
+            showscale: false,
+            opacity: 0.7,
+            name: '底面'
+        });
+        
+        document.getElementById('radiusRVal').textContent = R.toFixed(2);
+        document.getElementById('heightHVal').textContent = (h/R).toFixed(2);
+        
+        const layout = {
+            title: {
+                text: `球缺可视化: R=${R.toFixed(2)}, h=${h.toFixed(2)}`,
+                font: { size: 16, color: '#1a237e', family: 'Times New Roman' }
+            },
+            scene: {
+                xaxis: { title: 'x', range: [-R*1.3, R*1.3], gridcolor: '#e0e0e0' },
+                yaxis: { title: 'y', range: [-R*1.3, R*1.3], gridcolor: '#e0e0e0' },
+                zaxis: { title: 'z', range: [-R*0.5, R*1.2], gridcolor: '#e0e0e0' },
+                camera: { eye: { x: 1.5, y: 1.5, z: 1.0 } },
+                aspectmode: 'cube'
+            },
+            margin: { t: 60, l: 0, r: 0, b: 0 }
+        };
+        
+        Plotly.newPlot('chart3d', traces, layout, {responsive: true});
+    }
+    
+    // ========== 截面法可视化 ==========
+    function drawSection() {
+        const zRatio = parseInt(document.getElementById('sectionZ').value) / 100;
+        const z = zBottom + zRatio * h;
+        
+        const traces = [];
+        
+        // 截面圆
+        if (z >= zBottom && z <= R) {
+            const r = Math.sqrt(R*R - z*z);
+            const theta = [];
+            const xCircle = [], yCircle = [];
+            for (let i = 0; i <= 100; i++) {
+                const t = 2 * Math.PI * i / 100;
+                theta.push(t);
+                xCircle.push(r * Math.cos(t));
+                yCircle.push(r * Math.sin(t));
+            }
+            
+            traces.push({
+                x: xCircle, y: yCircle,
+                type: 'scatter', mode: 'lines',
+                line: { color: '#1976d2', width: 2 },
+                fill: 'toself',
+                fillcolor: 'rgba(25, 118, 210, 0.2)',
+                name: `截面圆 r=${r.toFixed(3)}`
+            });
+            
+            document.getElementById('sectionRadius').textContent = r.toFixed(3);
+        }
+        
+        const layout = {
+            title: {
+                text: `截面法：z=${z.toFixed(2)} 处的圆截面`,
+                font: { size: 16, color: '#1a237e' }
+            },
+            xaxis: { title: 'x', range: [-R*1.2, R*1.2], gridcolor: '#e0e0e0', scaleanchor: 'y' },
+            yaxis: { title: 'y', range: [-R*1.2, R*1.2], gridcolor: '#e0e0e0' },
+            showlegend: true
+        };
+        
+        Plotly.newPlot('chartSection', traces, layout, {responsive: true});
+        document.getElementById('sectionZVal').textContent = zRatio.toFixed(2);
+    }
+    
+    // ========== 事件监听 ==========
+    document.getElementById('viewXY').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 0, y: 0, z: 2.5 } } });
+    });
+    
+    document.getElementById('viewXZ').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 2.5, y: 0, z: 0 } } });
+    });
+    
+    document.getElementById('view3D').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 1.5, y: 1.5, z: 1.0 } } });
+    });
+    
+    document.getElementById('animateRotate').addEventListener('click', function() {
+        let angle = 0;
+        rotateAnimationId = setInterval(() => {
+            angle += 0.05;
+            Plotly.relayout('chart3d', {
+                'scene.camera': {
+                    eye: { x: 2 * Math.cos(angle), y: 2 * Math.sin(angle), z: 1 }
+                }
+            });
+        }, 50);
+    });
+    
+    document.getElementById('stopRotate').addEventListener('click', function() {
+        if (rotateAnimationId) {
+            clearInterval(rotateAnimationId);
+            rotateAnimationId = null;
+        }
+    });
+    
+    document.getElementById('radiusR').addEventListener('input', function() {
+        draw3DRegion();
+        drawSection();
+    });
+    
+    document.getElementById('heightH').addEventListener('input', function() {
+        draw3DRegion();
+        drawSection();
+    });
+    
+    document.getElementById('sectionZ').addEventListener('input', function() {
+        sectionAnimationZ = parseInt(document.getElementById('sectionZ').value);
+        drawSection();
+    });
+    
+    // 截面法动画控制
+    let sectionAnimationZ = 0;
+    let zBottom = R - h;
+    
+    document.getElementById('playSection').addEventListener('click', function() {
+        const btn = document.getElementById('playSection');
+        if (sectionAnimationId) {
+            clearInterval(sectionAnimationId);
+            sectionAnimationId = null;
+            btn.textContent = '播放动画';
+        } else {
+            btn.textContent = '暂停动画';
+            sectionAnimationId = setInterval(() => {
+                sectionAnimationZ += 1;
+                if (sectionAnimationZ > 100) sectionAnimationZ = 0;
+                document.getElementById('sectionZ').value = sectionAnimationZ;
+                drawSection();
+            }, 100);
+        }
+    });
+    
+    document.getElementById('resetSection').addEventListener('click', function() {
+        if (sectionAnimationId) {
+            clearInterval(sectionAnimationId);
+            sectionAnimationId = null;
+            document.getElementById('playSection').textContent = '播放动画';
+        }
+        sectionAnimationZ = 50;
+        document.getElementById('sectionZ').value = 50;
+        drawSection();
+    });
+    
+    // 初始化
+    draw3DRegion();
+    drawSection();
+</script>
+
+</body>
+</html>

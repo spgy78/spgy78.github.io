@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>例 3.9 椭球区域三重积分</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: {
+                fontCache: 'global'
+            },
+            startup: {
+                ready: function() {
+                    MathJax.startup.defaultReady();
+                    MathJax.startup.promise.then(function() {
+                        // console.log('MathJax is ready');
+                    });
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', Arial, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        
+        .header {
+            position: relative;
+            background: linear-gradient(135deg, #1a365d 0%, #2b4c8c 60%, #3182ce 100%);
+            color: #fff;
+            padding: 52px 48px 44px;
+            text-align: center;
+            border-radius: 14px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 2.6em;
+            letter-spacing: 4px;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            color: #fff;
+        }
+        .header-logo {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            width: 210px;
+            height: auto;
+            opacity: 0.95;
+        }
+        
+        h2 {
+            color: #1a237e;
+            border-bottom: 3px solid #3949ab;
+            padding-bottom: 12px;
+            margin-top: 40px;
+            font-size: 1.6em;
+        }
+        
+        .problem-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 24px;
+            border-radius: 12px;
+            border-left: 5px solid #1976d2;
+            margin: 24px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .formula-box {
+            background: #fff;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 14px 0;
+            text-align: center;
+            font-size: 1.15em;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .chart-container {
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin: 24px 0;
+        }
+        
+        .chart-wrapper {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+        }
+        
+        .chart-main {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .chart-controls {
+            width: 280px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .control-group {
+            margin-bottom: 18px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1a237e;
+        }
+        
+        .control-group input[type="range"] {
+            width: 100%;
+            margin-bottom: 6px;
+        }
+        
+        .control-group .value-display {
+            text-align: center;
+            color: #1976d2;
+            font-weight: 600;
+        }
+        
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+        
+        button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3949ab 0%, #303f9f 100%);
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(57, 73, 171, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #5c6bc0 0%, #3f51b5 100%);
+            color: #fff;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(92, 107, 192, 0.4);
+        }
+        
+        .btn-gray {
+            background: linear-gradient(135deg, #78909c 0%, #546e7a 100%);
+            color: #fff;
+        }
+        
+        .step-box {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 16px 0;
+            border-left: 4px solid #ffa000;
+        }
+        
+        .step-num {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #ffa000 0%, #ff8f00 100%);
+            color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+        
+        .result-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            padding: 24px;
+            border-radius: 12px;
+            border-left: 5px solid #4caf50;
+            margin: 24px 0;
+            font-size: 1.15em;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #fff59d 0%, #fff176 100%);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .note {
+            background: #fff3e0;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border-left: 4px solid #ff9800;
+            margin: 16px 0;
+            font-size: 0.95em;
+        }
+        
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        
+        @media (max-width: 900px) {
+            .section-grid {
+                grid-template-columns: 1fr;
+            }
+            .chart-wrapper {
+                flex-direction: column;
+            }
+            .chart-controls {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <img class="header-logo" src="吉林大学校徽_透明.png" alt="吉林大学校徽" />
+    <h1>三重积分的计算</h1>
+</div>
+
+<div class="problem-box">
+    <strong>例 3.9</strong> 计算 $\displaystyle I = \iiint\limits_\Omega z^2\,\mathrm{d}V$，其中 $\Omega$ 是椭球区域 $\displaystyle \frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} \leq 1$.
+</div>
+
+<h2>一、问题分析</h2>
+
+<p>这是一个在<strong>椭球区域</strong>上计算三重积分的问题.  椭球的标准方程为：</p>
+
+<div class="formula-box">
+    $$\frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1$$
+</div>
+
+<p>其中 $a, b, c$ 分别是椭球在 $x, y, z$ 三个方向上的半轴长度.</p>
+
+<div class="note">
+    <strong>关键思路:</strong> 可以使用<strong>广义球坐标变换</strong>或<strong>切片法（先二后一）</strong>来求解. 这里我们采用切片法, 利用对称性简化计算.
+</div>
+
+<h2>二、交互式3D可视化：椭球区域</h2>
+
+<div class="chart-container">
+    <div class="chart-wrapper">
+        <div class="chart-main">
+            <div id="chart3d" style="width: 100%; height: 500px;"></div>
+        </div>
+        <div class="chart-controls">
+            <div class="control-group">
+                <label>半轴 $a$ (x方向):</label>
+                <input type="range" id="axisA" min="0.5" max="2" step="0.1" value="1">
+                <div class="value-display" id="axisAVal">1.0</div>
+            </div>
+            <div class="control-group">
+                <label>半轴 $b$ (y方向):</label>
+                <input type="range" id="axisB" min="0.5" max="2" step="0.1" value="1">
+                <div class="value-display" id="axisBVal">1.0</div>
+            </div>
+            <div class="control-group">
+                <label>半轴 $c$ (z方向):</label>
+                <input type="range" id="axisC" min="0.5" max="2" step="0.1" value="1">
+                <div class="value-display" id="axisCVal">1.0</div>
+            </div>
+            <div class="btn-group">
+                <button class="btn-secondary" id="viewXY">俯视(x-y)</button>
+                <button class="btn-secondary" id="viewXZ">侧视(x-z)</button>
+                <button class="btn-secondary" id="view3D">3D视角</button>
+            </div>
+            <div class="btn-group">
+                <button class="btn-gray" id="animateRotate">自动旋转</button>
+                <button class="btn-gray" id="stopRotate">停止</button>
+            </div>
+            <p style="margin-top: 15px; font-size: 0.9em; color: #666;">
+                说明: 拖动滑块调整椭球的三个半轴长度, 观察椭球形状变化.
+            </p>
+        </div>
+    </div>
+</div>
+
+<h2>三、切片法求解</h2>
+
+<div class="step-box">
+    <span class="step-num">1</span>
+    <strong>确定积分区域</strong>
+    <p>对于固定的 $z$，椭球的截面是一个椭圆：</p>
+    <div class="formula-box">
+        $$\frac{x^2}{a^2} + \frac{y^2}{b^2} \leq 1 - \frac{z^2}{c^2}$$
+    </div>
+    <p>即：$\displaystyle \frac{x^2}{a^2(1-\frac{z^2}{c^2})} + \frac{y^2}{b^2(1-\frac{z^2}{c^2})} \leq 1$</p>
+</div>
+
+<div class="step-box">
+    <span class="step-num">2</span>
+    <strong>计算截面面积</strong>
+    <p>对于固定的 $z$，截面是椭圆，其半轴为：</p>
+    <div class="formula-box">
+        $$a' = a\sqrt{1-\frac{z^2}{c^2}}, \quad b' = b\sqrt{1-\frac{z^2}{c^2}}$$
+    </div>
+    <p>椭圆面积为：$S(z) = \pi a' b' = \pi ab\left(1-\frac{z^2}{c^2}\right)$</p>
+</div>
+
+<div class="step-box">
+    <span class="step-num">3</span>
+    <strong>建立三重积分</strong>
+    <p>利用切片法（先二后一）：</p>
+    <div class="formula-box">
+        $$I = \int_{-c}^{c} z^2 \cdot S(z)\,\mathrm{d}z = \int_{-c}^{c} z^2 \cdot \pi ab\left(1-\frac{z^2}{c^2}\right)\mathrm{d}z$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">4</span>
+    <strong>计算定积分</strong>
+    <p>由于被积函数是偶函数：</p>
+    <div class="formula-box">
+        $$I = 2\pi ab \int_{0}^{c} z^2\left(1-\frac{z^2}{c^2}\right)\mathrm{d}z = 2\pi ab \int_{0}^{c} \left(z^2 - \frac{z^4}{c^2}\right)\mathrm{d}z$$
+    </div>
+    <div class="formula-box">
+        $$= 2\pi ab \left[\frac{z^3}{3} - \frac{z^5}{5c^2}\right]_0^c = 2\pi ab \left(\frac{c^3}{3} - \frac{c^3}{5}\right)$$
+    </div>
+    <div class="formula-box">
+        $$= 2\pi ab \cdot \frac{5c^3 - 3c^3}{15} = 2\pi ab \cdot \frac{2c^3}{15} = \frac{4\pi abc^3}{15}$$
+    </div>
+</div>
+
+<h2>四、截面可视化</h2>
+
+<div class="chart-container">
+    <div class="chart-wrapper">
+        <div class="chart-main">
+            <div id="chartSection" style="width: 100%; height: 400px;"></div>
+        </div>
+        <div class="chart-controls">
+            <div class="control-group">
+                <label>截面高度 $z$:</label>
+                <input type="range" id="sectionZ" min="0" max="100" value="50">
+                <div class="value-display" id="sectionZVal">0.00</div>
+            </div>
+            <div class="btn-group">
+                <button class="btn-primary" id="playSection">播放动画</button>
+                <button class="btn-gray" id="stopSection">停止</button>
+            </div>
+            <p style="margin-top: 15px; font-size: 0.9em; color: #666;">
+                截面椭圆半轴: <span id="sectionAxes">a'=0.00, b'=0.00</span><br>
+                截面面积: <span id="sectionArea">S=0.0000</span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<h2>五、广义球坐标法验证</h2>
+
+<div class="step-box">
+    <span class="step-num">1</span>
+    <strong>广义球坐标变换</strong>
+    <p>令：</p>
+    <div class="formula-box">
+        $$x = ar\sin\varphi\cos\theta, \quad y = br\sin\varphi\sin\theta, \quad z = cr\cos\varphi$$
+    </div>
+    <p>其中 $r \in [0,1]$, $\varphi \in [0,\pi]$, $\theta \in [0,2\pi]$</p>
+</div>
+
+<div class="step-box">
+    <span class="step-num">2</span>
+    <strong>计算雅可比行列式</strong>
+    <div class="formula-box">
+        $$J = \frac{\partial(x,y,z)}{\partial(r,\varphi,\theta)} = abc \cdot r^2\sin\varphi$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">3</span>
+    <strong>建立积分</strong>
+    <div class="formula-box">
+        $$I = \int_0^{2\pi}\!\mathrm{d}\theta \int_0^{\pi}\!\mathrm{d}\varphi \int_0^1 (cr\cos\varphi)^2 \cdot abc r^2\sin\varphi\,\mathrm{d}r$$
+    </div>
+    <div class="formula-box">
+        $$= abc^3 \int_0^{2\pi}\!\mathrm{d}\theta \int_0^{\pi}\!\cos^2\varphi\sin\varphi\,\mathrm{d}\varphi \int_0^1 r^4\,\mathrm{d}r$$
+    </div>
+</div>
+
+<div class="step-box">
+    <span class="step-num">4</span>
+    <strong>分别计算三个积分</strong>
+    <p>$\displaystyle \int_0^{2\pi}\!\mathrm{d}\theta = 2\pi$</p>
+    <p>$\displaystyle \int_0^{\pi}\!\cos^2\varphi\sin\varphi\,\mathrm{d}\varphi = \left[-\frac{\cos^3\varphi}{3}\right]_0^{\pi} = \frac{2}{3}$</p>
+    <p>$\displaystyle \int_0^1 r^4\,\mathrm{d}r = \frac{1}{5}$</p>
+</div>
+
+<div class="step-box">
+    <span class="step-num">5</span>
+    <strong>合并结果</strong>
+    <div class="formula-box">
+        $$I = abc^3 \cdot 2\pi \cdot \frac{2}{3} \cdot \frac{1}{5} = \frac{4\pi abc^3}{15}$$
+    </div>
+</div>
+
+<h2>六、特殊情况验证</h2>
+
+<div class="chart-container">
+    <div class="section-grid">
+        <div>
+            <h3 style="color: #1a237e; margin-top: 0;">情况1: 球体 ($a=b=c=R$)</h3>
+            <div class="formula-box">
+                $$I = \frac{4\pi R \cdot R \cdot R^3}{15} = \frac{4\pi R^5}{15}$$
+            </div>
+            <p>验证: 球坐标下 $\displaystyle \iiint_{球} z^2\,\mathrm{d}V = \frac{4\pi R^5}{15}$, 结果一致.</p>
+        </div>
+        <div>
+            <h3 style="color: #1a237e; margin-top: 0;">情况2: 旋转椭球 ($a=b \neq c$)</h3>
+            <div class="formula-box">
+                $$I = \frac{4\pi a^2 c^3}{15}$$
+            </div>
+            <p>当 $c > a$ 时为长椭球（橄榄球状）, 当 $c < a$ 时为扁椭球（飞碟状）.</p>
+        </div>
+    </div>
+</div>
+
+<h2>七、最终结果</h2>
+
+<div class="result-box">
+    <strong>答案：</strong>
+    <div class="formula-box" style="font-size: 1.3em; background: #fff;">
+        $$I = \iiint\limits_\Omega z^2\,\mathrm{d}V = \frac{4\pi abc^3}{15}$$
+    </div>
+    <p style="margin-top: 15px;">
+        <strong>数值示例:</strong> 当 $a=1, b=1, c=1$（单位球）时, $I = \dfrac{4\pi}{15} \approx 0.838$.
+    </p>
+</div>
+
+<h2>八、总结</h2>
+
+<div class="note">
+    <strong>方法对比：</strong>
+    <ul style="margin: 10px 0; padding-left: 20px;">
+        <li><strong>切片法:</strong> 适用于被积函数仅依赖于一个变量的情况, 计算简洁直观.</li>
+        <li><strong>广义球坐标法:</strong> 适用于一般椭球区域, 通过变量替换将椭球变为单位球.</li>
+    </ul>
+    <p style="margin-top: 10px;"><strong>关键公式：</strong> 椭球体积 $V = \dfrac{4\pi abc}{3}$，本题结果 $I = \dfrac{4\pi abc^3}{15} = \dfrac{c^2}{5} \cdot V$.</p>
+</div>
+
+<script>
+    // 全局变量
+    let a = 1, b = 1, c = 1;
+    let rotateAnimationId = null;
+    let sectionAnimationId = null;
+    
+    // ========== 3D椭球可视化 ==========
+    function drawEllipsoid() {
+        // 生成椭球表面
+        const phi = [];
+        const theta = [];
+        const x = [], y = [], z = [];
+        
+        const nPhi = 50, nTheta = 50;
+        for (let i = 0; i <= nPhi; i++) {
+            const phii = i / nPhi * Math.PI;
+            for (let j = 0; j <= nTheta; j++) {
+                const thetaj = j / nTheta * 2 * Math.PI;
+                phi.push(phii);
+                theta.push(thetaj);
+                x.push(a * Math.sin(phii) * Math.cos(thetaj));
+                y.push(b * Math.sin(phii) * Math.sin(thetaj));
+                z.push(c * Math.cos(phii));
+            }
+        }
+        
+        const trace = {
+            x: x, y: y, z: z,
+            type: 'scatter3d',
+            mode: 'markers',
+            marker: {
+                size: 3,
+                color: z,
+                colorscale: 'Viridis',
+                opacity: 0.8
+            },
+            name: '椭球表面'
+        };
+        
+        // 添加坐标轴
+        const axisLength = Math.max(a, b, c) * 1.5;
+        const xAxis = {
+            x: [-axisLength, axisLength], y: [0, 0], z: [0, 0],
+            type: 'scatter3d', mode: 'lines',
+            line: { color: '#f44336', width: 3 },
+            name: 'x轴', showlegend: false
+        };
+        const yAxis = {
+            x: [0, 0], y: [-axisLength, axisLength], z: [0, 0],
+            type: 'scatter3d', mode: 'lines',
+            line: { color: '#4caf50', width: 3 },
+            name: 'y轴', showlegend: false
+        };
+        const zAxis = {
+            x: [0, 0], y: [0, 0], z: [-axisLength, axisLength],
+            type: 'scatter3d', mode: 'lines',
+            line: { color: '#2196f3', width: 3 },
+            name: 'z轴', showlegend: false
+        };
+        
+        const traces = [trace, xAxis, yAxis, zAxis];
+        
+        const maxRange = Math.max(a, b, c) * 1.5;
+        const layout = {
+            title: {
+                text: `椭球可视化: a=${a.toFixed(1)}, b=${b.toFixed(1)}, c=${c.toFixed(1)}`,
+                font: { size: 16, color: '#1a237e', family: 'Times New Roman' }
+            },
+            scene: {
+                xaxis: { title: 'x', range: [-maxRange, maxRange], gridcolor: '#e0e0e0', backgroundcolor: '#f9f9f9' },
+                yaxis: { title: 'y', range: [-maxRange, maxRange], gridcolor: '#e0e0e0', backgroundcolor: '#f9f9f9' },
+                zaxis: { title: 'z', range: [-maxRange, maxRange], gridcolor: '#e0e0e0', backgroundcolor: '#f9f9f9' },
+                camera: { eye: { x: 1.5, y: 1.5, z: 1.0 } },
+                aspectmode: 'cube',
+                aspectratio: { x: 1, y: 1, z: 1 }
+            },
+            margin: { t: 60, l: 0, r: 0, b: 0 }
+        };
+        
+        Plotly.newPlot('chart3d', traces, layout, {responsive: true});
+    }
+    
+    // ========== 截面可视化 ==========
+    function drawSection() {
+        const zRatio = parseInt(document.getElementById('sectionZ').value) / 100;
+        const z = (zRatio - 0.5) * 2 * c; // z in [-c, c]
+        
+        // 计算截面椭圆参数
+        const factor = 1 - (z*z)/(c*c);
+        const aPrime = a * Math.sqrt(Math.max(0, factor));
+        const bPrime = b * Math.sqrt(Math.max(0, factor));
+        const area = Math.PI * aPrime * bPrime;
+        
+        // 生成椭圆
+        const xEllipse = [], yEllipse = [];
+        for (let i = 0; i <= 100; i++) {
+            const theta = i / 100 * 2 * Math.PI;
+            xEllipse.push(aPrime * Math.cos(theta));
+            yEllipse.push(bPrime * Math.sin(theta));
+        }
+        
+        const traces = [{
+            x: xEllipse, y: yEllipse,
+            type: 'scatter', mode: 'lines',
+            line: { color: '#1976d2', width: 2 },
+            fill: 'toself',
+            fillcolor: 'rgba(25, 118, 210, 0.2)',
+            name: `截面 z=${z.toFixed(2)}`
+        }];
+        
+        // 添加坐标轴
+        const maxRange = Math.max(a, b) * 1.2;
+        traces.push(
+            { x: [-maxRange, maxRange], y: [0, 0], type: 'scatter', mode: 'lines', 
+              line: { color: '#ccc', width: 1 }, showlegend: false },
+            { x: [0, 0], y: [-maxRange, maxRange], type: 'scatter', mode: 'lines', 
+              line: { color: '#ccc', width: 1 }, showlegend: false }
+        );
+        
+        const layout = {
+            title: {
+                text: `椭球截面: z=${z.toFixed(2)}`,
+                font: { size: 16, color: '#1a237e' }
+            },
+            xaxis: { title: 'x', range: [-maxRange, maxRange], gridcolor: '#e0e0e0', scaleanchor: 'y' },
+            yaxis: { title: 'y', range: [-maxRange, maxRange], gridcolor: '#e0e0e0' },
+            showlegend: true
+        };
+        
+        Plotly.newPlot('chartSection', traces, layout, {responsive: true});
+        
+        // 更新显示
+        document.getElementById('sectionZVal').textContent = z.toFixed(2);
+        document.getElementById('sectionAxes').textContent = `a'=${aPrime.toFixed(2)}, b'=${bPrime.toFixed(2)}`;
+        document.getElementById('sectionArea').textContent = `S=${area.toFixed(4)}`;
+    }
+    
+    // ========== 事件监听 ==========
+    document.getElementById('axisA').addEventListener('input', function() {
+        a = parseFloat(this.value);
+        document.getElementById('axisAVal').textContent = a.toFixed(1);
+        drawEllipsoid();
+        drawSection();
+    });
+    
+    document.getElementById('axisB').addEventListener('input', function() {
+        b = parseFloat(this.value);
+        document.getElementById('axisBVal').textContent = b.toFixed(1);
+        drawEllipsoid();
+        drawSection();
+    });
+    
+    document.getElementById('axisC').addEventListener('input', function() {
+        c = parseFloat(this.value);
+        document.getElementById('axisCVal').textContent = c.toFixed(1);
+        drawEllipsoid();
+        drawSection();
+    });
+    
+    document.getElementById('sectionZ').addEventListener('input', function() {
+        drawSection();
+    });
+    
+    document.getElementById('viewXY').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 0, y: 0, z: 2.5 } } });
+    });
+    
+    document.getElementById('viewXZ').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 2.5, y: 0, z: 0 } } });
+    });
+    
+    document.getElementById('view3D').addEventListener('click', function() {
+        Plotly.relayout('chart3d', { 'scene.camera': { eye: { x: 1.5, y: 1.5, z: 1.0 } } });
+    });
+    
+    document.getElementById('animateRotate').addEventListener('click', function() {
+        let angle = 0;
+        rotateAnimationId = setInterval(() => {
+            angle += 0.05;
+            Plotly.relayout('chart3d', {
+                'scene.camera': {
+                    eye: { x: 2 * Math.cos(angle), y: 2 * Math.sin(angle), z: 1 }
+                }
+            });
+        }, 50);
+    });
+    
+    document.getElementById('stopRotate').addEventListener('click', function() {
+        if (rotateAnimationId) {
+            clearInterval(rotateAnimationId);
+            rotateAnimationId = null;
+        }
+    });
+    
+    document.getElementById('playSection').addEventListener('click', function() {
+        let value = 0;
+        sectionAnimationId = setInterval(() => {
+            value += 1;
+            if (value > 100) value = 0;
+            document.getElementById('sectionZ').value = value;
+            drawSection();
+        }, 50);
+    });
+    
+    document.getElementById('stopSection').addEventListener('click', function() {
+        if (sectionAnimationId) {
+            clearInterval(sectionAnimationId);
+            sectionAnimationId = null;
+        }
+    });
+    
+    // 初始化
+    drawEllipsoid();
+    drawSection();
+</script>
+
+</body>
+</html>
