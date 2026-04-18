@@ -308,24 +308,24 @@
     <strong>球坐标变换</strong>
     <p>令:</p>
     <div class="formula-box">
-        $$x = r\sin\varphi\cos\theta, \quad y = r\sin\varphi\sin\theta, \quad z = r\cos\varphi$$
+        $$x = \rho\sin\varphi\cos\theta, \quad y = \rho\sin\varphi\sin\theta, \quad z = \rho\cos\varphi$$
     </div>
-    <p>雅可比行列式: $J = r^2\sin\varphi$</p>
-    <p>被积函数: $(x^2+y^2+z^2)^4 = (r^2)^4 = r^8$</p>
+    <p>雅可比行列式: $J = \rho^2\sin\varphi$</p>
+    <p>被积函数: $(x^2+y^2+z^2)^4 = (\rho^2)^4 = \rho^8$</p>
 </div>
 
 <div class="step-box">
     <span class="step-num">2</span>
     <strong>确定积分限</strong>
-    <p>球面 $x^2+y^2+z^2=4$ 对应 $r = 2$.</p>
+    <p>球面 $x^2+y^2+z^2=4$ 对应 $\rho = 2$.</p>
     <p>锥面 $y^2+z^2=x^2$ 在球坐标下:</p>
     <div class="formula-box">
-        $$r^2\sin^2\varphi(\sin^2\theta + \cos^2\theta) = r^2\sin^2\varphi\cos^2\theta$$
+        $$\rho^2\sin^2\varphi(\sin^2\theta + \cos^2\theta) = \rho^2\sin^2\varphi\cos^2\theta$$
     </div>
     <p>即 $\sin^2\varphi = \cos^2\theta\sin^2\varphi$, 这不对. 让我重新推导:</p>
     <p>实际上, 锥面 $y^2+z^2=x^2$ 即 $\rho^2 = x^2$（柱坐标）, 其中 $\rho = \sqrt{y^2+z^2}$.</p>
-    <p>在球坐标中: $\rho = r\sin\varphi$, $x = r\cos\varphi$（这里 $\varphi$ 是与 $x$ 轴的夹角）.</p>
-    <p>所以锥面方程为: $r^2\sin^2\varphi = r^2\cos^2\varphi$, 即 $\tan^2\varphi = 1$, $\varphi = \frac{\pi}{4}$.</p>
+    <p>在球坐标中: 柱坐标 $\rho = \rho_{球}\sin\varphi$, $x = \rho_{球}\cos\varphi$（这里 $\varphi$ 是与 $x$ 轴的夹角, $\rho_{球}$ 表示球坐标中的径向距离）.</p>
+    <p>所以锥面方程为: $\rho^2\sin^2\varphi = \rho^2\cos^2\varphi$, 即 $\tan^2\varphi = 1$, $\varphi = \frac{\pi}{4}$.</p>
     <p>积分区域: 锥面内部 $|x| \geq \sqrt{y^2+z^2}$ 对应 $\varphi \in [0, \frac{\pi}{4}] \cup [\frac{3\pi}{4}, \pi]$.</p>
     <p>由于对称性, 我们计算右半部分再乘以 2.</p>
 </div>
@@ -335,10 +335,10 @@
     <strong>建立三重积分</strong>
     <p>利用对称性, 计算右球冠再乘以 2:</p>
     <div class="formula-box">
-        $$I = 2 \int_0^{2\pi}\!\mathrm{d}\theta \int_0^{\pi/4}\!\mathrm{d}\varphi \int_0^2 r^8 \cdot r^2\sin\varphi\,\mathrm{d}r$$
+        $$I = 2 \int_0^{2\pi}\!\mathrm{d}\theta \int_0^{\pi/4}\!\mathrm{d}\varphi \int_0^2 \rho^8 \cdot \rho^2\sin\varphi\,\mathrm{d}\rho$$
     </div>
     <div class="formula-box">
-        $$= 2 \int_0^{2\pi}\!\mathrm{d}\theta \int_0^{\pi/4}\!\sin\varphi\,\mathrm{d}\varphi \int_0^2 r^{10}\,\mathrm{d}r$$
+        $$= 2 \int_0^{2\pi}\!\mathrm{d}\theta \int_0^{\pi/4}\!\sin\varphi\,\mathrm{d}\varphi \int_0^2 \rho^{10}\,\mathrm{d}\rho$$
     </div>
 </div>
 
@@ -347,7 +347,7 @@
     <strong>分别计算三个积分</strong>
     <p>$\displaystyle \int_0^{2\pi}\!\mathrm{d}\theta = 2\pi$</p>
     <p>$\displaystyle \int_0^{\pi/4}\!\sin\varphi\,\mathrm{d}\varphi = \left[-\cos\varphi\right]_0^{\pi/4} = 1 - \frac{\sqrt{2}}{2} = \frac{2-\sqrt{2}}{2}$</p>
-    <p>$\displaystyle \int_0^2 r^{10}\,\mathrm{d}r = \left[\frac{r^{11}}{11}\right]_0^2 = \frac{2^{11}}{11} = \frac{2048}{11}$</p>
+    <p>$\displaystyle \int_0^2 \rho^{10}\,\mathrm{d}\rho = \left[\frac{\rho^{11}}{11}\right]_0^2 = \frac{2^{11}}{11} = \frac{2048}{11}$</p>
 </div>
 
 <div class="step-box">
@@ -368,9 +368,9 @@
         <h3 style="color: #1a237e; margin-top: 0;">方法1: 球坐标法</h3>
         <div class="step-box">
             <p>积分区域: $\varphi \in [0, \frac{\pi}{4}] \cup [\frac{3\pi}{4}, \pi]$</p>
-            <p>被积函数: $r^8$, $J = r^2\sin\varphi$</p>
+            <p>被积函数: $\rho^8$, $J = \rho^2\sin\varphi$</p>
             <div class="formula-box">
-                $$I = 2 \cdot \int_0^{2\pi}\!\mathrm{d}\theta \int_0^{\pi/4}\!\sin\varphi\,\mathrm{d}\varphi \int_0^2 r^{10}\,\mathrm{d}r$$
+                $$I = 2 \cdot \int_0^{2\pi}\!\mathrm{d}\theta \int_0^{\pi/4}\!\sin\varphi\,\mathrm{d}\varphi \int_0^2 \rho^{10}\,\mathrm{d}\rho$$
             </div>
             <p>$= 2 \cdot 2\pi \cdot \frac{2-\sqrt{2}}{2} \cdot \frac{2048}{11}$</p>
             <div class="formula-box">
@@ -415,7 +415,7 @@
 <div class="note">
     <strong>方法选择:</strong>
     <ul style="margin: 10px 0; padding-left: 20px;">
-        <li><strong>球坐标法:</strong> 最适合本题, 被积函数为 $r^8$, 积分区域由球面和锥面围成, 计算简洁.</li>
+        <li><strong>球坐标法:</strong> 最适合本题, 被积函数为 $\rho^8$, 积分区域由球面和锥面围成, 计算简洁.</li>
         <li><strong>柱坐标法:</strong> 也可求解, 但积分限较复杂, 需要仔细分析区域.</li>
     </ul>
     <p style="margin-top: 10px;"><strong>关键技巧:</strong> 识别积分区域为两个对称的球冠, 利用对称性简化计算.</p>
@@ -593,3 +593,5 @@
 
 </body>
 </html>
+
+
