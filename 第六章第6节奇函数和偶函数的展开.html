@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第六章第6节 奇函数和偶函数的傅里叶展开</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$']],
+    displayMath: [['$$', '$$']],
+    tags: 'ams'
+  },
+  loader: {load: ['[tex]/ams']},
+  svg: {fontCache: 'global'}
+};
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei',sans-serif;background:linear-gradient(135deg,#e8eaf6 0%,#c5cae9 50%,#9fa8da 100%);min-height:100vh;padding:20px;color:#222;font-size:15px;line-height:1.9}
+.container-wrap{max-width:1200px;margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.25);overflow:hidden;padding:0}
+.header{background:linear-gradient(135deg,#1a237e 0%,#283593 50%,#3949ab 100%);color:#fff;padding:50px 30px;border-radius:12px 12px 0 0;position:relative;text-align:center}
+.header h1{font-size:2.4em;letter-spacing:2px}
+.header-logo{position:absolute;top:10px;right:15px;width:210px;height:auto;opacity:0.95}
+.nav-bar{display:flex;justify-content:center;gap:6px;padding:10px 15px;background:#e8eaf6;border-bottom:1px solid #c5cae9;flex-wrap:wrap}
+.nav-btn{flex:1;min-width:90px;padding:10px 12px;border:none;border-radius:8px;background:linear-gradient(135deg,#e0e0e0,#bdbdbd);color:#333;font-size:0.88em;font-weight:bold;cursor:pointer;transition:all 0.3s}
+.nav-btn:hover{background:linear-gradient(135deg,#1976d2,#2196f3);color:#fff}
+.nav-btn.active{background:linear-gradient(135deg,#1976d2,#2196f3);color:#fff;box-shadow:0 4px 15px rgba(25,118,210,0.4)}
+.content{padding:20px 32px 30px}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.sec-title{font-size:1.15em;color:#1a237e;margin:18px 0 9px;padding:8px 14px;background:linear-gradient(90deg,#e8eaf6,#c5cae9);border-radius:8px;font-weight:700;box-shadow:0 2px 8px rgba(26,35,126,.1)}
+.def-box{background:linear-gradient(135deg,#e8eaf6,#e3f2fd);border-left:4px solid #1976d2;border-radius:0 10px 10px 0;padding:15px 20px;margin:12px 0}
+.def-box .title{font-weight:700;font-size:1.02em;color:#1a237e;margin-bottom:5px}
+.thm-box{background:linear-gradient(135deg,#fff8e1,#ffecb3);border-left:4px solid #ff9800;border-radius:0 10px 10px 0;padding:15px 20px;margin:12px 0}
+.thm-box .title{font-weight:700;font-size:1.02em;color:#e65100;margin-bottom:5px}
+.proof-box{background:linear-gradient(135deg,#f3e5f5,#e1bee7);border-left:4px solid #7b1fa2;border-radius:0 10px 10px 0;padding:15px 20px;margin:12px 0}
+.proof-box .title{font-weight:700;font-size:1.02em;color:#6a1b9a;margin-bottom:5px}
+.remark-box{background:#e8f5e9;border-left:4px solid #4caf50;border-radius:0 10px 10px 0;padding:12px 18px;margin:10px 0}
+.remark-box .title{font-weight:700;font-size:.98em;color:#2e7d32;margin-bottom:4px}
+.warn-box{background:#ffebee;border-left:4px solid #ef5350;border-radius:0 8px 8px 0;padding:10px 16px;margin:10px 0;font-size:.93em;color:#c62828}
+.warn-box strong{color:#b71c1c}
+.summ-box{background:linear-gradient(135deg,#e8eaf6,#e3f2fd);border-left:4px solid #1a237e;border-radius:0 10px 10px 0;padding:15px 20px;margin:12px 0}
+.summ-box .title{font-weight:700;font-size:1.02em;color:#1a237e;margin-bottom:5px}
+.box-formula{text-align:center;padding:16px 10px;font-size:1.12em;color:#1a237e;background:linear-gradient(90deg,rgba(26,35,126,.04),rgba(26,35,126,.10),rgba(26,35,126,.04));border-radius:8px;margin:10px 0}
+.box-step{background:#e8f5e9;border-left:4px solid #4caf50;border-radius:0 8px 8px 0;padding:12px 18px;margin:10px 0}
+.box-step .step-num{display:inline-block;background:#1a237e;color:#fff;border-radius:50%;width:26px;height:26px;text-align:center;line-height:26px;font-size:.85em;margin-right:8px}
+.result-box{background:linear-gradient(135deg,#c8e6c9,#a5d6a7);border-left:4px solid #4caf50;border-radius:0 10px 10px 0;padding:15px 20px;margin:14px 0;text-align:center;font-size:1.08em}
+table.formula-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.93em}
+table.formula-table th{background:#1a237e;color:#fff;padding:7px 12px;text-align:center;font-weight:700}
+table.formula-table td{padding:7px 12px;border:1px solid #c5cae9;text-align:center}
+table.formula-table tr:nth-child(even) td{background:#e8eaf6}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0}
+@media(max-width:700px){.compare-grid{grid-template-columns:1fr}}
+.compare-card{border-radius:10px;padding:14px;text-align:center}
+.compare-card.even{background:linear-gradient(135deg,#e3f2fd,#bbdefb);border:2px solid #1976d2}
+.compare-card.odd{background:linear-gradient(135deg,#fff8e1,#ffecb3);border:2px solid #ff9800}
+.compare-card .card-title{font-weight:700;font-size:1em;margin-bottom:4px}
+.compare-card.even .card-title{color:#0d47a1}
+.compare-card.odd .card-title{color:#e65100}
+.plot-container{border-radius:8px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.1);margin:12px 0}
+.interactive-panel{background:linear-gradient(135deg,#f5f5f5,#e0e0e0);border-radius:12px;padding:16px;margin:14px 0}
+.interactive-panel .panel-title{font-weight:700;font-size:1.05em;color:#1a237e;margin-bottom:10px}
+.slider-row{display:flex;align-items:center;gap:10px;margin:8px 0}
+.slider-row label{font-weight:600;color:#555;min-width:100px}
+.slider-row input[type=range]{flex:1;height:6px;accent-color:#1976d2}
+.slider-row span{font-weight:700;color:#1976d2;min-width:60px;text-align:center}
+.func-select{display:flex;align-items:center;gap:10px;margin:8px 0;flex-wrap:wrap}
+.func-select label{font-weight:600;color:#555;min-width:100px}
+.func-select select{flex:1;min-width:180px;padding:6px 10px;border:2px solid #1976d2;border-radius:8px;font-size:.93em;color:#333;background:#fff;cursor:pointer}
+.btn-primary{margin-top:8px;padding:8px 18px;background:linear-gradient(135deg,#1976d2,#2196f3);color:#fff;border:none;border-radius:8px;font-size:.93em;font-weight:bold;cursor:pointer;transition:all 0.3s}
+.btn-primary:hover{transform:scale(1.03)}
+</style>
+</head>
+<body>
+
+<div class="container-wrap">
+
+<div class="header">
+  <h1>第六章第6节 &nbsp; 奇函数和偶函数的傅里叶展开</h1>
+  <img src="jlulogo.png" class="header-logo" alt="JLU Logo">
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn active" onclick="showTab('overview',this)">概述</button>
+  <button class="nav-btn" onclick="showTab('even',this)">偶函数展开</button>
+  <button class="nav-btn" onclick="showTab('odd',this)">奇函数展开</button>
+  <button class="nav-btn" onclick="showTab('halfrange',this)">半幅展开与应用</button>
+  <button class="nav-btn" onclick="showTab('interactive',this)">交互演示</button>
+</div>
+
+<div class="content">
+
+<!-- ============================================================
+     Tab 0: 概述
+     ============================================================ -->
+<div id="tab-overview" class="tab-content active">
+
+  <div class="sec-title">从傅里叶级数到函数的奇偶性简化</div>
+
+  <p>设 $f(x)$ 是以 $2\pi$ 为周期的可积函数, 其傅里叶级数为</p>
+  <div class="box-formula">
+    $$ f(x) \sim \dfrac{a_0}{2} + \sum_{n=1}^{\infty} \bigl( a_n \cos nx + b_n \sin nx \bigr), $$
+  </div>
+  <p>其中傅里叶系数由以下积分给出:</p>
+  <div class="box-formula">
+    $$ a_n = \dfrac{1}{\pi} \int_{-\pi}^{\pi} f(x) \cos nx \, \mathrm{d}x, \quad
+       b_n = \dfrac{1}{\pi} \int_{-\pi}^{\pi} f(x) \sin nx \, \mathrm{d}x. $$
+  </div>
+
+  <div class="sec-title">奇偶性的核心简化</div>
+  <p>当 $f(x)$ 具有奇偶性时, 傅里叶系数的计算可以大幅简化: 一半系数自动为零!</p>
+
+  <div class="compare-grid">
+    <div class="compare-card even">
+      <div class="card-title">偶函数展开 (余弦级数)</div>
+      <p style="font-size:.93em;margin-top:4px">$f(-x) = f(x)$</p>
+      <p style="font-size:.85em;color:#555;margin-top:3px">$b_n \equiv 0$, 仅含余弦项.</p>
+      <p style="font-size:.85em;color:#555">$\cos nx$ 是偶函数, 与偶函数之积仍为偶函数.</p>
+    </div>
+    <div class="compare-card odd">
+      <div class="card-title">奇函数展开 (正弦级数)</div>
+      <p style="font-size:.93em;margin-top:4px">$f(-x) = -f(x)$</p>
+      <p style="font-size:.85em;color:#555;margin-top:3px">$a_n \equiv 0$, 仅含正弦项.</p>
+      <p style="font-size:.85em;color:#555">$\sin nx$ 是奇函数, 与奇函数之积为偶函数.</p>
+    </div>
+  </div>
+
+  <div class="def-box">
+    <div class="title">定义 1 (偶函数与奇函数)</div>
+    <p>设 $f(x)$ 的定义域关于原点对称.</p>
+    <p><strong>偶函数:</strong> $\forall x$, 有 $f(-x) = f(x)$. 图像关于 $y$ 轴对称.</p>
+    <p><strong>奇函数:</strong> $\forall x$, 有 $f(-x) = -f(x)$. 图像关于原点对称.</p>
+  </div>
+
+  <div class="sec-title">简化原理的直观解释</div>
+  <div class="box-step">
+    <p><span class="step-num">1</span>$\cos nx$ 是偶函数, $\sin nx$ 是奇函数.</p>
+  </div>
+  <div class="box-step">
+    <p><span class="step-num">2</span>偶函数 $\times$ 奇函数 = 奇函数, 在对称区间上积分为零.</p>
+  </div>
+  <div class="box-step">
+    <p><span class="step-num">3</span>若 $f(x)$ 为偶函数, 则 $f(x)\sin nx$ 为奇函数, 故 $b_n = 0$.</p>
+  </div>
+  <div class="box-step">
+    <p><span class="step-num">4</span>若 $f(x)$ 为奇函数, 则 $f(x)\cos nx$ 为奇函数, 故 $a_n = 0$.</p>
+  </div>
+
+  <div class="warn-box">
+    <strong>注意:</strong> 周期延拓时务必保持函数的奇偶性. 将定义在 $[0, \pi]$ 上的函数延拓到 $[-\pi, \pi]$ 时, 可选择奇延拓或偶延拓, 从而得到不同的傅里叶级数 (半幅展开).
+  </div>
+
+</div>
+
+<!-- ============================================================
+     Tab 1: 偶函数展开
+     ============================================================ -->
+<div id="tab-even" class="tab-content">
+
+  <div class="sec-title">一、偶函数的傅里叶级数 (余弦级数)</div>
+
+  <div class="thm-box">
+    <div class="title">定理 1 (偶函数的傅里叶展开)</div>
+    <p>设 $f(x)$ 是以 $2\pi$ 为周期的偶函数, 且在 $[-\pi, \pi]$ 上可积. 则其傅里叶级数为</p>
+    <div class="box-formula">
+      $$ f(x) \sim \dfrac{a_0}{2} + \sum_{n=1}^{\infty} a_n \cos nx, $$
+    </div>
+    <p>其中系数 $b_n \equiv 0$, 而 $a_n$ 可简化为 $[0, \pi]$ 上的积分:</p>
+    <div class="box-formula">
+      $$ a_n = \dfrac{2}{\pi} \int_{0}^{\pi} f(x) \cos nx \, \mathrm{d}x \quad (n = 0, 1, 2, \dots). $$
+    </div>
+  </div>
+
+  <div class="proof-box">
+    <div class="title">推导</div>
+    <p>由 $a_n$ 的一般公式:</p>
+    <div class="box-formula">
+      $$ a_n = \dfrac{1}{\pi} \int_{-\pi}^{\pi} f(x) \cos nx \, \mathrm{d}x. $$
+    </div>
+    <p>由于 $f(x)$ 和 $\cos nx$ 均为偶函数, 被积函数 $f(x)\cos nx$ 为偶函数, 故</p>
+    <div class="box-formula">
+      $$ \int_{-\pi}^{\pi} f(x) \cos nx \, \mathrm{d}x = 2 \int_{0}^{\pi} f(x) \cos nx \, \mathrm{d}x. $$
+    </div>
+    <p>对于 $b_n$, 被积函数 $f(x)\sin nx$ 为偶函数 $\times$ 奇函数 = 奇函数, 在对称区间上积分为零, 故 $b_n = 0$.</p>
+  </div>
+
+  <div class="sec-title">二、典型例子</div>
+
+  <div class="def-box">
+    <div class="title">例 1: $f(x) = x^2$ 在 $[-\pi, \pi]$ 上的傅里叶展开</div>
+    <p>$f(x) = x^2$ 是偶函数, 故 $b_n = 0$. 计算 $a_n$:</p>
+    <div class="box-formula">
+      $$ a_0 = \dfrac{2}{\pi} \int_{0}^{\pi} x^2 \, \mathrm{d}x = \dfrac{2\pi^2}{3}, $$
+      $$ a_n = \dfrac{2}{\pi} \int_{0}^{\pi} x^2 \cos nx \, \mathrm{d}x. $$
+    </div>
+    <p>分部积分两次, 得</p>
+    <div class="box-formula">
+      $$ a_n = \dfrac{4(-1)^n}{n^2} \quad (n \geqslant 1). $$
+    </div>
+    <div class="result-box">
+      $$ x^2 = \dfrac{\pi^2}{3} + 4 \sum_{n=1}^{\infty} \dfrac{(-1)^n}{n^2} \cos nx, \quad x \in [-\pi, \pi]. $$
+    </div>
+    <p style="margin-top:6px">令 $x = 0$ 可导出著名结果: $\displaystyle \sum_{n=1}^{\infty} \dfrac{(-1)^{n-1}}{n^2} = \dfrac{\pi^2}{12}$.</p>
+  </div>
+
+  <div class="def-box">
+    <div class="title">例 2: $f(x) = |x|$ 在 $[-\pi, \pi]$ 上的傅里叶展开</div>
+    <p>$f(x) = |x|$ 是偶函数. 计算系数:</p>
+    <div class="box-formula">
+      $$ a_0 = \dfrac{2}{\pi} \int_{0}^{\pi} x \, \mathrm{d}x = \pi, $$
+      $$ a_n = \dfrac{2}{\pi} \int_{0}^{\pi} x \cos nx \, \mathrm{d}x. $$
+    </div>
+    <p>分部积分:</p>
+    <div class="box-formula">
+      $$ a_n = \dfrac{2}{n^2\pi} \bigl[ (-1)^n - 1 \bigr] = \begin{cases}
+        0, & n \text{ 为偶数}, \\
+        -\dfrac{4}{n^2\pi}, & n \text{ 为奇数}.
+      \end{cases} $$
+    </div>
+    <div class="result-box">
+      $$ |x| = \dfrac{\pi}{2} - \dfrac{4}{\pi} \sum_{k=0}^{\infty} \dfrac{\cos(2k+1)x}{(2k+1)^2}, \quad x \in [-\pi, \pi]. $$
+    </div>
+  </div>
+
+  <div class="remark-box">
+    <div class="title">注记: 偶函数展开的优点</div>
+    <p>偶函数展开只含余弦项, 计算量减半. 更重要的是, 余弦级数在 $x=0$ 处具有良好的收敛性质 (因为偶延拓后函数在原点光滑). 这在偏微分方程边值问题中极为有用.</p>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     Tab 2: 奇函数展开
+     ============================================================ -->
+<div id="tab-odd" class="tab-content">
+
+  <div class="sec-title">一、奇函数的傅里叶级数 (正弦级数)</div>
+
+  <div class="thm-box">
+    <div class="title">定理 2 (奇函数的傅里叶展开)</div>
+    <p>设 $f(x)$ 是以 $2\pi$ 为周期的奇函数, 且在 $[-\pi, \pi]$ 上可积. 则其傅里叶级数为</p>
+    <div class="box-formula">
+      $$ f(x) \sim \sum_{n=1}^{\infty} b_n \sin nx, $$
+    </div>
+    <p>其中 $a_n \equiv 0$ ($n = 0, 1, 2, \dots$), 而 $b_n$ 可简化为:</p>
+    <div class="box-formula">
+      $$ b_n = \dfrac{2}{\pi} \int_{0}^{\pi} f(x) \sin nx \, \mathrm{d}x \quad (n = 1, 2, 3, \dots). $$
+    </div>
+  </div>
+
+  <div class="proof-box">
+    <div class="title">推导</div>
+    <p>由 $b_n$ 的一般公式:</p>
+    <div class="box-formula">
+      $$ b_n = \dfrac{1}{\pi} \int_{-\pi}^{\pi} f(x) \sin nx \, \mathrm{d}x. $$
+    </div>
+    <p>$f(x)$ 是奇函数, $\sin nx$ 也是奇函数, 两者之积 $f(x)\sin nx$ 为偶函数. 故</p>
+    <div class="box-formula">
+      $$ \int_{-\pi}^{\pi} f(x) \sin nx \, \mathrm{d}x = 2 \int_{0}^{\pi} f(x) \sin nx \, \mathrm{d}x. $$
+    </div>
+    <p>对于 $a_n$, $f(x)\cos nx$ 为奇函数 $\times$ 偶函数 = 奇函数, 在对称区间上积分为零.</p>
+  </div>
+
+  <div class="sec-title">二、典型例子</div>
+
+  <div class="def-box">
+    <div class="title">例 1: $f(x) = x$ 在 $[-\pi, \pi]$ 上的傅里叶展开 (锯齿波)</div>
+    <p>$f(x) = x$ 是奇函数, 故 $a_n = 0$. 计算 $b_n$:</p>
+    <div class="box-formula">
+      $$ b_n = \dfrac{2}{\pi} \int_{0}^{\pi} x \sin nx \, \mathrm{d}x. $$
+    </div>
+    <p>分部积分:</p>
+    <div class="box-formula">
+      $$ b_n = \dfrac{2}{\pi} \left[ -\dfrac{x \cos nx}{n} \Big|_{0}^{\pi} + \dfrac{1}{n} \int_{0}^{\pi} \cos nx \, \mathrm{d}x \right] = \dfrac{2(-1)^{n+1}}{n}. $$
+    </div>
+    <div class="result-box">
+      $$ x = 2 \sum_{n=1}^{\infty} \dfrac{(-1)^{n+1}}{n} \sin nx, \quad x \in (-\pi, \pi). $$
+    </div>
+  </div>
+
+  <div class="def-box">
+    <div class="title">例 2: 方波的傅里叶展开</div>
+    <p>设 $$ f(x) = \begin{cases} -1, & -\pi < x < 0, \\ 1, & 0 < x < \pi, \end{cases} $$ 并周期延拓. 这是奇函数, 故 $a_n = 0$.</p>
+    <div class="box-formula">
+      $$ b_n = \dfrac{2}{\pi} \int_{0}^{\pi} 1 \cdot \sin nx \, \mathrm{d}x = \dfrac{2}{n\pi} \bigl[ 1 - (-1)^n \bigr]. $$
+    </div>
+    <p>即 $$ b_n = \begin{cases} \dfrac{4}{n\pi}, & n \text{ 为奇数}, \\ 0, & n \text{ 为偶数}. \end{cases} $$</p>
+    <div class="result-box">
+      $$ f(x) = \dfrac{4}{\pi} \sum_{k=0}^{\infty} \dfrac{\sin(2k+1)x}{2k+1}, \quad x \neq 0, \pm\pi. $$
+    </div>
+    <p style="margin-top:6px">令 $x = \pi/2$ 可导出莱布尼茨级数: $\displaystyle \sum_{k=0}^{\infty} \dfrac{(-1)^k}{2k+1} = \dfrac{\pi}{4}$.</p>
+  </div>
+
+  <div class="warn-box">
+    <strong>吉布斯现象 (Gibbs Phenomenon):</strong> 在间断点处 (如方波的 $x=0, \pm\pi$), 傅里叶级数的部分和在间断点附近出现过冲 (overshoot), 其幅度约为间断跳跃值的 $9\%$, 且不随 $N$ 增大而消失. 这在信号处理中非常重要!
+  </div>
+
+  <div class="remark-box">
+    <div class="title">注记: 狄利克雷收敛定理</div>
+    <p>若 $f(x)$ 在 $[-\pi, \pi]$ 上分段光滑, 则其傅里叶级数收敛于 $\displaystyle \dfrac{f(x^+) + f(x^-)}{2}$. 在连续点处收敛于 $f(x)$, 在跳跃间断点处收敛于左右极限的平均值.</p>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     Tab 3: 半幅展开与应用
+     ============================================================ -->
+<div id="tab-halfrange" class="tab-content">
+
+  <div class="sec-title">一、半幅展开 (Half-Range Expansion)</div>
+
+  <p>许多实际问题中, 函数只定义在 $[0, \pi]$ (或 $[0, L]$) 上. 我们可以将其<strong>奇延拓</strong>或<strong>偶延拓</strong>到 $[-\pi, \pi]$, 从而得到正弦级数或余弦级数.</p>
+
+  <div class="def-box">
+    <div class="title">定义 2 (半幅正弦展开 / 半幅余弦展开)</div>
+    <p>设 $f(x)$ 定义在 $[0, \pi]$ 上.</p>
+    <p><strong>偶延拓 (余弦展开):</strong> 令 $F_{\mathrm{e}}(x) = f(|x|)$, 将 $f$ 延拓为 $[-\pi, \pi]$ 上的偶函数, 得余弦级数.</p>
+    <p><strong>奇延拓 (正弦展开):</strong> 令 $$ F_{\mathrm{o}}(x) = \begin{cases} f(x), & 0 < x < \pi, \\ -f(-x), & -\pi < x < 0, \end{cases} $$ 得正弦级数.</p>
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-card even">
+      <div class="card-title">偶延拓 (余弦展开)</div>
+      <div class="box-formula" style="font-size:.9em">
+        $$ a_n = \dfrac{2}{\pi} \int_{0}^{\pi} f(x) \cos nx \, \mathrm{d}x $$
+      </div>
+      <p style="font-size:.85em;color:#555">$b_n \equiv 0$, 延拓后在 $x=0$ 处连续.</p>
+    </div>
+    <div class="compare-card odd">
+      <div class="card-title">奇延拓 (正弦展开)</div>
+      <div class="box-formula" style="font-size:.9em">
+        $$ b_n = \dfrac{2}{\pi} \int_{0}^{\pi} f(x) \sin nx \, \mathrm{d}x $$
+      </div>
+      <p style="font-size:.85em;color:#555">$a_n \equiv 0$, 延拓后在 $x=0$ 处为零.</p>
+    </div>
+  </div>
+
+  <div class="sec-title">二、选取延拓方式的依据</div>
+
+  <table class="formula-table">
+    <tr><th>条件</th><th>推荐延拓</th><th>原因</th></tr>
+    <tr>
+      <td>$f(0) = 0$</td>
+      <td>奇延拓 (正弦级数)</td>
+      <td>延拓后 $x = 0$ 处连续, 收敛更快</td>
+    </tr>
+    <tr>
+      <td>$f(0) \neq 0$</td>
+      <td>偶延拓 (余弦级数)</td>
+      <td>避免引入人为间断点</td>
+    </tr>
+    <tr>
+      <td>边界条件要求 $f(0)=0$</td>
+      <td>奇延拓 (正弦级数)</td>
+      <td>满足 Dirichlet 边值条件</td>
+    </tr>
+    <tr>
+      <td>边界条件要求 $f'(0)=0$</td>
+      <td>偶延拓 (余弦级数)</td>
+      <td>满足 Neumann 边值条件</td>
+    </tr>
+  </table>
+
+  <div class="sec-title">三、应用场景</div>
+
+  <div class="summ-box">
+    <div class="title">1. 热传导方程 (Heat Equation)</div>
+    <p>一维热传导方程 $\displaystyle \dfrac{\partial u}{\partial t} = \alpha^2 \dfrac{\partial^2 u}{\partial x^2}$ 在有限杆上的求解:</p>
+    <p>两端温度固定为零 (Dirichlet 条件) $\rightarrow$ <strong>正弦级数展开</strong>.</p>
+    <p>两端绝热 (Neumann 条件, $\partial u/\partial x = 0$) $\rightarrow$ <strong>余弦级数展开</strong>.</p>
+    <div class="box-formula">
+      $$ u(x, t) = \sum_{n=1}^{\infty} b_n \mathrm{e}^{-\alpha^2 n^2 \pi^2 t / L^2} \sin \dfrac{n\pi x}{L}. $$
+    </div>
+  </div>
+
+  <div class="summ-box">
+    <div class="title">2. 波动方程 (Wave Equation)</div>
+    <p>弦振动方程 $\displaystyle \dfrac{\partial^2 u}{\partial t^2} = c^2 \dfrac{\partial^2 u}{\partial x^2}$:</p>
+    <p>两端固定的弦 $\rightarrow$ 正弦级数, 得到驻波解 (简正模式).</p>
+    <div class="box-formula">
+      $$ u(x, t) = \sum_{n=1}^{\infty} \sin \dfrac{n\pi x}{L} \bigl( A_n \cos \dfrac{n\pi c t}{L} + B_n \sin \dfrac{n\pi c t}{L} \bigr). $$
+    </div>
+  </div>
+
+  <div class="summ-box">
+    <div class="title">3. 信号处理与数据压缩</div>
+    <p>离散余弦变换 (DCT) 是 JPEG 图像压缩的核心算法, 其数学基础正是偶延拓的余弦展开.</p>
+    <p>离散正弦变换 (DST) 用于音频编码和某些 PDE 数值求解.</p>
+    <p>傅里叶级数的奇偶性简化使得频谱分析中只需计算一半系数, 大幅降低计算量.</p>
+  </div>
+
+  <div class="summ-box">
+    <div class="title">4. 电路分析与滤波器设计</div>
+    <p>周期信号的奇偶性决定了其频谱中只含奇次谐波还是偶次谐波. 例如:</p>
+    <p>奇谐函数 (半波对称) $\rightarrow$ 只有奇次谐波.</p>
+    <p>偶谐函数 $\rightarrow$ 只有偶次谐波 (含直流分量).</p>
+  </div>
+
+  <div class="remark-box">
+    <div class="title">延拓到一般区间 $[0, L]$</div>
+    <p>若函数定义在 $[0, L]$ 上, 周期 $T = 2L$, 则相应的正弦/余弦展开为:</p>
+    <div class="box-formula">
+      $$ f(x) \sim \sum_{n=1}^{\infty} b_n \sin \dfrac{n\pi x}{L}, \quad b_n = \dfrac{2}{L} \int_{0}^{L} f(x) \sin \dfrac{n\pi x}{L} \, \mathrm{d}x, $$
+      $$ f(x) \sim \dfrac{a_0}{2} + \sum_{n=1}^{\infty} a_n \cos \dfrac{n\pi x}{L}, \quad a_n = \dfrac{2}{L} \int_{0}^{L} f(x) \cos \dfrac{n\pi x}{L} \, \mathrm{d}x. $$
+    </div>
+  </div>
+
+</div>
+
+<!-- ============================================================
+     Tab 4: 交互演示
+     ============================================================ -->
+<div id="tab-interactive" class="tab-content">
+
+  <div class="sec-title">交互演示 1: 傅里叶级数逼近可视化</div>
+  <p>选择函数并调节项数 $N$, 观察傅里叶级数如何逐步逼近原函数. 蓝色曲线为原函数, 橙色曲线为 $N$ 项傅里叶部分和.</p>
+
+  <div class="interactive-panel">
+    <div class="panel-title">函数与参数选择</div>
+    <div class="func-select">
+      <label>选择函数:</label>
+      <select id="funcSelect" onchange="updateFourierPlot()">
+        <option value="square">方波 (奇函数 - 正弦级数)</option>
+        <option value="sawtooth">锯齿波 (奇函数 - 正弦级数)</option>
+        <option value="triangle">三角波 (偶函数 - 余弦级数)</option>
+        <option value="parabola">f(x)=x² (偶函数 - 余弦级数)</option>
+      </select>
+    </div>
+    <div class="slider-row">
+      <label>项数 $N$:</label>
+      <input type="range" id="fourierNSlider" min="1" max="50" value="3" step="1" oninput="updateFourierPlot()">
+      <span id="fourierNValue">3</span>
+    </div>
+    <button class="btn-primary" onclick="animateFourier()">播放动画</button>
+  </div>
+  <div class="plot-container"><div id="fourierPlot"></div></div>
+
+  <div class="sec-title">交互演示 2: 偶延拓 vs 奇延拓</div>
+  <p>下方展示定义在 $[0, \pi]$ 上的函数 $f(x) = \sin x\;(0 \leqslant x \leqslant \pi)$ 分别进行偶延拓和奇延拓的结果. 拖动滑块调整傅里叶项数 $N$, 观察两种延拓下傅里叶级数的逼近效果.</p>
+
+  <div class="compare-grid" style="margin-bottom:12px">
+    <div class="compare-card even">
+      <div class="card-title">偶延拓 ($f(|x|) = |\sin x|$)</div>
+      <p style="font-size:.85em;color:#555">余弦级数, 延拓后在 $x=0$ 处连续.</p>
+    </div>
+    <div class="compare-card odd">
+      <div class="card-title">奇延拓 ($\sin x$ 的自然延拓)</div>
+      <p style="font-size:.85em;color:#555">正弦级数, 延拓后在 $x=0$ 处 $f(0)=0$.</p>
+    </div>
+  </div>
+
+  <div class="interactive-panel">
+    <div class="panel-title">延拓对比参数</div>
+    <div class="slider-row">
+      <label>项数 $N$:</label>
+      <input type="range" id="extNSlider" min="1" max="20" value="3" step="1" oninput="updateExtensionPlot()">
+      <span id="extNValue">3</span>
+    </div>
+    <button class="btn-primary" onclick="animateExtension()">播放动画</button>
+  </div>
+
+  <div class="compare-grid">
+    <div class="plot-container"><div id="evenExtPlot"></div></div>
+    <div class="plot-container"><div id="oddExtPlot"></div></div>
+  </div>
+
+  <div class="sec-title">交互演示 3: 吉布斯现象观察</div>
+  <p>聚焦方波的间断点 $x = 0$ 附近, 增大项数观察过冲现象. 无论 $N$ 多大, 过冲幅度始终约为跳跃值的 $9\%$.</p>
+
+  <div class="interactive-panel">
+    <div class="panel-title">吉布斯现象参数</div>
+    <div class="slider-row">
+      <label>项数 $N$:</label>
+      <input type="range" id="gibbsNSlider" min="5" max="200" value="20" step="1" oninput="updateGibbsPlot()">
+      <span id="gibbsNValue">20</span>
+    </div>
+    <button class="btn-primary" onclick="animateGibbs()">观察过冲变化</button>
+  </div>
+  <div class="plot-container"><div id="gibbsPlot"></div></div>
+
+  <div class="warn-box">
+    <strong>吉布斯现象总结:</strong> 在跳跃间断点 $x_0$ 处, 傅里叶部分和的最大过冲值为 $\displaystyle f(x_0^+) + \Delta \cdot \dfrac{1}{\pi} \int_{\pi}^{\infty} \dfrac{\sin t}{t} \, \mathrm{d}t \approx f(x_0^+) + 0.0895 \Delta$, 其中 $\Delta = |f(x_0^+) - f(x_0^-)|$ 为跳跃幅度. 这是级数逐点收敛而非一致收敛的典型表现.
+  </div>
+
+</div>
+
+</div><!-- end .content -->
+
+</div><!-- end .container-wrap -->
+
+<script>
+// === Tab Switching ===
+function showTab(tabId, btn) {
+  document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (tabId === 'interactive') {
+    setTimeout(function() {
+      updateFourierPlot();
+      updateExtensionPlot();
+      updateGibbsPlot();
+    }, 300);
+  }
+  setTimeout(function() {
+    if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+      MathJax.typesetPromise().catch(function(err) { console.warn('MathJax render failed:', err); });
+    }
+  }, 100);
+}
+
+// === Interactive 1: Fourier Series Approximation ===
+function squareWaveFourier(x, N) {
+  var s = 0;
+  for (var k = 0; k < N; k++) {
+    s += Math.sin((2*k + 1) * x) / (2*k + 1);
+  }
+  return 4 / Math.PI * s;
+}
+function sawtoothFourier(x, N) {
+  var s = 0;
+  for (var n = 1; n <= N; n++) {
+    s += Math.pow(-1, n+1) * Math.sin(n * x) / n;
+  }
+  return 2 * s;
+}
+function triangleFourier(x, N) {
+  var s = 0;
+  for (var k = 0; k < N; k++) {
+    s += Math.cos((2*k + 1) * x) / ((2*k + 1) * (2*k + 1));
+  }
+  return Math.PI / 2 - 4 / Math.PI * s;
+}
+function parabolaFourier(x, N) {
+  var s = 0;
+  for (var n = 1; n <= N; n++) {
+    s += Math.pow(-1, n) * Math.cos(n * x) / (n * n);
+  }
+  return Math.PI * Math.PI / 3 + 4 * s;
+}
+
+function getOriginalFunction(type) {
+  var pts = 600;
+  var xs = [], ys = [];
+  for (var i = 0; i <= pts; i++) {
+    var x = -Math.PI + 2 * Math.PI * i / pts;
+    xs.push(x);
+    if (type === 'square') {
+      ys.push(x > -Math.PI && x < 0 ? -1 : (x > 0 && x < Math.PI ? 1 : 0));
+    } else if (type === 'sawtooth') {
+      ys.push(x > -Math.PI && x < Math.PI ? x : 0);
+    } else if (type === 'triangle') {
+      ys.push(Math.abs(x));
+    } else if (type === 'parabola') {
+      ys.push(x * x);
+    }
+  }
+  return { x: xs, y: ys };
+}
+
+var fourierAnimTimer = null;
+function updateFourierPlot() {
+  var N = parseInt(document.getElementById('fourierNSlider').value);
+  document.getElementById('fourierNValue').textContent = N;
+  var funcType = document.getElementById('funcSelect').value;
+  var orig = getOriginalFunction(funcType);
+
+  var pts = 600;
+  var xs = [], ys = [];
+  for (var i = 0; i <= pts; i++) {
+    var x = -Math.PI + 2 * Math.PI * i / pts;
+    xs.push(x);
+    var val;
+    if (funcType === 'square') val = squareWaveFourier(x, N);
+    else if (funcType === 'sawtooth') val = sawtoothFourier(x, N);
+    else if (funcType === 'triangle') val = triangleFourier(x, N);
+    else val = parabolaFourier(x, N);
+    ys.push(val);
+  }
+
+  var origTrace = { x: orig.x, y: orig.y, type: 'scatter', mode: 'lines', name: '原函数',
+    line: { color: '#1976d2', width: 2.5 } };
+  var approxTrace = { x: xs, y: ys, type: 'scatter', mode: 'lines',
+    name: 'N=' + N + ' 傅里叶逼近', line: { color: '#ff9800', width: 2 } };
+
+  var layout = {
+    title: { text: '傅里叶级数逼近 — N = ' + N, font: { size: 16, color: '#1a237e' } },
+    xaxis: { title: 'x', gridcolor: '#e0e0e0', range: [-Math.PI - 0.2, Math.PI + 0.2] },
+    yaxis: { gridcolor: '#e0e0e0' },
+    legend: { x: 0.01, y: 0.99, bgcolor: 'rgba(255,255,255,0.8)' },
+    margin: { l: 50, r: 20, t: 50, b: 40 },
+    plot_bgcolor: '#fafafa', paper_bgcolor: '#fafafa',
+    height: 420
+  };
+  Plotly.newPlot('fourierPlot', [origTrace, approxTrace], layout, { responsive: true });
+}
+
+function animateFourier() {
+  if (fourierAnimTimer) { clearInterval(fourierAnimTimer); fourierAnimTimer = null; }
+  var slider = document.getElementById('fourierNSlider');
+  slider.value = 1; updateFourierPlot();
+  fourierAnimTimer = setInterval(function() {
+    var v = parseInt(slider.value) + 1;
+    if (v > 50) { clearInterval(fourierAnimTimer); fourierAnimTimer = null; v = 50; }
+    slider.value = v; updateFourierPlot();
+    if (v >= 50) { clearInterval(fourierAnimTimer); fourierAnimTimer = null; }
+  }, 200);
+}
+
+// === Interactive 2: Even/Odd Extension Comparison ===
+function computeEvenExtFourier(N) {
+  var a0 = 4 / Math.PI;
+  var pts = 500;
+  var xs = [], ys = [];
+  for (var i = 0; i <= pts; i++) {
+    var x = -Math.PI + 2 * Math.PI * i / pts;
+    xs.push(x);
+    var s = a0 / 2;
+    for (var n = 1; n <= N; n++) {
+      if (n % 2 === 0) {
+        var an = -4 / (Math.PI * (n*n - 1));
+        s += an * Math.cos(n * x);
+      }
+    }
+    ys.push(s);
+  }
+  return { x: xs, y: ys };
+}
+
+function computeOddExtFourier(N) {
+  var pts = 500;
+  var xs = [], ys = [];
+  for (var i = 0; i <= pts; i++) {
+    var x = -Math.PI + 2 * Math.PI * i / pts;
+    xs.push(x);
+    ys.push(Math.sin(x));
+  }
+  return { x: xs, y: ys };
+}
+
+var extAnimTimer = null;
+function updateExtensionPlot() {
+  var N = parseInt(document.getElementById('extNSlider').value);
+  document.getElementById('extNValue').textContent = N;
+  var evenData = computeEvenExtFourier(N);
+  var oddData = computeOddExtFourier(N);
+
+  var pts = 300;
+  var origX = [], origYEven = [], origYOdd = [];
+  for (var i = 0; i <= pts; i++) {
+    var x = -Math.PI + 2 * Math.PI * i / pts;
+    origX.push(x);
+    origYEven.push(Math.abs(Math.sin(x)));
+    origYOdd.push(x >= -Math.PI && x <= Math.PI ? Math.sin(x) : 0);
+  }
+
+  var evenLayout = {
+    title: { text: '偶延拓: f(x)=|sin x| (N=' + N + ')', font: { size: 14, color: '#0d47a1' } },
+    xaxis: { title: 'x', gridcolor: '#e0e0e0', range: [-Math.PI - 0.2, Math.PI + 0.2] },
+    yaxis: { gridcolor: '#e0e0e0', range: [-0.2, 1.4] },
+    legend: { x: 0.01, y: 0.99, bgcolor: 'rgba(255,255,255,0.8)' },
+    margin: { l: 40, r: 10, t: 40, b: 35 },
+    plot_bgcolor: '#fafafa', paper_bgcolor: '#fafafa', height: 320
+  };
+  var oddLayout = {
+    title: { text: '奇延拓: f(x)=sin x (N=' + N + ')', font: { size: 14, color: '#e65100' } },
+    xaxis: { title: 'x', gridcolor: '#e0e0e0', range: [-Math.PI - 0.2, Math.PI + 0.2] },
+    yaxis: { gridcolor: '#e0e0e0', range: [-1.4, 1.4] },
+    legend: { x: 0.01, y: 0.99, bgcolor: 'rgba(255,255,255,0.8)' },
+    margin: { l: 40, r: 10, t: 40, b: 35 },
+    plot_bgcolor: '#fafafa', paper_bgcolor: '#fafafa', height: 320
+  };
+
+  var evenOrigTrace = { x: origX, y: origYEven, type: 'scatter', mode: 'lines', name: '原函数',
+    line: { color: '#1976d2', width: 2 } };
+  var evenApproxTrace = { x: evenData.x, y: evenData.y, type: 'scatter', mode: 'lines', name: 'N=' + N + ' 余弦逼近',
+    line: { color: '#ff9800', width: 2 } };
+
+  var oddOrigTrace = { x: origX, y: origYOdd, type: 'scatter', mode: 'lines', name: '原函数',
+    line: { color: '#1976d2', width: 2 } };
+  var oddApproxTrace = { x: oddData.x, y: oddData.y, type: 'scatter', mode: 'lines', name: 'N=' + N + ' 正弦逼近',
+    line: { color: '#ff9800', width: 2 } };
+
+  Plotly.newPlot('evenExtPlot', [evenOrigTrace, evenApproxTrace], evenLayout, { responsive: true });
+  Plotly.newPlot('oddExtPlot', [oddOrigTrace, oddApproxTrace], oddLayout, { responsive: true });
+}
+
+function animateExtension() {
+  if (extAnimTimer) { clearInterval(extAnimTimer); extAnimTimer = null; }
+  var slider = document.getElementById('extNSlider');
+  slider.value = 1; updateExtensionPlot();
+  extAnimTimer = setInterval(function() {
+    var v = parseInt(slider.value) + 1;
+    if (v > 20) { clearInterval(extAnimTimer); extAnimTimer = null; v = 20; }
+    slider.value = v; updateExtensionPlot();
+    if (v >= 20) { clearInterval(extAnimTimer); extAnimTimer = null; }
+  }, 300);
+}
+
+// === Interactive 3: Gibbs Phenomenon ===
+var gibbsAnimTimer = null;
+function updateGibbsPlot() {
+  var N = parseInt(document.getElementById('gibbsNSlider').value);
+  document.getElementById('gibbsNValue').textContent = N;
+
+  var pts = 800;
+  var xsFourier = [], ysFourier = [];
+  var xsOrig = [], ysOrig = [];
+  var zoomHalf = 0.5;
+
+  for (var i = 0; i <= pts; i++) {
+    var x = -zoomHalf + 2 * zoomHalf * i / pts;
+    var s = 0;
+    for (var k = 0; k < N; k++) {
+      s += Math.sin((2*k + 1) * x) / (2*k + 1);
+    }
+    s = 4 / Math.PI * s;
+    xsFourier.push(x);
+    ysFourier.push(s);
+  }
+
+  // Original square wave in zoom region
+  for (var i = 0; i <= pts; i++) {
+    var x = -zoomHalf + 2 * zoomHalf * i / pts;
+    xsOrig.push(x);
+    ysOrig.push(x > 0 ? 1 : (x < 0 ? -1 : 0));
+  }
+
+  // Overshoot markers
+  var peakLine = { x: [-zoomHalf, zoomHalf], y: [1.17898, 1.17898], type: 'scatter', mode: 'lines',
+    name: '极限过冲 ≈ 1.179', line: { color: '#ef5350', width: 1.5, dash: 'dash' } };
+  var lowLine = { x: [-zoomHalf, zoomHalf], y: [-1.17898, -1.17898], type: 'scatter', mode: 'lines',
+    name: '极限下冲 ≈ -1.179', line: { color: '#ef5350', width: 1.5, dash: 'dash' }, showlegend: false };
+
+  var fourierTrace = { x: xsFourier, y: ysFourier, type: 'scatter', mode: 'lines',
+    name: 'N=' + N + ' 傅里叶逼近', line: { color: '#ff9800', width: 2 } };
+  var origTrace = { x: xsOrig, y: ysOrig, type: 'scatter', mode: 'lines',
+    name: '原方波', line: { color: '#1976d2', width: 2.5 } };
+
+  var layout = {
+    title: { text: '吉布斯现象 — x=0 附近放大 (N=' + N + ')', font: { size: 16, color: '#1a237e' } },
+    xaxis: { title: 'x', gridcolor: '#e0e0e0' },
+    yaxis: { gridcolor: '#e0e0e0', range: [-1.6, 1.6] },
+    legend: { x: 0.01, y: 0.99, bgcolor: 'rgba(255,255,255,0.8)' },
+    margin: { l: 50, r: 20, t: 50, b: 40 },
+    plot_bgcolor: '#fafafa', paper_bgcolor: '#fafafa',
+    height: 420
+  };
+  Plotly.newPlot('gibbsPlot', [origTrace, fourierTrace, peakLine, lowLine], layout, { responsive: true });
+}
+
+function animateGibbs() {
+  if (gibbsAnimTimer) { clearInterval(gibbsAnimTimer); gibbsAnimTimer = null; }
+  var slider = document.getElementById('gibbsNSlider');
+  slider.value = 5; updateGibbsPlot();
+  gibbsAnimTimer = setInterval(function() {
+    var v = parseInt(slider.value) + 3;
+    if (v > 200) { clearInterval(gibbsAnimTimer); gibbsAnimTimer = null; v = 200; }
+    slider.value = v; updateGibbsPlot();
+    if (v >= 200) { clearInterval(gibbsAnimTimer); gibbsAnimTimer = null; }
+  }, 80);
+}
+
+// === Init ===
+window.addEventListener('load', function() {
+  updateFourierPlot();
+  updateExtensionPlot();
+  updateGibbsPlot();
+  setTimeout(function() {
+    if (typeof MathJax !== 'undefined' && MathJax.typesetPromise) {
+      MathJax.typesetPromise().catch(function(err) { console.warn('MathJax render failed:', err); });
+    }
+  }, 200);
+});
+</script>
+
+</body>
+</html>
