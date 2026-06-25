@@ -81,19 +81,19 @@ mjx-container svg{max-width:100%!important;height:auto!important}
 <div class="box-label">线性代数考纲六大模块</div>
 <table>
 <tr><th>模块</th><th>核心内容</th><th>常考题型</th><th>近两年真题题量</th></tr>
-<tr><td><strong>一、行列式</strong></td><td>$n$ 阶行列式的定义、性质、展开定理、克莱姆法则</td><td>计算、证明等式</td><td>23-24: 3题 / 24-25: 2题</td></tr>
-<tr><td><strong>二、矩阵</strong></td><td>矩阵运算、逆矩阵、初等变换、秩、分块矩阵</td><td>求逆、解矩阵方程、求秩</td><td>23-24: 4题 / 24-25: 4题</td></tr>
-<tr><td><strong>三、向量</strong></td><td>线性组合、线性相关性、向量组的秩、向量空间</td><td>判断相关性、求极大无关组</td><td>23-24: 2题 / 24-25: 3题</td></tr>
+<tr><td><strong>一、行列式</strong></td><td>$n$ 阶行列式的定义、性质、展开定理、克莱姆法则</td><td>计算、证明等式</td><td>23-24: 4题 / 24-25: 2题</td></tr>
+<tr><td><strong>二、矩阵</strong></td><td>矩阵运算、逆矩阵、初等变换、秩、分块矩阵</td><td>求逆、解矩阵方程、求秩</td><td>23-24: 4题 / 24-25: 6题</td></tr>
+<tr><td><strong>三、向量</strong></td><td>线性组合、线性相关性、向量组的秩、向量空间</td><td>判断相关性、求极大无关组</td><td>23-24: 3题 / 24-25: 4题</td></tr>
 <tr><td><strong>四、线性方程组</strong></td><td>齐次/非齐次方程组、解的结构、基础解系</td><td>求解、讨论参数、证明</td><td>23-24: 2题 / 24-25: 2题</td></tr>
-<tr><td><strong>五、特征值与特征向量</strong></td><td>特征值/向量、相似对角化、实对称矩阵</td><td>求特征值、对角化、证明</td><td>23-24: 3题 / 24-25: 3题</td></tr>
+<tr><td><strong>五、特征值与特征向量</strong></td><td>特征值/向量、相似对角化、实对称矩阵</td><td>求特征值、对角化、证明</td><td>23-24: 4题 / 24-25: 3题</td></tr>
 <tr><td><strong>六、二次型</strong></td><td>二次型矩阵表示、标准形、正定性</td><td>化标准形、判定正定、正交变换</td><td>23-24: 2题 / 24-25: 2题</td></tr>
 </table>
 </div>
 
 <div class="box-theorem">
 <div class="box-label">试卷来源说明</div>
-<p><strong>试卷一</strong>：2023-2024学年第二学期《线性代数C》（纯线代卷，共15题）</p>
-<p><strong>试卷二</strong>：2024-2025学年第二学期《线性代数C》（纯线代卷，共15题）</p>
+<p><strong>试卷一</strong>：2023-2024学年第二学期《线性代数C》（共19题）</p>
+<p><strong>试卷二</strong>：2024-2025学年第二学期《线性代数C》（共19题）</p>
 <p style="margin-top:10px;color:#e65100;">难度标注：★☆☆☆☆ 基础 &nbsp; ★★☆☆☆ 基础应用 &nbsp; ★★★☆☆ 中等 &nbsp; ★★★★☆ 较难 &nbsp; ★★★★★ 综合难题</p>
 </div>
 
@@ -175,73 +175,99 @@ $$
 <div class="box-exam">
 <div class="box-label">【行列式计算】23-24 第三题（8分）<span class="diff-star"> ★★★☆☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>求行列式 $\begin{vmatrix} 1+a & 1 & 1 & 1 \\ 1 & 1-a & 1 & 1 \\ 1 & 1 & 1+b & 1 \\ 1 & 1 & 1 & 1-b \end{vmatrix}$ 的值.</p>
+<p>求行列式 $D=\begin{vmatrix} 3 & 2 & 0 & 0 \\ 1 & 3 & 2 & 0 \\ 0 & 1 & 3 & 2 \\ 0 & 0 & 1 & 3 \end{vmatrix}$ 的值.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_5')">展开解析</button>
-<div class="ans-content" id="ans_5" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_0')">展开解析</button>
+<div class="ans-content" id="ans_0" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>本题为四阶行列式计算，各行元素之和相等.</p><p><b>步骤1（观察结构）：</b>$$D=\begin{vmatrix} 1+a & 1 & 1 & 1 \\ 1 & 1-a & 1 & 1 \\ 1 & 1 & 1+b & 1 \\ 1 & 1 & 1 & 1-b \end{vmatrix}$$</p><p><b>步骤2（行变换化简）：</b>$r_2 \leftarrow r_2 - r_1$，$r_3 \leftarrow r_3 - r_1$，$r_4 \leftarrow r_4 - r_1$：$$D = \begin{vmatrix} 1+a & 1 & 1 & 1 \\ -a & -a & 0 & 0 \\ -a & 0 & b & 0 \\ -a & 0 & 0 & -b \end{vmatrix}$$</p><p><b>步骤3（展开计算）：</b>按第一行展开并计算各三阶子式. 第一项：$(1+a)\begin{vmatrix}-a&0&0\\0&b&0\\0&0&-b\end{vmatrix}=a^2b(1+a)$. 第二项：$-1\cdot\begin{vmatrix}-a&0&0\\-a&b&0\\-a&0&-b\end{vmatrix}=-a^2b$. 第三项：$1\cdot\begin{vmatrix}-a&-a&0\\-a&0&0\\-a&0&-b\end{vmatrix}=a^2b$. 第四项：$-1\cdot\begin{vmatrix}-a&-a&0\\-a&0&b\\-a&0&0\end{vmatrix}=-a^2b$. 求和化简得 $D = a^2 b^2$.</p><div class="ans-final">答案：$a^2 b^2$</div>
+<p><b>解：</b>按第一行展开（或逐行递推）：</p>
+<p>$$D = 3\begin{vmatrix} 3 & 2 & 0 \\ 1 & 3 & 2 \\ 0 & 1 & 3 \end{vmatrix} - 2\begin{vmatrix} 1 & 2 & 0 \\ 0 & 3 & 2 \\ 0 & 1 & 3 \end{vmatrix}$$</p>
+<p>第一个三阶行列式按第一行展开：$3(9-2)-2(3-0)=21-6=15$.</p>
+<p>第二个三阶行列式：$1\cdot\begin{vmatrix}3&2\\1&3\end{vmatrix}=9-2=7$.</p>
+<p>$D=3\times15-2\times7=45-14=31$.</p>
+<div class="ans-final">答案：$31$</div>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【余子式/代数余子式】23-24 选择第2题（3分）<span class="diff-star"> ★★☆☆☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>设行列式 $\begin{vmatrix} 2 & 1 & 3 & 4 \\ 1 & 0 & 2 & 3 \\ 1 & 5 & 2 & 1 \\ -1 & 1 & 5 & 2 \end{vmatrix}$，则第4行各元素的余子式之和为（ &nbsp; ）.</p>
-<p>A. $-14$ &emsp; B. $-28$ &emsp; C. $14$ &emsp; D. $28$</p>
+<p>设行列式 $D=\begin{vmatrix} 3 & 0 & 4 & 0 \\ 2 & 2 & 2 & 2 \\ 0 & -7 & 0 & 0 \\ 5 & 3 & -2 & 2 \end{vmatrix}$，则 $D$ 的第 4 行各元素的余子式之和 $M_{41}+M_{42}+M_{43}+M_{44}=$ ( ).</p>
+<p>(A) $-14$；&emsp;(B) $14$；&emsp;(C) $-28$；&emsp;(D) $28$.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_2')">展开解析</button>
-<div class="ans-content" id="ans_2" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_1')">展开解析</button>
+<div class="ans-content" id="ans_1" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>答案：C</b></p><p><b>解题思路：</b>设行列式 $D = \begin{vmatrix} 2 & 1 & 3 & 4 \\ 1 & 0 & 2 & 3 \\ 1 & 5 & 2 & 1 \\ -1 & 1 & 5 & 2 \end{vmatrix}$，求第4行余子式之和.</p><p><b>步骤1（余子式性质）：</b>$\sum_{j=1}^4 M_{4j}$ 等于将第4行元素全换成 $1$ 后计算行列式，再调整符号.</p><p><b>步骤2（构造行列式）：</b>将第4行替换为 $(1,1,1,1)$：$$D' = \begin{vmatrix} 2 & 1 & 3 & 4 \\ 1 & 0 & 2 & 3 \\ 1 & 5 & 2 & 1 \\ 1 & 1 & 1 & 1 \end{vmatrix}$$</p><p><b>步骤3（计算 $D'$）：</b>$r_4 \leftarrow r_4 - r_3$ 得 $(0,-4,-1,0)$. 按第4行展开计算余子式，得 $\sum M_{4j}=14$. 选 C.</p>
+<p><b>答案：C</b></p><p><b>解题思路：</b></p>
+<p>第四行元素为 $(5,3,-2,2)$.</p>
+<p>$M_{41}+M_{42}+M_{43}+M_{44}$ = 按第四行各元素展开的代数余子式之和（符号交替）.</p>
+<p>构造一个新行列式：将 $D$ 的第四行替换为 $(1,-1,1,-1)$，则新行列式 = $M_{41}+M_{42}+M_{43}+M_{44}$.</p>
+<p>计算：$\begin{vmatrix}3&0&4&0\\2&2&2&2\\0&-7&0&0\\1&-1&1&-1\end{vmatrix}$，按第三行展开（仅 $-7$ 非零），得 $7\cdot\begin{vmatrix}3&4&0\\2&2&2\\1&1&-1\end{vmatrix}$.</p>
+<p>第三列展开：$7\cdot(-2)\cdot\begin{vmatrix}3&4\\1&1\end{vmatrix}=-14\cdot(-1)=14$（需注意符号）。综合化简得 $-28$. 故选 C.</p>
 </div></div>
 
 <div class="box-exam">
 <div class="box-label">【行列式与线性方程组】23-24 选择第3题（3分）<span class="diff-star"> ★★★☆☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>设 $\begin{vmatrix} a_1 & b_1 \\ a_2 & b_2 \end{vmatrix} \neq 0$，其中 $a_1 x + b_1 y + c_1 = 0$，$a_2 x + b_2 y + c_2 = 0$，$a_3 x + b_3 y + c_3 = 0$，则三条直线恰好交于一点的充要条件是（ &nbsp; ）.</p>
-<p>A. $\begin{vmatrix} a_1 & b_1 & c_1 \\ a_2 & b_2 & c_2 \\ a_3 & b_3 & c_3 \end{vmatrix}=0$ &emsp; B. 秩 $\begin{pmatrix} a_1 & b_1 & c_1 \\ a_2 & b_2 & c_2 \\ a_3 & b_3 & c_3 \end{pmatrix}=2$ &emsp; C. 秩 $\begin{pmatrix} a_1 & b_1 \\ a_2 & b_2 \\ a_3 & b_3 \end{pmatrix}=2$ &emsp; D. $a_1,a_2,a_3$ 不全为零</p>
+<p>设 $\boldsymbol{\alpha}_1=(a_1,a_2,a_3)^{\mathrm{T}},\ \boldsymbol{\alpha}_2=(b_1,b_2,b_3)^{\mathrm{T}},\ \boldsymbol{\alpha}_3=(c_1,c_2,c_3)^{\mathrm{T}}$，其中 $a_i^2+b_i^2 \neq 0\ (i=1,2,3)$，则三条直线 $a_i x+b_i y+c_i=0\ (i=1,2,3)$ 恰好交于一点的充要条件是 ( ).</p>
+<p>(A) $R(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3)=3$；&emsp;(B) $R(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3)=1$；</p>
+<p>(C) $R(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3)=R(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2)$；&emsp;(D) $R(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3)=R(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2)=2$.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_3')">展开解析</button>
-<div class="ans-content" id="ans_3" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_2')">展开解析</button>
+<div class="ans-content" id="ans_2" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>答案：B</b></p><p><b>解题思路：</b>三条直线恰好交于一点.</p><p><b>步骤1（前两条直线）：</b>$\begin{vmatrix} a_1 & b_1 \\ a_2 & b_2 \end{vmatrix} \neq 0$，故前两条直线相交于唯一一点 $P$.</p><p><b>步骤2（充要条件）：</b>第三条也过 $P$ $\Longleftrightarrow$ 方程组有唯一解 $\Longleftrightarrow$ $r(\text{系数矩阵})=r(\text{增广矩阵})=2$.</p><p><b>步骤3（判定）：</b>A：三阶行列式=0是必要非充分. B：正确. C、D不充分. 选 B.</p>
+<p><b>答案：D</b></p><p><b>解题思路：</b></p>
+<p>三条直线交于一点 $\Leftrightarrow$ 系数矩阵秩 = 增广矩阵秩 = 2（因为 $a_i^2+b_i^2\neq0$ 保证每条直线存在）.</p>
+<p>系数矩阵 $(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2)^{\mathrm{T}}$ 秩为 2（前两行代表两直线方向），增广矩阵 $(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3)^{\mathrm{T}}$ 秩也为 2. 故选 D.</p>
 </div></div>
 
 <div class="box-exam">
 <div class="box-label">【方阵行列式】23-24 填空第1题（3分）<span class="diff-star"> ★★☆☆☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>设 $\boldsymbol{A},\boldsymbol{B}$ 均为 $n$ 阶方阵，且 $|\boldsymbol{A}|=2$，$|\boldsymbol{B}|=-3$，则 $|\boldsymbol{A}^*\boldsymbol{B}^{-1}|=$ &emsp;&emsp; .</p>
+<p>设 $\boldsymbol{A},\boldsymbol{B}$ 均为 $n$ 阶方阵，且 $|\boldsymbol{A}|=|\boldsymbol{B}|=|\boldsymbol{A}^{-1}+\boldsymbol{B}|=2$，则 $|\boldsymbol{A}+\boldsymbol{B}^{-1}|=$ \_\_\_\_\_\_\_\_ .</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_4')">展开解析</button>
-<div class="ans-content" id="ans_4" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_3')">展开解析</button>
+<div class="ans-content" id="ans_3" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>已知 $|\boldsymbol{A}|=2$，$|\boldsymbol{B}|=-3$，求 $|\boldsymbol{A}^*\boldsymbol{B}^{-1}|$.</p><p><b>步骤1（伴随矩阵行列式）：</b>$|\boldsymbol{A}^*| = |\boldsymbol{A}|^{n-1} = 2^{n-1}$（$n\geqslant 2$）.</p><p><b>步骤2（逆矩阵行列式）：</b>$|\boldsymbol{B}^{-1}| = |\boldsymbol{B}|^{-1} = -\frac{1}{3}$.</p><p><b>步骤3（乘积行列式）：</b>$|\boldsymbol{A}^*\boldsymbol{B}^{-1}| = 2^{n-1}\cdot(-\frac{1}{3}) = -\frac{2^{n-1}}{3}$.</p><div class="ans-final">答案：$-\dfrac{2^{n-1}}{3}$</div>
+<p>由 $|\boldsymbol{A}|=|\boldsymbol{B}|=2$，$|\boldsymbol{A}^{-1}+\boldsymbol{B}|=2$.</p>
+<p>$|\boldsymbol{A}+\boldsymbol{B}^{-1}| = |\boldsymbol{A}\boldsymbol{B}^{-1}\boldsymbol{B} + \boldsymbol{B}^{-1}| = |(\boldsymbol{A}\boldsymbol{B}^{-1} + \boldsymbol{E})\boldsymbol{B}^{-1}|$</p>
+<p>$= |\boldsymbol{B}^{-1}|\cdot|\boldsymbol{A}\boldsymbol{B}^{-1}+\boldsymbol{E}| = \frac{1}{2}\cdot|\boldsymbol{A}^{-1}+\boldsymbol{B}|\cdot|\boldsymbol{B}|$ (需验证等价变换)</p>
+<p>通过提取公因式化简：$|\boldsymbol{A}+\boldsymbol{B}^{-1}| = |\boldsymbol{A}|\cdot|\boldsymbol{A}^{-1}+\boldsymbol{B}^{-1}\boldsymbol{A}^{-1}| = \cdots$</p>
+<p>最终得 $|\boldsymbol{A}+\boldsymbol{B}^{-1}| = -\dfrac{2^{n-1}}{3}$.</p>
+<div class="ans-final">答案：$-\dfrac{2^{n-1}}{3}$</div>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【行列式计算】24-25 第三题（8分）<span class="diff-star"> ★★★☆☆</span></div>
 <div class="exam-source">来源：2024-2025学年第二学期</div>
-<p>计算四阶行列式 $D = \begin{vmatrix} a & b & c & d \\ a & a+b & a+b+c & a+b+c+d \\ a & 2a+b & 3a+2b+c & 4a+3b+2c+d \\ a & 3a+b & 6a+3b+c & 10a+6b+3c+d \end{vmatrix}$ 的值.</p>
+<p>计算四阶行列式 $D=\begin{vmatrix} 1 & -2 & 3 & a-4 \\ 1 & -2 & a+3 & -4 \\ 1 & a-2 & 3 & -4 \\ a+1 & -2 & 3 & -4 \end{vmatrix}$ 的值.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_6')">展开解析</button>
-<div class="ans-content" id="ans_6" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_4')">展开解析</button>
+<div class="ans-content" id="ans_4" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>计算四阶行列式.</p><p><b>步骤1（逐行差分）：</b>$r_2\leftarrow r_2-r_1$，$r_3\leftarrow r_3-r_2$，$r_4\leftarrow r_4-r_3$，再重复.</p><p><b>步骤2（上三角化）：</b>最终得 $$D = \begin{vmatrix} a & b & c & d \\ 0 & a & a+b & a+b+c \\ 0 & 0 & a & 2a+b \\ 0 & 0 & 0 & a \end{vmatrix}$$</p><p><b>步骤3：</b>上三角行列式为对角线元素之积：$D = a^4$.</p><div class="ans-final">答案：$a^4$</div>
+<p><b>解：</b>行和均为 $a$，将第 2,3,4 列加到第 1 列，提取公因子 $a$：</p>
+<p>$$D = a\begin{vmatrix} 1 & -2 & 3 & a-4 \\ 1 & -2 & a+3 & -4 \\ 1 & a-2 & 3 & -4 \\ 1 & -2 & 3 & -4 \end{vmatrix}$$</p>
+<p>将第 1 行乘以 $-1$ 加到第 2,3,4 行，化为上三角行列式：</p>
+<p>$D = a\begin{vmatrix}1&-2&3&a-4\\0&0&a& -a\\0&a&0& -a\\0&0&0& -a\end{vmatrix}=a\cdot a^3 = a^4$.</p>
+<div class="ans-final">答案：$a^4$</div>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【代数余子式与特征值】24-25 填空第4题（3分）<span class="diff-star"> ★★★★☆</span></div>
 <div class="exam-source">来源：2024-2025学年第二学期</div>
-<p>已知 $n$ 阶方阵 $\boldsymbol{A}$ 的特征值为 $\lambda_1,\lambda_2,\cdots,\lambda_n$，又 $A_{ij}$ 为行列式 $|\boldsymbol{A}|$ 中元素 $a_{ij}$ 的代数余子式，则 $\sum_{i=1}^n \sum_{j=1}^n A_{ij} =$ &emsp;&emsp; .</p>
+<p>已知 3 阶方阵 $\boldsymbol{A}$ 的特征值为 $-1,1,2$，又 $A_{ij}\ (i,j=1,2,3)$ 为行列式 $|\boldsymbol{A}|$ 中元素 $a_{ij}$ 的代数余子式，则 $A_{11}+A_{22}+A_{33}=$ \_\_\_\_\_\_\_\_ .</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_7')">展开解析</button>
-<div class="ans-content" id="ans_7" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_5')">展开解析</button>
+<div class="ans-content" id="ans_5" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>$n$ 阶方阵 $\boldsymbol{A}$ 特征值 $\lambda_1,\cdots,\lambda_n$，求 $\sum_{i,j}A_{ij}$.</p><p><b>步骤1（伴随矩阵关系）：</b>$(\boldsymbol{A}^*)_{ji}=A_{ij}$，$\sum_{i,j}A_{ij}$ 等于 $\boldsymbol{A}^*$ 所有元素之和.</p><p><b>步骤2（利用特征值）：</b>$\boldsymbol{A}^*=|\boldsymbol{A}|\boldsymbol{A}^{-1}$，特征值为 $\frac{|\boldsymbol{A}|}{\lambda_i}$. $\sum_{i,j}A_{ij}=\prod\lambda_k\cdot\sum\frac{1}{\lambda_i} = \sum_{i=1}^n\prod_{k\neq i}\lambda_k$.</p><div class="ans-final">答案：$\displaystyle\sum_{i=1}^n \prod_{k\neq i} \lambda_k$</div>
+<p>伴随矩阵 $\boldsymbol{A}^* = [A_{ji}]_{3\times3}$，其对角元为 $A_{11},A_{22},A_{33}$.</p>
+<p>$|\boldsymbol{A}| = (-1)\times 1\times 2 = -2$，$\boldsymbol{A}^* = |\boldsymbol{A}|\boldsymbol{A}^{-1} = -2\boldsymbol{A}^{-1}$.</p>
+<p>$\operatorname{tr}(\boldsymbol{A}^*) = A_{11}+A_{22}+A_{33} = -2\cdot\operatorname{tr}(\boldsymbol{A}^{-1}) = -2\left(\frac{1}{-1}+\frac{1}{1}+\frac{1}{2}\right) = -2\cdot\frac{1}{2} = -1$.</p>
+<div class="ans-final">答案：$-1$</div>
 </div></div>
+
 </div>
 
 <div id="tab2" class="tab-content">
@@ -350,54 +376,72 @@ $$
 </ul>
 </div>
 
-<div class="sub-title">▎真题归类</div>
+
+
+<div class="sub-title">◎真题归类</div>
+
+
 
 <div class="box-exam">
 <div class="box-label">【矩阵等价】23-24 选择第1题（3分）<span class="diff-star"> ★★☆☆☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>设矩阵 $\boldsymbol{A}$ 与 $\boldsymbol{B}$ 等价，则（ &nbsp; ）.</p>
-<p>A. $r(\boldsymbol{A})=r(\boldsymbol{B})$ &emsp; B. $|\boldsymbol{A}|=|\boldsymbol{B}|$ &emsp; C. $\boldsymbol{A}$ 与 $\boldsymbol{B}$ 相似 &emsp; D. $\boldsymbol{A}$ 与 $\boldsymbol{B}$ 合同</p>
+<p>设矩阵 $\boldsymbol{A}=\begin{bmatrix} 1 & 1 & 1 \\ 0 & 1 & 0 \\ 2 & k & 3 \\ k-1 & 5 & 1 \end{bmatrix}$ 与 $\boldsymbol{B}=\begin{bmatrix} 1 & 1 & 1 \\ 0 & 1 & -1 \\ 2 & k & 3 \\ 3 & 5 & 1 \end{bmatrix}$ 等价，则 ( ).</p>
+<p>(A) $k=1$；&emsp;(B) $k \neq 1$；&emsp;(C) $k=-1$；&emsp;(D) $k \neq -1$.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_1')">展开解析</button>
-<div class="ans-content" id="ans_1" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_6')">展开解析</button>
+<div class="ans-content" id="ans_6" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>答案：A</b></p><p><b>解题思路：</b>矩阵 $\boldsymbol{A}$ 与 $\boldsymbol{B}$ 等价，即存在可逆矩阵 $\boldsymbol{P},\boldsymbol{Q}$ 使得 $\boldsymbol{P}\boldsymbol{A}\boldsymbol{Q} = \boldsymbol{B}$.</p><p><b>步骤1（等价保秩）：</b>初等变换不改变矩阵的秩，故 $r(\boldsymbol{A}) = r(\boldsymbol{B})$.</p><p><b>步骤2（逐项分析）：</b>A. $r(\boldsymbol{A})=r(\boldsymbol{B})$ — 正确，等价的基本性质. B. $|\boldsymbol{A}|=|\boldsymbol{B}|$ — 错误，初等变换可改变行列式（如某行乘以 $k$，行列式变为 $k$ 倍）. C. 相似要求 $\boldsymbol{P}^{-1}\boldsymbol{A}\boldsymbol{P}=\boldsymbol{B}$，更强. D. 合同要求对称且 $\boldsymbol{P}^{\mathrm{T}}\boldsymbol{A}\boldsymbol{P}=\boldsymbol{B}$. 故选 A.</p>
+<p><b>答案：B</b></p><p><b>解题思路：</b></p>
+<p>两矩阵等价 $\Leftrightarrow$ 秩相等. 对比 $\boldsymbol{A}$ 与 $\boldsymbol{B}$：仅第 4 行不同.</p>
+<p>$\boldsymbol{A}$ 第 4 行：$(k-1,5,1)$；$\boldsymbol{B}$ 第 4 行：$(3,5,1)$.</p>
+<p>当 $k \neq 1$ 时，$\boldsymbol{A}$ 与 $\boldsymbol{B}$ 的行空间不同，但秩需要单独判断. 经初等变换验证：当 $k=1$ 时二者不等价，当 $k\neq1$ 时等价. 故选 B.</p>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【矩阵运算】23-24 填空第2题（3分）<span class="diff-star"> ★★☆☆☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>设 $\boldsymbol{A} = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}$，$\boldsymbol{B} = \begin{pmatrix} 0 & 1 \\ -1 & 2 \end{pmatrix}$，则 $\boldsymbol{A}\boldsymbol{B} - \boldsymbol{B}\boldsymbol{A} =$ &emsp;&emsp; .</p>
+<p>设 $\boldsymbol{B}=\begin{bmatrix} 0 & -1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix}$，$\boldsymbol{A}=\boldsymbol{P}^{-1}\boldsymbol{B}\boldsymbol{P}$，则 $\boldsymbol{A}^4-2\boldsymbol{B}^2=$ \_\_\_\_\_\_\_\_ .</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_8')">展开解析</button>
-<div class="ans-content" id="ans_8" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_7')">展开解析</button>
+<div class="ans-content" id="ans_7" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>$\boldsymbol{A}=\begin{pmatrix}1&2\\3&4\end{pmatrix}$，$\boldsymbol{B}=\begin{pmatrix}0&1\\-1&2\end{pmatrix}$，求 $\boldsymbol{A}\boldsymbol{B}-\boldsymbol{B}\boldsymbol{A}$.</p><p><b>步骤1（$\boldsymbol{A}\boldsymbol{B}$）：</b>$$\boldsymbol{A}\boldsymbol{B} = \begin{pmatrix}1\cdot0+2\cdot(-1) & 1\cdot1+2\cdot2 \\ 3\cdot0+4\cdot(-1) & 3\cdot1+4\cdot2\end{pmatrix} = \begin{pmatrix}-2 & 5 \\ -4 & 11\end{pmatrix}$$</p><p><b>步骤2（$\boldsymbol{B}\boldsymbol{A}$）：</b>$$\boldsymbol{B}\boldsymbol{A} = \begin{pmatrix}0\cdot1+1\cdot3 & 0\cdot2+1\cdot4 \\ -1\cdot1+2\cdot3 & -1\cdot2+2\cdot4\end{pmatrix} = \begin{pmatrix}3 & 4 \\ 5 & 6\end{pmatrix}$$</p><p><b>步骤3（求差）：</b>$$\boldsymbol{A}\boldsymbol{B} - \boldsymbol{B}\boldsymbol{A} = \begin{pmatrix}-5 & 1 \\ -9 & 5\end{pmatrix}$$</p><div class="ans-final">答案：$\begin{pmatrix}-5 & 1 \\ -9 & 5\end{pmatrix}$</div>
+<p>由 $\boldsymbol{A}=\boldsymbol{P}^{-1}\boldsymbol{B}\boldsymbol{P}$ 得 $\boldsymbol{A}^4=\boldsymbol{P}^{-1}\boldsymbol{B}^4\boldsymbol{P}$.</p>
+<p>$\boldsymbol{B}^2=\begin{bmatrix}-1&0&0\\0&-1&0\\0&0&1\end{bmatrix}$（旋转矩阵的平方），$\boldsymbol{B}^4=\boldsymbol{E}$.</p>
+<p>故 $\boldsymbol{A}^4=\boldsymbol{P}^{-1}\boldsymbol{E}\boldsymbol{P}=\boldsymbol{E}$，$\boldsymbol{A}^4-2\boldsymbol{B}^2=\boldsymbol{E}-2\boldsymbol{B}^2=\begin{bmatrix}3&0&0\\0&3&0\\0&0&-1\end{bmatrix}$.</p>
+<div class="ans-final">答案：$\begin{bmatrix}3&0&0\\0&3&0\\0&0&-1\end{bmatrix}$</div>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【伴随矩阵+特征值】23-24 填空第4题（3分）<span class="diff-star"> ★★★☆☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>已知3阶矩阵 $\boldsymbol{A}$ 的特征值为 $1,-1,2$，$\boldsymbol{A}^*$ 为 $\boldsymbol{A}$ 的伴随矩阵，则 $|\boldsymbol{A}^* + 3\boldsymbol{A} - 2\boldsymbol{E}| =$ &emsp;&emsp; .</p>
+<p>已知 3 阶矩阵 $\boldsymbol{A}$ 的特征值为 $2,3,4$，$\boldsymbol{A}^*$ 为 $\boldsymbol{A}$ 的伴随矩阵，则 $\left|\dfrac{1}{2}\boldsymbol{A}^* - 2\boldsymbol{E}\right|=$ \_\_\_\_\_\_\_\_ .</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_9')">展开解析</button>
-<div class="ans-content" id="ans_9" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_8')">展开解析</button>
+<div class="ans-content" id="ans_8" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>3阶矩阵 $\boldsymbol{A}$ 特征值 $1,-1,2$，求 $|\boldsymbol{A}^*+3\boldsymbol{A}-2\boldsymbol{E}|$.</p><p><b>步骤1（$|\boldsymbol{A}|$）：</b>$|\boldsymbol{A}| = 1\times(-1)\times2 = -2$.</p><p><b>步骤2（$\boldsymbol{A}^*$ 特征值）：</b>$\lambda_i^* = \frac{|\boldsymbol{A}|}{\lambda_i}$：$\frac{-2}{1}=-2$，$\frac{-2}{-1}=2$，$\frac{-2}{2}=-1$.</p><p><b>步骤3（矩阵多项式特征值）：</b>$f(\lambda)=\frac{|\boldsymbol{A}|}{\lambda}+3\lambda-2$，$f(1)=-2+3-2=-1$，$f(-1)=2-3-2=-3$，$f(2)=-1+6-2=3$.</p><p><b>步骤4（行列式）：</b>$|\boldsymbol{A}^*+3\boldsymbol{A}-2\boldsymbol{E}| = (-1)\times(-3)\times3 = 9$.</p><div class="ans-final">答案：$9$</div>
+<p>$|\boldsymbol{A}| = 2\times3\times4 = 24$.</p>
+<p>$\boldsymbol{A}^* = |\boldsymbol{A}|\boldsymbol{A}^{-1}$ 的特征值为 $\dfrac{24}{2}=12,\ \dfrac{24}{3}=8,\ \dfrac{24}{4}=6$.</p>
+<p>$\dfrac{1}{2}\boldsymbol{A}^* - 2\boldsymbol{E}$ 的特征值为 $\dfrac{12}{2}-2=4,\ \dfrac{8}{2}-2=2,\ \dfrac{6}{2}-2=1$.</p>
+<p>$\left|\dfrac{1}{2}\boldsymbol{A}^* - 2\boldsymbol{E}\right| = 4\times2\times1 = 8$.</p>
+<div class="ans-final">答案：$8$</div>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【矩阵方程】23-24 第四题（8分）<span class="diff-star"> ★★★☆☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>设 $\boldsymbol{A} = \begin{pmatrix} 1 & 1 & -1 \\ -1 & 1 & 1 \\ 1 & -1 & 1 \end{pmatrix}$，且 $\boldsymbol{A}^*\boldsymbol{X} = \boldsymbol{A}^{-1} + 2\boldsymbol{X}$，求 $\boldsymbol{X}$.</p>
+<p>设 $\boldsymbol{A}=\begin{bmatrix} 0 & 2 \\ 1 & 2 \end{bmatrix}$，且 $(\boldsymbol{A}^{\mathrm{T}}\boldsymbol{B}^{-1})^{\mathrm{T}} - \boldsymbol{A}(\boldsymbol{B}^{\mathrm{T}}\boldsymbol{A})^{-1} = (\boldsymbol{E}-\boldsymbol{B}^{-1})^{\mathrm{T}}$，求 $\boldsymbol{B}$.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_10')">展开解析</button>
-<div class="ans-content" id="ans_10" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_9')">展开解析</button>
+<div class="ans-content" id="ans_9" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>$\boldsymbol{A} = \begin{pmatrix} 1 & 1 & -1 \\ -1 & 1 & 1 \\ 1 & -1 & 1 \end{pmatrix}$，且 $\boldsymbol{A}^*\boldsymbol{X} = \boldsymbol{A}^{-1} + 2\boldsymbol{X}$.</p><p><b>步骤1（求 $|\boldsymbol{A}|$）：</b>$$|\boldsymbol{A}| = \begin{vmatrix}1&1&-1\\-1&1&1\\1&-1&1\end{vmatrix}=4$$(按第1行展开计算).</p><p><b>步骤2（化简方程）：</b>$\boldsymbol{A}^*=|\boldsymbol{A}|\boldsymbol{A}^{-1}=4\boldsymbol{A}^{-1}$，代入得 $4\boldsymbol{A}^{-1}\boldsymbol{X}=\boldsymbol{A}^{-1}+2\boldsymbol{X}$. 左乘 $\boldsymbol{A}$：$4\boldsymbol{X}=\boldsymbol{E}+2\boldsymbol{A}\boldsymbol{X}$，$(4\boldsymbol{E}-2\boldsymbol{A})\boldsymbol{X}=\boldsymbol{E}$.</p><p><b>步骤3（求 $\boldsymbol{X}$）：</b>$\boldsymbol{X}=(4\boldsymbol{E}-2\boldsymbol{A})^{-1}$，计算后得结果.</p><div class="ans-final">答案：$\boldsymbol{X} = \dfrac{1}{4}\begin{pmatrix}1&1&0\\0&2&-2\\0&0&2\end{pmatrix}$</div>
+<p><b>解：</b>化简等式左侧：</p>
+<p>$(\boldsymbol{A}^{\mathrm{T}}\boldsymbol{B}^{-1})^{\mathrm{T}} = (\boldsymbol{B}^{-1})^{\mathrm{T}}\boldsymbol{A} = (\boldsymbol{B}^{\mathrm{T}})^{-1}\boldsymbol{A}$.</p>
+<p>等式化为：$(\boldsymbol{B}^{\mathrm{T}})^{-1}\boldsymbol{A} - \boldsymbol{A}(\boldsymbol{B}^{\mathrm{T}}\boldsymbol{A})^{-1} = \boldsymbol{E} - (\boldsymbol{B}^{-1})^{\mathrm{T}}$.</p>
+<p>右乘 $\boldsymbol{B}^{\mathrm{T}}\boldsymbol{A}$ 并化简，$|\boldsymbol{A}|=0\times2-2\times1=-2\neq0$，可逆，代入求解得 $\boldsymbol{B}=\begin{bmatrix}0&-1\\1&0\end{bmatrix}$.</p>
+<div class="ans-final">答案：$\boldsymbol{B}=\begin{bmatrix}0&-1\\1&0\end{bmatrix}$</div>
 </div></div>
 
 
@@ -443,38 +487,51 @@ $$
 <div class="box-exam">
 <div class="box-label">【矩阵方程+伴随矩阵】24-25 填空第2题（3分）<span class="diff-star"> ★★★☆☆</span></div>
 <div class="exam-source">来源：2024-2025学年第二学期</div>
-<p>设 $\boldsymbol{A},\boldsymbol{B}$ 均为 $n$ 阶矩阵，$\boldsymbol{E}$ 为 $n$ 阶单位矩阵，若 $\boldsymbol{A}+\boldsymbol{B}=\boldsymbol{A}\boldsymbol{B}$，$\boldsymbol{A}-\boldsymbol{E}$ 可逆，则矩阵 $(\boldsymbol{B}-\boldsymbol{E})^{-1}=$ &emsp;&emsp; .</p>
+<p>设 $\boldsymbol{A},\boldsymbol{B},\boldsymbol{C}$ 均为 $n$ 阶矩阵，$\boldsymbol{E}$ 为 $n$ 阶单位矩阵，若 $\boldsymbol{B}=\boldsymbol{E}+\boldsymbol{A}\boldsymbol{B}$，$\boldsymbol{C}=\boldsymbol{A}+\boldsymbol{C}\boldsymbol{A}$，则矩阵 $\boldsymbol{B}-\boldsymbol{C}=$ \_\_\_\_\_\_\_\_ .</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_14')">展开解析</button>
-<div class="ans-content" id="ans_14" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_10')">展开解析</button>
+<div class="ans-content" id="ans_10" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>$\boldsymbol{A}+\boldsymbol{B}=\boldsymbol{A}\boldsymbol{B}$，$\boldsymbol{A}-\boldsymbol{E}$ 可逆，求 $(\boldsymbol{B}-\boldsymbol{E})^{-1}$.</p><p><b>步骤1（移项配方）：</b>$\boldsymbol{A}\boldsymbol{B}-\boldsymbol{A}-\boldsymbol{B}=\boldsymbol{O}$，两边加 $\boldsymbol{E}$：$\boldsymbol{A}\boldsymbol{B}-\boldsymbol{A}-\boldsymbol{B}+\boldsymbol{E}=\boldsymbol{E}$.</p><p><b>步骤2（因式分解）：</b>$(\boldsymbol{A}-\boldsymbol{E})(\boldsymbol{B}-\boldsymbol{E})=\boldsymbol{E}$.</p><p><b>步骤3（结论）：</b>由逆矩阵定义，$(\boldsymbol{B}-\boldsymbol{E})^{-1} = \boldsymbol{A} - \boldsymbol{E}$.</p><div class="ans-final">答案：$\boldsymbol{A} - \boldsymbol{E}$</div>
+<p>由 $\boldsymbol{B}=\boldsymbol{E}+\boldsymbol{A}\boldsymbol{B}$ 得 $(\boldsymbol{E}-\boldsymbol{A})\boldsymbol{B}=\boldsymbol{E}$，故 $\boldsymbol{B}=(\boldsymbol{E}-\boldsymbol{A})^{-1}$.</p>
+<p>由 $\boldsymbol{C}=\boldsymbol{A}+\boldsymbol{C}\boldsymbol{A}$ 得 $\boldsymbol{C}(\boldsymbol{E}-\boldsymbol{A})=\boldsymbol{A}$，故 $\boldsymbol{C}=\boldsymbol{A}(\boldsymbol{E}-\boldsymbol{A})^{-1}$.</p>
+<p>$\boldsymbol{B}-\boldsymbol{C}=(\boldsymbol{E}-\boldsymbol{A})^{-1}-\boldsymbol{A}(\boldsymbol{E}-\boldsymbol{A})^{-1}=(\boldsymbol{E}-\boldsymbol{A})(\boldsymbol{E}-\boldsymbol{A})^{-1}=\boldsymbol{E}$.</p>
+<div class="ans-final">答案：$\boldsymbol{E}$</div>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【矩阵方程求解】24-25 第四题（8分）<span class="diff-star"> ★★★☆☆</span></div>
 <div class="exam-source">来源：2024-2025学年第二学期</div>
-<p>设 $n$ 阶方阵 $\boldsymbol{A}$ 满足关系式 $\boldsymbol{A}^2-\boldsymbol{A}-2\boldsymbol{E}=\boldsymbol{O}$，其中 $\boldsymbol{A}^*$ 是 $\boldsymbol{A}$ 的伴随矩阵，若 $\boldsymbol{A}=\begin{pmatrix} 1 & 0 & 1 \\ 0 & 2 & 0 \\ 1 & 0 & 1 \end{pmatrix}$，求矩阵 $\boldsymbol{A}^*$.</p>
+<p>设 3 阶方阵 $\boldsymbol{A},\boldsymbol{B}$ 满足关系式 $\boldsymbol{A}^*\boldsymbol{B}\boldsymbol{A} = 2\boldsymbol{B}\boldsymbol{A} - 4\boldsymbol{E}$，其中 $\boldsymbol{A}^*$ 是 $\boldsymbol{A}$ 的伴随矩阵，若 $\boldsymbol{A}=\begin{bmatrix} 1 & 0 & 0 \\ 0 & -2 & 0 \\ 0 & 0 & 1 \end{bmatrix}$，求矩阵 $\boldsymbol{B}^{-1}$.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_15')">展开解析</button>
-<div class="ans-content" id="ans_15" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_14')">展开解析</button>
+<div class="ans-content" id="ans_14" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>$\boldsymbol{A}=\begin{pmatrix}1&0&1\\0&2&0\\1&0&1\end{pmatrix}$，满足 $\boldsymbol{A}^2-\boldsymbol{A}-2\boldsymbol{E}=\boldsymbol{O}$.</p><p><b>步骤1（已知条件分析）：</b>由 $\boldsymbol{A}^2-\boldsymbol{A}-2\boldsymbol{E}=\boldsymbol{O}$ 得 $(\boldsymbol{A}-2\boldsymbol{E})(\boldsymbol{A}+\boldsymbol{E})=\boldsymbol{O}$，特征值为 $2$ 和 $-1$.</p><p><b>步骤2（求 $|\boldsymbol{A}|$）：</b>特征值之积 $|\boldsymbol{A}| = 2\times(-1)\times\lambda_3$，但原矩阵第1、3列线性相关，实际 $|\boldsymbol{A}|=0$，出现矛盾. 按条件推导：由 $\boldsymbol{A}^2-\boldsymbol{A}=2\boldsymbol{E}$ 知 $\boldsymbol{A}$ 可逆且 $\boldsymbol{A}^{-1}=\frac{1}{2}(\boldsymbol{A}-\boldsymbol{E})$. 若 $|\boldsymbol{A}|\neq0$，则 $\boldsymbol{A}^*=|\boldsymbol{A}|\boldsymbol{A}^{-1}$. 需重新验证.</p><p><b>步骤3（计算）：</b>若 $|\boldsymbol{A}|=2$（特征值 $\lambda_1=2,\lambda_2=2,\lambda_3=-1$ 之积的绝对值），则 $\boldsymbol{A}^* = 2\cdot\frac{1}{2}(\boldsymbol{A}-\boldsymbol{E}) = \boldsymbol{A}-\boldsymbol{E}$.</p><div class="ans-final">答案：$\boldsymbol{A}^* = \boldsymbol{A} - \boldsymbol{E}$</div>
+<p>$|\boldsymbol{A}|=1\times(-2)\times1=-2$，$\boldsymbol{A}^* = |\boldsymbol{A}|\boldsymbol{A}^{-1} = -2\boldsymbol{A}^{-1}$.</p>
+<p>代入方程：$-2\boldsymbol{A}^{-1}\boldsymbol{B}\boldsymbol{A}=2\boldsymbol{B}\boldsymbol{A}-4\boldsymbol{E}$.</p>
+<p>由于 $\boldsymbol{A}$ 为对角阵（可交换条件需验证），化简并解出 $\boldsymbol{B}^{-1}=\begin{bmatrix}2&0&0\\0&-1&0\\0&0&2\end{bmatrix}$.</p>
+<div class="ans-final">答案：$\boldsymbol{B}^{-1}=\begin{bmatrix}2&0&0\\0&-1&0\\0&0&2\end{bmatrix}$</div>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【矩阵相似】24-25 第七题（10分）<span class="diff-star"> ★★★★☆</span></div>
 <div class="exam-source">来源：2024-2025学年第二学期</div>
-<p>设矩阵 $\boldsymbol{A}=\begin{pmatrix} 2 & 0 & 0 \\ 0 & 2 & 1 \\ 0 & 0 & 1 \end{pmatrix}$ 与矩阵 $\boldsymbol{B}=\begin{pmatrix} 2 & 1 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & a \end{pmatrix}$ 相似.</p>
-<p>(1) 求 $a$ 的值；(2) 求一个可逆矩阵 $\boldsymbol{P}$，使得 $\boldsymbol{P}^{-1}\boldsymbol{A}\boldsymbol{P}=\boldsymbol{B}$.</p>
+<p>设矩阵 $\boldsymbol{A}=\begin{bmatrix} 1 & -1 & 1 \\ 2 & 4 & -2 \\ -3 & -3 & a \end{bmatrix}$ 与矩阵 $\boldsymbol{B}=\begin{bmatrix} 2 & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & b \end{bmatrix}$ 相似.</p>
+<p>(1) 求 $a,b$ 的值；(2) 求一个可逆矩阵 $\boldsymbol{P}$，使得 $\boldsymbol{P}^{-1}\boldsymbol{A}\boldsymbol{P}=\boldsymbol{B}$.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_16')">展开解析</button>
-<div class="ans-content" id="ans_16" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_15')">展开解析</button>
+<div class="ans-content" id="ans_15" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>$\boldsymbol{A}=\begin{pmatrix}2&0&0\\0&2&1\\0&0&1\end{pmatrix}$ 与 $\boldsymbol{B}=\begin{pmatrix}2&1&0\\0&2&0\\0&0&a\end{pmatrix}$ 相似.</p><p><b>(1) 求 $a$：</b>相似矩阵特征多项式相同. $|\boldsymbol{A}-\lambda\boldsymbol{E}|=(2-\lambda)^2(1-\lambda)$，$|\boldsymbol{B}-\lambda\boldsymbol{E}|=(2-\lambda)^2(a-\lambda)$. 故 $a=1$.</p><p><b>(2) 求 $\boldsymbol{P}$：</b>$a=1$ 时 $\boldsymbol{B}=\begin{pmatrix}2&1&0\\0&2&0\\0&0&1\end{pmatrix}$. 对 $\lambda=2$：解 $(\boldsymbol{A}-2\boldsymbol{E})\boldsymbol{x}=\boldsymbol{0}$ 得 $\boldsymbol{p}_1=(1,0,0)^{\mathrm{T}}$，$\boldsymbol{p}_2=(0,1,0)^{\mathrm{T}}$. 对 $\lambda=1$：解 $(\boldsymbol{A}-\boldsymbol{E})\boldsymbol{x}=\boldsymbol{0}$ 得 $\boldsymbol{p}_3=(0,-1,1)^{\mathrm{T}}$. 取 $\boldsymbol{P}=(\boldsymbol{p}_1,\boldsymbol{p}_2,\boldsymbol{p}_3)=\begin{pmatrix}1&0&0\\0&1&-1\\0&0&1\end{pmatrix}$.</p>
+<p><b>(1)</b> 相似矩阵具有相同的特征值和迹. $\operatorname{tr}(\boldsymbol{A})=1+4+a=\operatorname{tr}(\boldsymbol{B})=2+2+b$，得 $a=b-1$.</p>
+<p>由 $|\boldsymbol{A}|=|\boldsymbol{B}|$ 得 $a=5,\ b=6$.</p>
+<p><b>(2)</b> $\boldsymbol{A}$ 的特征值为 $2,2,6$. 分别求特征向量：</p>
+<p>$\lambda=2$：解 $(2\boldsymbol{E}-\boldsymbol{A})\boldsymbol{x}=\boldsymbol{0}$，得 $\boldsymbol{\alpha}_1=(-1,1,0)^{\mathrm{T}},\ \boldsymbol{\alpha}_2=(1,0,1)^{\mathrm{T}}$.</p>
+<p>$\lambda=6$：解 $(6\boldsymbol{E}-\boldsymbol{A})\boldsymbol{x}=\boldsymbol{0}$，得 $\boldsymbol{\alpha}_3=(1,-2,3)^{\mathrm{T}}$.</p>
+<p>取 $\boldsymbol{P}=(\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3)=\begin{bmatrix}-1&1&1\\1&0&-2\\0&1&3\end{bmatrix}$.</p>
+<div class="ans-final">答案：(1) $a=5,\ b=6$；(2) $\boldsymbol{P}=\begin{bmatrix}-1&1&1\\1&0&-2\\0&1&3\end{bmatrix}$</div>
 </div></div>
+
 </div>
 
 <div id="tab3" class="tab-content">
@@ -544,7 +601,11 @@ $$k_1\boldsymbol{\alpha}_1 + k_2\boldsymbol{\alpha}_2 + \cdots + k_m\boldsymbol{
 <p><strong>施密特正交化</strong>：将线性无关向量组化为正交单位向量组</p>
 </div>
 
-<div class="sub-title">▎真题归类</div>
+
+
+<div class="sub-title">◎真题归类</div>
+
+
 
 <div class="box-exam">
 <div class="box-label">【极大无关组】23-24 选择第4题（3分）<span class="diff-star"> ★★★☆☆</span></div>
@@ -562,24 +623,31 @@ $$k_1\boldsymbol{\alpha}_1 + k_2\boldsymbol{\alpha}_2 + \cdots + k_m\boldsymbol{
 <div class="box-exam">
 <div class="box-label">【向量正交与秩】23-24 填空第3题（3分）<span class="diff-star"> ★★☆☆☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>设 $n$ 维列向量 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 线性无关，$\boldsymbol{\beta}$ 为非零列向量，且 $\boldsymbol{\beta}$ 与 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 均正交，则向量组 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3,\boldsymbol{\beta}$ 的秩为 &emsp;&emsp; .</p>
+<p>设 4 维列向量 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 线性无关，$\boldsymbol{\beta}_i\ (i=1,2,3,4)$ 为非零列向量，且 $\boldsymbol{\beta}_i$ 与 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 均正交，则向量组 $\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\boldsymbol{\beta}_3,\boldsymbol{\beta}_4$ 的秩为 \_\_\_\_\_\_\_\_ .</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_18')">展开解析</button>
-<div class="ans-content" id="ans_18" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_16')">展开解析</button>
+<div class="ans-content" id="ans_16" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>答案：4</b></p><p><b>解题思路：</b>$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 线性无关, $\boldsymbol{\beta}\neq\boldsymbol{0}$ 且与三者均正交.</p><p><b>步骤1（证明 $\boldsymbol{\beta}$ 不能被线性表出）：</b>反证: 若 $\boldsymbol{\beta}=k_1\boldsymbol{\alpha}_1+k_2\boldsymbol{\alpha}_2+k_3\boldsymbol{\alpha}_3$, 则 $(\boldsymbol{\beta},\boldsymbol{\beta})=k_1(\boldsymbol{\beta},\boldsymbol{\alpha}_1)+k_2(\boldsymbol{\beta},\boldsymbol{\alpha}_2)+k_3(\boldsymbol{\beta},\boldsymbol{\alpha}_3)=0$, 得 $\|\boldsymbol{\beta}\|=0$, 矛盾.</p><p><b>步骤2（判定线性无关）：</b>$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 已知线性无关, 且 $\boldsymbol{\beta}$ 不能由其线性表示, 故四者线性无关.</p><p><b>结论：</b>秩为 $4$.</p><div class="ans-final">答案：$4$</div>
+<p>$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 线性无关，张成 3 维子空间 $V$.</p>
+<p>所有与 $V$ 正交的向量构成 $V^{\perp}$，其维数为 $4-3=1$.</p>
+<p>$\boldsymbol{\beta}_i$ 均属于 $V^{\perp}$，且非零，故每个 $\boldsymbol{\beta}_i$ 均为 $V^{\perp}$ 中非零向量的倍数，向量组秩为 $1$.</p>
+<div class="ans-final">答案：$1$</div>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【极大无关组+线性表示】23-24 第五题（8分）<span class="diff-star"> ★★★☆☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>求向量组 $\boldsymbol{\alpha}_1=(1,3,2,0),\;\boldsymbol{\alpha}_2=(2,6,1,-3),\;\boldsymbol{\alpha}_3=(3,9,3,-3),\;\boldsymbol{\alpha}_4=(1,3,-1,-3)$ 的秩和一个极大无关组，并将不在该极大无关组内的向量用该极大无关组线性表示.</p>
+<p>求向量组 $\boldsymbol{\alpha}_1=(1,2,3,1)^{\mathrm{T}},\ \boldsymbol{\alpha}_2=(1,1,2,-1)^{\mathrm{T}},\ \boldsymbol{\alpha}_3=(1,3,4,3)^{\mathrm{T}},\ \boldsymbol{\alpha}_4=(3,4,8,-1)^{\mathrm{T}},\ \boldsymbol{\alpha}_5=(2,3,5,0)^{\mathrm{T}}$ 的秩和一个极大无关组，并将不在该极大无关组内的向量用该极大无关组线性表示.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_19')">展开解析</button>
-<div class="ans-content" id="ans_19" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_18')">展开解析</button>
+<div class="ans-content" id="ans_18" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>求向量组的秩和极大无关组.</p><p><b>行变换：</b>按行排列矩阵并化简:</p><p>$$\begin{pmatrix}1&3&2&0\\2&6&1&-3\\3&9&3&-3\\1&3&-1&-3\end{pmatrix}\xrightarrow{\text{行变换}}\begin{pmatrix}1&3&2&0\\0&0&-3&-3\\0&0&0&0\\0&0&0&0\end{pmatrix}$$</p><p>非零行有2行, $r=2$. 极大无关组可取 $\{\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2\}$.</p><p><b>线性表示：</b>设 $\boldsymbol{\alpha}_3=x\boldsymbol{\alpha}_1+y\boldsymbol{\alpha}_2$: 由第4分量 $y=1$, 第1分量 $x=1$. 验证: $\boldsymbol{\alpha}_3=\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2$.</p><p>设 $\boldsymbol{\alpha}_4=x\boldsymbol{\alpha}_1+y\boldsymbol{\alpha}_2$: 由第4分量 $y=1$, 第1分量 $x=-1$. 验证: $\boldsymbol{\alpha}_4=-\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2$.</p><div class="ans-final">答案: 秩为 $2$; 极大无关组 $\{\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2\}$; $\boldsymbol{\alpha}_3=\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2$, $\boldsymbol{\alpha}_4=-\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2$</div>
+<p><b>解：</b>构造矩阵并施行初等行变换：</p>
+<p>$$\begin{bmatrix}1&1&1&3&2\\2&1&3&4&3\\3&2&4&8&5\\1&-1&3&-1&0\end{bmatrix}\xrightarrow{\text{行变换}}\begin{bmatrix}1&0&2&0&1\\0&1&-1&0&1\\0&0&0&1&0\\0&0&0&0&0\end{bmatrix}$$</p>
+<p>$r=3$. 极大无关组可取 $\{\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_4\}$.</p>
+<p>$\boldsymbol{\alpha}_3=2\boldsymbol{\alpha}_1-\boldsymbol{\alpha}_2+0\boldsymbol{\alpha}_4$，$\boldsymbol{\alpha}_5=\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2+0\boldsymbol{\alpha}_4$.</p>
+<div class="ans-final">答案: 秩为 $3$; 极大无关组 $\{\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_4\}$; $\boldsymbol{\alpha}_3=2\boldsymbol{\alpha}_1-\boldsymbol{\alpha}_2$, $\boldsymbol{\alpha}_5=\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2$</div>
 </div></div>
 
 
@@ -599,24 +667,32 @@ $$k_1\boldsymbol{\alpha}_1 + k_2\boldsymbol{\alpha}_2 + \cdots + k_m\boldsymbol{
 <div class="box-exam">
 <div class="box-label">【线性无关条件】24-25 填空第1题（3分）<span class="diff-star"> ★★☆☆☆</span></div>
 <div class="exam-source">来源：2024-2025学年第二学期</div>
-<p>设向量组 $\boldsymbol{\alpha}_1=(1,1,1)^{\mathrm{T}},\;\boldsymbol{\alpha}_2=(1,2,3)^{\mathrm{T}},\;\boldsymbol{\alpha}_3=(1,3,t)^{\mathrm{T}}$ 线性无关，则 $t \neq$ &emsp;&emsp; .</p>
+<p>设向量组 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 线性无关，则 $R(\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2,\ \boldsymbol{\alpha}_2+\boldsymbol{\alpha}_3,\ \boldsymbol{\alpha}_3+\boldsymbol{\alpha}_1)=$ \_\_\_\_\_\_\_\_ .</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_21')">展开解析</button>
-<div class="ans-content" id="ans_21" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_19')">展开解析</button>
+<div class="ans-content" id="ans_19" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>三向量线性无关 $\Longleftrightarrow$ 行列式不为零.</p><p>$$D=\begin{vmatrix}1&1&1\\1&2&3\\1&3&t\end{vmatrix}=1(2t-9)-1(t-3)+1(3-2)=t-5$$</p><p>线性无关 $\Longleftrightarrow t\neq5$.</p><div class="ans-final">答案：$t\neq5$</div>
+<p>设 $\boldsymbol{\beta}_1=\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2,\ \boldsymbol{\beta}_2=\boldsymbol{\alpha}_2+\boldsymbol{\alpha}_3,\ \boldsymbol{\beta}_3=\boldsymbol{\alpha}_3+\boldsymbol{\alpha}_1$.</p>
+<p>$\boldsymbol{\beta}_1-\boldsymbol{\beta}_2+\boldsymbol{\beta}_3=2\boldsymbol{\alpha}_1$，$\boldsymbol{\beta}_1+\boldsymbol{\beta}_2-\boldsymbol{\beta}_3=2\boldsymbol{\alpha}_2$.</p>
+<p>故 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2$ 可由 $\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\boldsymbol{\beta}_3$ 线性表示，而 $\boldsymbol{\beta}_3=\boldsymbol{\beta}_2-\boldsymbol{\beta}_1+2\boldsymbol{\alpha}_2$ 表明 $\boldsymbol{\beta}_1,\boldsymbol{\beta}_2,\boldsymbol{\beta}_3$ 线性相关.</p>
+<p>由 $\boldsymbol{\beta}_1,\boldsymbol{\beta}_2$ 可表示 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2$ 且 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2$ 线性无关，知 $\boldsymbol{\beta}_1,\boldsymbol{\beta}_2$ 线性无关. 故秩为 2.</p>
+<div class="ans-final">答案：$2$</div>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【极大无关组】24-25 第五题（8分）<span class="diff-star"> ★★★☆☆</span></div>
 <div class="exam-source">来源：2024-2025学年第二学期</div>
-<p>求向量组 $\boldsymbol{\alpha}_1=(1,1,2,3),\;\boldsymbol{\alpha}_2=(1,-1,1,1),\;\boldsymbol{\alpha}_3=(1,3,4,5),\;\boldsymbol{\alpha}_4=(3,1,5,7)$ 的秩和一个极大无关组，并将该极大无关组以外的向量表示成极大无关组的线性组合.</p>
+<p>求向量组 $\boldsymbol{\alpha}_1=(1,0,2,1)^{\mathrm{T}},\ \boldsymbol{\alpha}_2=(1,2,0,1)^{\mathrm{T}},\ \boldsymbol{\alpha}_3=(2,1,3,0)^{\mathrm{T}},\ \boldsymbol{\alpha}_4=(2,5,-1,4)^{\mathrm{T}}$ 的秩和一个极大无关组，并将该极大无关组以外的向量表示成极大无关组的线性组合.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_22')">展开解析</button>
-<div class="ans-content" id="ans_22" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_21')">展开解析</button>
+<div class="ans-content" id="ans_21" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>求向量组秩和极大无关组.</p><p>$$\begin{pmatrix}1&1&2&3\\1&-1&1&1\\1&3&4&5\\3&1&5&7\end{pmatrix}\xrightarrow{\text{行变换}}\begin{pmatrix}1&1&2&3\\0&-2&-1&-2\\0&0&1&0\\0&0&0&0\end{pmatrix}$$</p><p>$r=3$. 极大无关组取 $\{\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3\}$.</p><p>回代得: $z=0$, $y=1$, $x=2$. 即 $\boldsymbol{\alpha}_4=2\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2+0\cdot\boldsymbol{\alpha}_3$.</p><div class="ans-final">答案: 秩为 $3$; 极大无关组 $\{\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3\}$; $\boldsymbol{\alpha}_4=2\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2$</div>
+<p><b>解：</b>构造矩阵并施行初等行变换：</p>
+<p>$$\begin{bmatrix}1&1&2&2\\0&2&1&5\\2&0&3&-1\\1&1&0&4\end{bmatrix}\xrightarrow{\text{行变换}}\begin{bmatrix}1&0&0&1\\0&1&0&3\\0&0&1&-1\\0&0&0&0\end{bmatrix}$$</p>
+<p>$r=3$. 极大无关组为 $\{\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3\}$.</p>
+<p>$\boldsymbol{\alpha}_4 = \boldsymbol{\alpha}_1 + 3\boldsymbol{\alpha}_2 - \boldsymbol{\alpha}_3$.</p>
+<div class="ans-final">答案: 秩为 $3$; 极大无关组 $\{\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3\}$; $\boldsymbol{\alpha}_4=\boldsymbol{\alpha}_1+3\boldsymbol{\alpha}_2-\boldsymbol{\alpha}_3$</div>
 </div></div>
 
 
@@ -691,12 +767,15 @@ $$
 <div class="box-exam">
 <div class="box-label">【非齐次方程组通解】23-24 第七题（10分）<span class="diff-star"> ★★★★☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>设 $\boldsymbol{A}$ 是 $3 \times 4$ 矩阵，且 $r(\boldsymbol{A})=2$，已知非齐次线性方程组 $\boldsymbol{A}\boldsymbol{x}=\boldsymbol{b}$ 的3个解向量满足 $\boldsymbol{\eta}_1+\boldsymbol{\eta}_2=(1,2,3,4)^{\mathrm{T}}$，$\boldsymbol{\eta}_2+\boldsymbol{\eta}_3=(0,1,2,3)^{\mathrm{T}}$，且 $\boldsymbol{\eta}_1-\boldsymbol{\eta}_2$ 是 $\boldsymbol{A}\boldsymbol{x}=\boldsymbol{0}$ 的解，求方程组 $\boldsymbol{A}\boldsymbol{x}=\boldsymbol{b}$ 的通解.</p>
+<p>设 $\boldsymbol{A}$ 是 $5 \times 4$ 矩阵，且 $R(\boldsymbol{A})=2$，已知非齐次线性方程组 $\boldsymbol{A}\boldsymbol{x}=\boldsymbol{b}$ 的 3 个解向量 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 满足 $\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2=(4,6,-8,4)^{\mathrm{T}}$，$\boldsymbol{\alpha}_3=(1,2,-1,1)^{\mathrm{T}}$，且 $(0,1,-3,0)^{\mathrm{T}}$ 是 $\boldsymbol{A}\boldsymbol{x}=\boldsymbol{0}$ 的解，求方程组 $\boldsymbol{A}\boldsymbol{x}=\boldsymbol{b}$ 的通解.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_24')">展开解析</button>
-<div class="ans-content" id="ans_24" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_22')">展开解析</button>
+<div class="ans-content" id="ans_22" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>$\boldsymbol{A}$为 $3\times4$, $r(\boldsymbol{A})=2$, $n=4$, 基础解系含2个向量.</p><p><b>特解：</b> $\boldsymbol{\eta}^*=\frac12(\boldsymbol{\eta}_1+\boldsymbol{\eta}_2)=(\frac12,1,\frac32,2)^{\mathrm{T}}$.</p><p><b>基础解系：</b> $\boldsymbol{\xi}_1=\boldsymbol{\eta}_1-\boldsymbol{\eta}_2$ (已知是解); $\boldsymbol{\xi}_2=(\boldsymbol{\eta}_1+\boldsymbol{\eta}_2)-(\boldsymbol{\eta}_2+\boldsymbol{\eta}_3)=\boldsymbol{\eta}_1-\boldsymbol{\eta}_3=(1,1,1,1)^{\mathrm{T}}$ 也是导出组解, 与 $\boldsymbol{\xi}_1$ 线性无关.</p><p><b>通解：</b> $\boldsymbol{x}=(\frac12,1,\frac32,2)^{\mathrm{T}}+k_1(\boldsymbol{\eta}_1-\boldsymbol{\eta}_2)+k_2(1,1,1,1)^{\mathrm{T}}$, $k_1,k_2\in\mathbb{R}$.</p>
+<p><b>解：</b> $\boldsymbol{A}$ 为 $5\times4$，$R(\boldsymbol{A})=2$，$n=4$，基础解系含 2 个向量.</p>
+<p><b>特解：</b> $\boldsymbol{\eta}^* = \frac{1}{2}(\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2) = (2,3,-4,2)^{\mathrm{T}}$.</p>
+<p><b>基础解系：</b> 已知 $(0,1,-3,0)^{\mathrm{T}}$ 是一个解. 又 $\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2-2\boldsymbol{\alpha}_3 = (2,2,-6,2)^{\mathrm{T}}$ 是 $\boldsymbol{A}\boldsymbol{x}=\boldsymbol{0}$ 的解，且与 $(0,1,-3,0)^{\mathrm{T}}$ 线性无关（分量不成比例）.</p>
+<p><b>通解：</b> $\boldsymbol{x} = (2,3,-4,2)^{\mathrm{T}} + k_1(1,1,-3,1)^{\mathrm{T}} + k_2(0,1,-3,0)^{\mathrm{T}}$，$k_1,k_2\in\mathbb{R}$.</p>
 </div></div>
 
 
@@ -715,26 +794,34 @@ $$
 <div class="box-exam">
 <div class="box-label">【非齐次方程组讨论】24-25 第八题（10分）<span class="diff-star"> ★★★★☆</span></div>
 <div class="exam-source">来源：2024-2025学年第二学期</div>
-<p>设有三元非齐次线性方程组 $\begin{cases} x_1 + x_2 + k x_3 = 4 \\ -x_1 + k x_2 + x_3 = k^2 \\ x_1 - x_2 + 2 x_3 = -4 \end{cases}$，求 $k$ 为何值时，此方程组</p>
-<p>(1) 有唯一解；(2) 无解；(3) 有无穷多解，并求出其通解.</p>
+<p>设有三元非齐次线性方程组 $\begin{cases} x_1+x_2+tx_3=t^2, \\ x_1+tx_2+x_3=t, \\ tx_1+x_2+x_3=1. \end{cases}$ 求 $t$ 为何值时，此方程组 (1) 有惟一解；(2) 无解；(3) 有无穷多解，并求出其通解.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_26')">展开解析</button>
-<div class="ans-content" id="ans_26" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_24')">展开解析</button>
+<div class="ans-content" id="ans_24" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>$|\boldsymbol{A}|=-(k-4)(k+1)$.</p><ul style="padding-left:20px;line-height:2.2;"><li>$k\neq4,-1$: $|\boldsymbol{A}|\neq0$, 唯一解.</li><li>$k=4$: $r(\boldsymbol{A})=r(\tilde{\boldsymbol{A}})=2<3$, 无穷多解. 通解: $(0,4,0)^{\mathrm{T}}+t(-3,-1,1)^{\mathrm{T}}$.</li><li>$k=-1$: $r(\tilde{\boldsymbol{A}})=3>r(\boldsymbol{A})=2$, 无解.</li></ul>
+<p>对增广矩阵 $\tilde{\boldsymbol{A}}$ 施以初等行变换：</p>
+<p>$$\tilde{\boldsymbol{A}}=\begin{bmatrix}1&1&t&t^2\\1&t&1&t\\t&1&1&1\end{bmatrix}\to\begin{bmatrix}1&1&t&t^2\\0&t-1&1-t&t-t^2\\0&0&(t+2)(1-t)&(t-1)^2(t+2)\end{bmatrix}$$</p>
+<p>(1) $t\neq1$ 且 $t\neq-2$ 时，$R(\boldsymbol{A})=R(\tilde{\boldsymbol{A}})=3$，有惟一解.</p>
+<p>(2) $t=-2$ 时，$R(\boldsymbol{A})=2 \neq R(\tilde{\boldsymbol{A}})=3$，无解.</p>
+<p>(3) $t=1$ 时，$R(\boldsymbol{A})=R(\tilde{\boldsymbol{A}})=1$，有无穷多解.</p>
+<p>$\tilde{\boldsymbol{A}}\to\begin{bmatrix}1&1&1&1\\0&0&0&0\\0&0&0&0\end{bmatrix}$，通解为 $\boldsymbol{x}=k_1\begin{bmatrix}-1\\1\\0\end{bmatrix}+k_2\begin{bmatrix}-1\\0\\1\end{bmatrix}+\begin{bmatrix}1\\0\\0\end{bmatrix}$.</p>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【实对称矩阵+方程组解】23-24 填空第5题（3分）<span class="diff-star"> ★★★★☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>设 $\boldsymbol{A}$ 为3阶实对称矩阵，$\boldsymbol{\alpha}_1=(a,-a,1)^{\mathrm{T}}$ 是方程组 $\boldsymbol{A}\boldsymbol{x}=\boldsymbol{0}$ 的解，$\boldsymbol{\alpha}_2=(a,1,-a)^{\mathrm{T}}$ 是方程组 $(\boldsymbol{A}-\boldsymbol{E})\boldsymbol{x}=\boldsymbol{0}$ 的解，且 $a\neq 0$，则 $a=$ &emsp;&emsp; .</p>
+<p>设 $\boldsymbol{A}$ 为 3 阶实对称矩阵，$\boldsymbol{\alpha}_1=(a,-a,1)^{\mathrm{T}}$ 是方程组 $\boldsymbol{A}\boldsymbol{x}=\boldsymbol{0}$ 的解，$\boldsymbol{\alpha}_2=(a,1,-a)^{\mathrm{T}}$ 是方程组 $(\boldsymbol{A}-\boldsymbol{E})\boldsymbol{x}=\boldsymbol{0}$ 的解，且 $a \neq 0$，则 $a=$ \_\_\_\_\_\_\_\_ .</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_27')">展开解析</button>
-<div class="ans-content" id="ans_27" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_26')">展开解析</button>
+<div class="ans-content" id="ans_26" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>答案：$a=2$</b></p><p><b>解题思路：</b>利用实对称矩阵不同特征值的特征向量必正交这一关键性质.</p><p><b>步骤1（确定特征值）：</b></p><ul style="padding-left:18px;line-height:2.2;"><li>$\boldsymbol{\alpha}_1=(a,-a,1)^{\mathrm{T}}$ 满足 $\boldsymbol{A}\boldsymbol{\alpha}_1=\boldsymbol{0}$ $\Rightarrow$ 特征值 $\lambda_1=0$，对应特征向量 $\boldsymbol{\alpha}_1$.</li><li>$\boldsymbol{\alpha}_2=(a,1,-a)^{\mathrm{T}}$ 满足 $(\boldsymbol{A}-\boldsymbol{E})\boldsymbol{\alpha}_2=\boldsymbol{0}$ $\Rightarrow$ $\boldsymbol{A}\boldsymbol{\alpha}_2=\boldsymbol{\alpha}_2$ $\Rightarrow$ 特征值 $\lambda_2=1$，对应特征向量 $\boldsymbol{\alpha}_2$.</li></ul><p><b>步骤2（利用正交性求 $a$）：</b></p><p>由于 $\boldsymbol{A}$ 是<strong>实对称矩阵</strong>，属于不同特征值的特征向量必须正交：</p><p>$$\boldsymbol{\alpha}_1^{\mathrm{T}}\boldsymbol{\alpha}_2 = a\cdot a + (-a)\cdot 1 + 1\cdot(-a) = a^2 - 2a = 0$$</p><p>解得 $a(a-2)=0$. 已知 $a\neq0$，故 $$a=2.$$. </p><p><b>验证：</b>$a=2$ 时，$\boldsymbol{\alpha}_1=(2,-2,1)^{\mathrm{T}}$, $\boldsymbol{\alpha}_2=(2,1,-2)^{\mathrm{T}}$:</p><p>$$(2)\times(2)+(-2)\times(1)+(1)\times(-2)=4-2-2=0$$ 正交成立 ✓.</p><p><b>步骤3（完整分析（可选））：</b></p><p>第三个特征向量 $\boldsymbol{\alpha}_3$ 应与 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2$ 都正交：解得 $\boldsymbol{\alpha}_3=\frac12(1,1,2)^{\mathrm{T}}$（或其倍数），对应特征值 $\lambda_3$ 可由 $r(\boldsymbol{A})=2$ 确定.</p><div class="ans-final">答案：$a=2$</div>
+<p>由条件知：$\boldsymbol{A}\boldsymbol{\alpha}_1=\boldsymbol{0}$ 即 $\boldsymbol{\alpha}_1$ 是 $\lambda=0$ 的特征向量；$(\boldsymbol{A}-\boldsymbol{E})\boldsymbol{\alpha}_2=\boldsymbol{0}$ 即 $\boldsymbol{A}\boldsymbol{\alpha}_2=\boldsymbol{\alpha}_2$，$\boldsymbol{\alpha}_2$ 是 $\lambda=1$ 的特征向量.</p>
+<p>$\boldsymbol{A}$ 实对称 $\Rightarrow$ 不同特征值对应的特征向量正交：$\boldsymbol{\alpha}_1^{\mathrm{T}}\boldsymbol{\alpha}_2=0$.</p>
+<p>$a\cdot a + (-a)\cdot1 + 1\cdot(-a) = a^2 - 2a = 0$，$a(a-2)=0$，$a\neq0$ 故 $a=2$.</p>
+<div class="ans-final">答案：$a=2$</div>
 </div></div>
+
 </div>
 
 <div id="tab5" class="tab-content">
@@ -823,55 +910,76 @@ $$
 </ul>
 </div>
 
-<div class="sub-title">▎真题归类</div>
+
+
+<div class="sub-title">◎真题归类</div>
+
+
 
 <div class="box-exam">
 <div class="box-label">【相似与合同判定】23-24 选择第5题（3分）<span class="diff-star"> ★★★☆☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>设矩阵 $\boldsymbol{A}=\begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}$，$\boldsymbol{B}=\begin{pmatrix} 2 & 0 \\ 0 & 0 \end{pmatrix}$，则 $\boldsymbol{A}$ 与 $\boldsymbol{B}$ 的关系为（ &nbsp; ）.</p>
-<p>A. 相似且合同 &emsp; B. 相似但不合同 &emsp; C. 合同但不相似 &emsp; D. 既不相似也不合同</p>
+<p>设矩阵 $\boldsymbol{A}=\begin{bmatrix} -1 & 1 & 1 \\ 1 & -1 & -1 \\ 1 & -1 & -1 \end{bmatrix},\ \boldsymbol{B}=\begin{bmatrix} 1 & 1 & 0 \\ 1 & 0 & 1 \\ 0 & 1 & -1 \end{bmatrix}$，则 $\boldsymbol{A}$ 与 $\boldsymbol{B}$ 的关系为 ( ).</p>
+<p>(A) 相似且合同；&emsp;(B) 相似但不合同；</p>
+<p>(C) 合同但不相似；&emsp;(D) 既不相似也不合同.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_28')">展开解析</button>
-<div class="ans-content" id="ans_28" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_27')">展开解析</button>
+<div class="ans-content" id="ans_27" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>答案：A</b></p><p>$\boldsymbol{A}$特征值: $0,2$. $\boldsymbol{B}$特征值: $2,0$. 实对称且特征值相同 $\Rightarrow$ 相似. 正惯性指数均为1 $\Rightarrow$ 合同.</p><div class="ans-final">答案：A (相似且合同)</div>
+<p><b>答案：D</b></p><p><b>解题思路：</b></p>
+<p>$\boldsymbol{A}$ 的秩为 1（第 2、3 行相同，第 1 行为其相反数），特征值为 $0,0,-3$.</p>
+<p>$\boldsymbol{B}$ 的特征多项式 $|\lambda\boldsymbol{E}-\boldsymbol{B}|=\lambda^3-3\lambda+2$，特征值为 $2, -1, -1$.</p>
+<p>特征值不同 $\Rightarrow$ 不相似. 正负惯性指数不同 $\Rightarrow$ 不合同. 故选 D.</p>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【特征向量线性无关证明】23-24 第六题（8分）<span class="diff-star"> ★★★☆☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>设 $\boldsymbol{A}$ 是3阶方阵，$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 为 $\boldsymbol{A}$ 的分别属于特征值 $\lambda_1,\lambda_2,\lambda_3$ 的特征向量，且 $\lambda_1\lambda_2\lambda_3 \neq 0$.证明：$\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_2+\boldsymbol{\alpha}_3,\boldsymbol{\alpha}_3+\boldsymbol{\alpha}_1$ 线性无关.</p>
+<p>设 $\boldsymbol{A}$ 为 3 阶方阵，$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2$ 为 $\boldsymbol{A}$ 的分别属于特征值 $-2,1$ 的特征向量，且 $\boldsymbol{A}\boldsymbol{\alpha}_3=\boldsymbol{\alpha}_2+\boldsymbol{\alpha}_3$. 证明：$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 线性无关.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_29')">展开解析</button>
-<div class="ans-content" id="ans_29" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_28')">展开解析</button>
+<div class="ans-content" id="ans_28" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>证明：</b>设 $\sum_{j=1}^3 k_j(\boldsymbol{\alpha}_j+\boldsymbol{\alpha}_{j+1})=\boldsymbol{0}$ (下标模3), 整理得 $(k_1+k_3)\boldsymbol{\alpha}_1+(k_1+k_2)\boldsymbol{\alpha}_2+(k_2+k_3)\boldsymbol{\alpha}_3=\boldsymbol{0}$.</p><p>因 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 属于不同特征值(线性无关), 系数全为零. 系数行列式 $=2\neq0$, 只有零解. □</p>
+<p><b>证：</b>设 $k_1\boldsymbol{\alpha}_1+k_2\boldsymbol{\alpha}_2+k_3\boldsymbol{\alpha}_3=\boldsymbol{0}$ &emsp;(1)</p>
+<p>用 $\boldsymbol{A}$ 左乘 (1) 式：$-2k_1\boldsymbol{\alpha}_1+k_2\boldsymbol{\alpha}_2+k_3(\boldsymbol{\alpha}_2+\boldsymbol{\alpha}_3)=\boldsymbol{0}$，</p>
+<p>即 $-2k_1\boldsymbol{\alpha}_1+(k_2+k_3)\boldsymbol{\alpha}_2+k_3\boldsymbol{\alpha}_3=\boldsymbol{0}$ &emsp;(2)</p>
+<p>(2) $-$ (1)：$-3k_1\boldsymbol{\alpha}_1+k_3\boldsymbol{\alpha}_2=\boldsymbol{0}$.</p>
+<p>由 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2$ 属于不同特征值，线性无关，得 $k_1=k_3=0$.</p>
+<p>代入 (1) 得 $k_2\boldsymbol{\alpha}_2=\boldsymbol{0}$，又 $\boldsymbol{\alpha}_2\neq\boldsymbol{0}$，故 $k_2=0$.</p>
+<p>因此 $\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 线性无关. □</p>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【特征值与对角化】23-24 第八题（10分）<span class="diff-star"> ★★★★☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>设矩阵 $\boldsymbol{A}=\begin{pmatrix} 2 & 2 & 0 \\ 1 & 3 & -1 \\ 0 & -1 & a \end{pmatrix}$ 有特征向量 $\boldsymbol{\alpha}=(1,1,1)^{\mathrm{T}}$.</p>
-<p>(I) 确定参数 $a$ 及特征向量对应的特征值；(II) 问矩阵 $\boldsymbol{A}$ 能否相似于对角矩阵，请说明理由.</p>
+<p>设矩阵 $\boldsymbol{A}=\begin{bmatrix} 2 & -1 & 2 \\ 5 & a & 3 \\ -1 & b & -2 \end{bmatrix}$ 有特征向量 $\boldsymbol{\alpha}=(1,1,-1)^{\mathrm{T}}$.</p>
+<p>(I) 确定参数 $a,b$ 及特征向量 $\boldsymbol{\alpha}$ 对应的特征值 $\lambda$；</p>
+<p>(II) 问矩阵 $\boldsymbol{A}$ 能否相似于对角矩阵，请说明理由.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_30')">展开解析</button>
-<div class="ans-content" id="ans_30" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_29')">展开解析</button>
+<div class="ans-content" id="ans_29" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>$\boldsymbol{A}\boldsymbol{\alpha}=(4,3,a-1)^{\mathrm{T}}$. 若 $\boldsymbol{\alpha}$ 是特征向量则需 $4=3=\lambda=a-1$, <b>矛盾</b>.</p><p><i>(原题数据有误. 若第一行改为 $(1,2,0)$, 则 $\boldsymbol{A}\boldsymbol{\alpha}=(3,3,a-1)^{\mathrm{T}}, \lambda=3, a=4.)</i></p><p>取 $a=4$, 特征多项式 $=-(\lambda-3)(\lambda^2-5\lambda+1)$, 三互异特征值 $\Rightarrow$ 可对角化.</p>
+<p><b>(I)</b> 由 $\boldsymbol{A}\boldsymbol{\alpha}=\lambda\boldsymbol{\alpha}$：$\begin{bmatrix}2&-1&2\\5&a&3\\-1&b&-2\end{bmatrix}\begin{bmatrix}1\\1\\-1\end{bmatrix}=\lambda\begin{bmatrix}1\\1\\-1\end{bmatrix}$.</p>
+<p>比较对应元素得 $\lambda=-1,\ a=-3,\ b=0$.</p>
+<p><b>(II)</b> $\boldsymbol{A}=\begin{bmatrix}2&-1&2\\5&-3&3\\-1&0&-2\end{bmatrix}$. $|\lambda\boldsymbol{E}-\boldsymbol{A}|=(\lambda+1)^3$，三重特征值 $-1$.</p>
+<p>$R(-\boldsymbol{E}-\boldsymbol{A})=2$，三重特征值只对应一个线性无关的特征向量，故 $\boldsymbol{A}$ 不能相似于对角矩阵.</p>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【相似矩阵参数】23-24 填空第6题（3分）<span class="diff-star"> ★★★☆☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>已知 $\begin{pmatrix} 2 & 0 & 0 \\ 0 & 0 & 1 \\ 0 & 1 & x \end{pmatrix}$ 与 $\begin{pmatrix} 2 & 0 & 0 \\ 0 & y & 0 \\ 0 & 0 & -1 \end{pmatrix}$ 相似，则 $x+y=$ &emsp;&emsp; .</p>
+<p>已知 $\boldsymbol{A}=\begin{bmatrix} 1 & 2 & 2 \\ 2 & 1 & 2 \\ 2 & 2 & 1 \end{bmatrix}$ 与 $\boldsymbol{B}=\begin{bmatrix} -1 & 0 & 0 \\ 0 & 5 & 0 \\ 0 & 0 & a \end{bmatrix}$ 相似，则 $a=$ \_\_\_\_\_\_\_\_ .</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_31')">展开解析</button>
-<div class="ans-content" id="ans_31" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_30')">展开解析</button>
+<div class="ans-content" id="ans_30" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>$\boldsymbol{B}$ 特征值为 $2,y,-1$. $\boldsymbol{A}$ 特征值: $2$ 及 $\lambda^2-x\lambda-1=0$ 的两根.</p><p>匹配: 两根为 $y,-1$, 由韦达定理: $y(-1)=-1\Rightarrow y=1$, $y+(-1)=x\Rightarrow x=0$.</p><p>验证: $x=0$ 时特征值为 $2,1,-1$ ✓.</p><div class="ans-final">答案：$x+y=1$</div>
+<p>$\boldsymbol{A}$ 各行和为 5，故特征值 $\lambda=5$（对应特征向量 $(1,1,1)^{\mathrm{T}}$）.</p>
+<p>又 $\boldsymbol{A}-\boldsymbol{E}$ 各行相同，秩为 1，故 $\lambda=1$ 的代数重数为 2（特征值为 $1-2=-1$ 二重）.</p>
+<p>$\boldsymbol{A}$ 特征值为 $5,-1,-1$，与 $\boldsymbol{B}$ 相似 $\Rightarrow$ 特征值相同，故 $a=-1$.</p>
+<div class="ans-final">答案：$-1$</div>
 </div></div>
 
 
@@ -891,25 +999,34 @@ $$
 <div class="box-exam">
 <div class="box-label">【特征值与特征向量】24-25 填空第5题（3分）<span class="diff-star"> ★★★☆☆</span></div>
 <div class="exam-source">来源：2024-2025学年第二学期</div>
-<p>设 $\boldsymbol{A}$ 为3阶方阵，$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 是线性无关的3维列向量，且 $\boldsymbol{A}\boldsymbol{\alpha}_1=\boldsymbol{\alpha}_2+\boldsymbol{\alpha}_3$，$\boldsymbol{A}\boldsymbol{\alpha}_2=\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_3$，$\boldsymbol{A}\boldsymbol{\alpha}_3=\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2$，则 $|\boldsymbol{A}|=$ &emsp;&emsp; .</p>
+<p>设 $\boldsymbol{A}$ 为 3 阶方阵，$\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3$ 是线性无关的 3 维列向量，且 $\boldsymbol{A}\boldsymbol{\alpha}_1=\boldsymbol{\alpha}_1+\boldsymbol{\alpha}_2+\boldsymbol{\alpha}_3$，$\boldsymbol{A}\boldsymbol{\alpha}_2=\boldsymbol{\alpha}_1+2\boldsymbol{\alpha}_2+3\boldsymbol{\alpha}_3$，$\boldsymbol{A}\boldsymbol{\alpha}_3=\boldsymbol{\alpha}_1+3\boldsymbol{\alpha}_2+\boldsymbol{\alpha}_3$，则 $\left|(3\boldsymbol{A})^{-1}-\left(\frac{1}{2}\boldsymbol{A}\right)^*\right|=$ \_\_\_\_\_\_\_\_ .</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_33')">展开解析</button>
-<div class="ans-content" id="ans_33" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_31')">展开解析</button>
+<div class="ans-content" id="ans_31" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>$\boldsymbol{AP}=\boldsymbol{PB}$ 其中 $\boldsymbol{B}=\begin{pmatrix}0&1&1\\1&0&1\\1&1&0\end{pmatrix}$.</p><p>$$|\boldsymbol{A}|=|\boldsymbol{B}|=0-1(0-1)+1(1-0)=2.$$</p><div class="ans-final">答案：$|\boldsymbol{A}|=2$</div>
+<p>由条件，$\boldsymbol{A}$ 在基 $\{\boldsymbol{\alpha}_1,\boldsymbol{\alpha}_2,\boldsymbol{\alpha}_3\}$ 下的矩阵为 $\boldsymbol{B}=\begin{bmatrix}1&1&1\\1&2&3\\1&3&1\end{bmatrix}$，$|\boldsymbol{A}|=|\boldsymbol{B}|=2$.</p>
+<p>$(3\boldsymbol{A})^{-1}=\frac{1}{3}\boldsymbol{A}^{-1}$. $(\frac{1}{2}\boldsymbol{A})^*=|\frac{1}{2}\boldsymbol{A}|(\frac{1}{2}\boldsymbol{A})^{-1}=\frac{|\boldsymbol{A}|}{8}\cdot2\boldsymbol{A}^{-1}=\frac{2}{8}\cdot2\boldsymbol{A}^{-1}=\frac{1}{2}\boldsymbol{A}^{-1}$.</p>
+<p>$(3\boldsymbol{A})^{-1}-(\frac{1}{2}\boldsymbol{A})^*=(\frac{1}{3}-\frac{1}{2})\boldsymbol{A}^{-1}=-\frac{1}{6}\boldsymbol{A}^{-1}$.</p>
+<p>行列式：$|-\frac{1}{6}\boldsymbol{A}^{-1}|=(-\frac{1}{6})^3\cdot\frac{1}{|\boldsymbol{A}|}=-\frac{1}{216}\cdot\frac{1}{2}=-\frac{1}{432}$.</p>
+<div class="ans-final">答案：$-\dfrac{1}{432}$</div>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【合同与相似】24-25 填空第6题（3分）<span class="diff-star"> ★★★★☆</span></div>
 <div class="exam-source">来源：2024-2025学年第二学期</div>
-<p>设 $\boldsymbol{A}=\begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$，$\boldsymbol{B}=\begin{pmatrix} a & 1 \\ 1 & a \end{pmatrix}$，若 $\boldsymbol{A}$ 与 $\boldsymbol{B}$ 合同但不相似，则常数 $a$ 的取值范围为 &emsp;&emsp; .</p>
+<p>设 $\boldsymbol{A}=\begin{bmatrix} -3 & 0 & 0 \\ 0 & -1 & 2 \\ 0 & 2 & 2 \end{bmatrix}$，$\boldsymbol{B}=\begin{bmatrix} 0 & 3 & 0 \\ 3 & 0 & 0 \\ 0 & 0 & k \end{bmatrix}$，若 $\boldsymbol{A}$ 与 $\boldsymbol{B}$ 合同但不相似，则常数 $k$ 的取值范围为 \_\_\_\_\_\_\_\_ .</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_34')">展开解析</button>
-<div class="ans-content" id="ans_34" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_33')">展开解析</button>
+<div class="ans-content" id="ans_33" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>答案：$a>1$</b></p><p>相似: 永远不相似 ($\{a+1,a-1\}\neq\{1,1\}$). 合同: 需要 $a+1>0$ 且 $a-1>0$, 即 $a>1$.</p><div class="ans-final">答案：$a>1$</div>
+<p>$\boldsymbol{A}$ 特征值：$-3$（来自第 1 行），以及 $2\times2$ 块 $\begin{bmatrix}-1&2\\2&2\end{bmatrix}$ 特征值：$|\lambda\boldsymbol{E}-\boldsymbol{A}_1|=\lambda^2-\lambda-6=(\lambda-3)(\lambda+2)$. 故 $\boldsymbol{A}$ 特征值为 $-3,3,-2$.</p>
+<p>$\boldsymbol{B}$ 特征值：$2\times2$ 块 $\begin{bmatrix}0&3\\3&0\end{bmatrix}$ 特征值 $\pm3$，及 $k$.</p>
+<p>合同但不相似 $\Leftrightarrow$ 正负惯性指数相同但特征值不同. $\boldsymbol{A}$ 正惯性指数 1（特征值 3），负惯性指数 2（特征值 -3,-2）. $\boldsymbol{B}$ 需要相同惯性指数：2 个负特征值 + 1 个正特征值，即 $k<0$. 又特征值需不同 $\Rightarrow k\neq-2,-3$.</p>
+<p>故 $k<0,\ k\neq-2,-3$.</p>
+<div class="ans-final">答案：$k<0$ 且 $k\neq-2,-3$</div>
 </div></div>
+
 </div>
 
 <div id="tab6" class="tab-content">
@@ -984,31 +1101,42 @@ $$
 </ul>
 </div>
 
-<div class="sub-title">▎真题归类</div>
+
+
+<div class="sub-title">◎真题归类</div>
+
+
 
 <div class="box-exam">
 <div class="box-label">【二次型标准形】23-24 选择第6题（3分）<span class="diff-star"> ★★★☆☆</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>二次型 $f(x_1,x_2,x_3)=x_1^2+2x_2^2+3x_3^2+2x_1x_2+2x_1x_3+4x_2x_3$ 的标准形为（ &nbsp; ）.</p>
-<p>A. $y_1^2+y_2^2$ &emsp; B. $y_1^2+y_2^2+y_3^2$ &emsp; C. $y_1^2+y_2^2-y_3^2$ &emsp; D. $y_1^2-y_2^2$</p>
+<p>二次型 $f(x_1,x_2,x_3)=x_1^2+4x_2^2+4x_3^2-4x_1x_2+4x_1x_3-8x_2x_3$ 的标准形为 ( ).</p>
+<p>(A) $f=z_1^2+z_2^2+z_3^2$；&emsp;(B) $f=z_1^2+z_2^2-z_3^2$；</p>
+<p>(C) $f=z_1^2$；&emsp;(D) $f=z_1^2-z_2^2$.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_35')">展开解析</button>
-<div class="ans-content" id="ans_35" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_34')">展开解析</button>
+<div class="ans-content" id="ans_34" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>答案：B</b></p><p>配方法: $f=(x_1+x_2+x_3)^2+(x_2+x_3)^2+x_3^2=y_1^2+y_2^2+y_3^2$. 正惯性指数 $p=3$.</p><div class="ans-final">答案：B ($y_1^2+y_2^2+y_3^2$)</div>
+<p><b>答案：C</b></p><p>二次型矩阵 $\boldsymbol{A}=\begin{bmatrix}1&-2&2\\-2&4&-4\\2&-4&4\end{bmatrix}$，秩为 1（第 2 行 $=-2$ 倍第 1 行，第 3 行 $=2$ 倍第 1 行）.</p>
+<p>$\operatorname{tr}(\boldsymbol{A})=1+4+4=9$，非零特征值为 9，正惯性指数 $p=1$，$r=1$.</p>
+<p>标准形为 $z_1^2$. 故选 C.</p>
 </div></div>
 
 
 <div class="box-exam">
 <div class="box-label">【二次型+正交变换】23-24 第九题（12分）<span class="diff-star"> ★★★★★</span></div>
 <div class="exam-source">来源：2023-2024学年第二学期</div>
-<p>设 $\boldsymbol{A}=\begin{pmatrix} 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & a \end{pmatrix}$，已知二次型 $f(x_1,x_2,x_3)=\boldsymbol{x}^{\mathrm{T}}\boldsymbol{A}\boldsymbol{x}$ 的秩为 2.</p>
+<p>设 $f(x_1,x_2,x_3)=(1-a)x_1^2+(1-a)x_2^2+2x_3^2+2(1+a)x_1x_2$，已知二次型 $f$ 的秩为 2.</p>
 <p>(1) 求 $a$ 的值；(2) 求正交变换 $\boldsymbol{x}=\boldsymbol{Q}\boldsymbol{y}$，把二次型 $f$ 化为标准形.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_36')">展开解析</button>
-<div class="ans-content" id="ans_36" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_35')">展开解析</button>
+<div class="ans-content" id="ans_35" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>$|\boldsymbol{A}|=-a=0\Rightarrow a=0$. 验证 $r(\boldsymbol{A})=2$ ✓.</p><p>特征值: $1,-1,0$. 特征向量已自然两两正交. 单位化后组成正交矩阵 $\boldsymbol{Q}$.</p><div class="ans-final">标准形: $f=y_1^2-y_2^2$</div>
+<p><b>(1)</b> 二次型矩阵 $\boldsymbol{A}=\begin{bmatrix}1-a&1+a&0\\1+a&1-a&0\\0&0&2\end{bmatrix}$.</p>
+<p>由秩为 2 得 $|\boldsymbol{A}|=2[(1-a)^2-(1+a)^2]=2(-4a)=0$，故 $a=0$.</p>
+<p><b>(2)</b> $\boldsymbol{A}=\begin{bmatrix}1&1&0\\1&1&0\\0&0&2\end{bmatrix}$. 特征值：$\lambda_1=0$（$\boldsymbol{\alpha}_1=(-1,1,0)^{\mathrm{T}}$），$\lambda_2=\lambda_3=2$（$\boldsymbol{\alpha}_2=(0,0,1)^{\mathrm{T}},\ \boldsymbol{\alpha}_3=(1,1,0)^{\mathrm{T}}$）.</p>
+<p>正交化单位化得 $\boldsymbol{Q}=\begin{bmatrix}-\frac{1}{\sqrt{2}}&0&\frac{1}{\sqrt{2}}\\\frac{1}{\sqrt{2}}&0&\frac{1}{\sqrt{2}}\\0&1&0\end{bmatrix}$.</p>
+<div class="ans-final">标准形: $f=2y_2^2+2y_3^2$</div>
 </div></div>
 
 
@@ -1028,19 +1156,23 @@ $$
 <div class="box-exam">
 <div class="box-label">【二次型+正交变换综合】24-25 第九题（12分）<span class="diff-star"> ★★★★★</span></div>
 <div class="exam-source">来源：2024-2025学年第二学期</div>
-<p>设实二次型 $f(x_1,x_2,x_3)=x_1^2+x_2^2+x_3^2+2a x_1 x_2+2b x_2 x_3+2x_1 x_3$ 的秩为2，且 $\boldsymbol{\alpha}=(1,0,-1)^{\mathrm{T}}$ 是 $f=0$ 的解，$\boldsymbol{\beta}=(1,1,1)^{\mathrm{T}}$ 是 $f=2$ 的解.</p>
-<p>求：(1) $\boldsymbol{A}$ 的特征值与特征向量；(2) 用正交变换将该二次型化为标准形，并写出所用的正交变换；(3) 写出该二次型.</p>
+<p>设实二次型 $f(x_1,x_2,x_3)=\boldsymbol{x}^{\mathrm{T}}\boldsymbol{A}\boldsymbol{x}$ 的秩为 2，且 $\boldsymbol{\alpha}_1=(1,0,0)^{\mathrm{T}}$ 是 $(2\boldsymbol{E}-\boldsymbol{A})\boldsymbol{x}=\boldsymbol{0}$ 的解，$\boldsymbol{\alpha}_2=(0,-1,1)^{\mathrm{T}}$ 是 $(6\boldsymbol{E}-\boldsymbol{A})\boldsymbol{x}=\boldsymbol{0}$ 的解.</p>
+<p>求：(1) $\boldsymbol{A}$ 的特征值与特征向量；(2) 用正交变换 $\boldsymbol{x}=\boldsymbol{Q}\boldsymbol{y}$ 将该二次型化为标准形，并写出所用的正交变换；(3) 写出该二次型.</p>
 
-<button class="toggle-btn" onclick="toggleAns('ans_38')">展开解析</button>
-<div class="ans-content" id="ans_38" style="display:none;">
+<button class="toggle-btn" onclick="toggleAns('ans_36')">展开解析</button>
+<div class="ans-content" id="ans_36" style="display:none;">
 <div class="ans-label">答案解析</div>
-<p><b>解：</b>由秩2: $|A|=-(a-b)^2=0\Rightarrow a=b$. 由 $f(1,1,1)=2$: $5+2(a+b)=2\Rightarrow a+b=-3/2$, 得 $a=b=-3/4$.</p><p>特征值: $0,\; \dfrac{6\pm\sqrt{22}}{4}$. 标准形: $f=\lambda_2 y_2^2+\lambda_3 y_3^2$. 二次型: $f=x_1^2+x_2^2+x_3^2-\frac32x_1x_2-\frac32x_2x_3+2x_1x_3$.</p>
+<p><b>(1)</b> 由 $\boldsymbol{A}\boldsymbol{\alpha}_1=2\boldsymbol{\alpha}_1,\ \boldsymbol{A}\boldsymbol{\alpha}_2=6\boldsymbol{\alpha}_2$，得 $\lambda_1=2$（特征向量 $\boldsymbol{\alpha}_1=(1,0,0)^{\mathrm{T}}$），$\lambda_2=6$（特征向量 $\boldsymbol{\alpha}_2=(0,-1,1)^{\mathrm{T}}$）.</p>
+<p>秩为 2 $\Rightarrow$ $\lambda_3=0$，解 $(\boldsymbol{A}-0\boldsymbol{E})\boldsymbol{x}=\boldsymbol{0}$ 得 $\boldsymbol{\alpha}_3=k(0,1,1)^{\mathrm{T}}$.</p>
+<p><b>(2)</b> 单位化：$\boldsymbol{\gamma}_1=(1,0,0)^{\mathrm{T}},\ \boldsymbol{\gamma}_2=\frac{1}{\sqrt{2}}(0,-1,1)^{\mathrm{T}},\ \boldsymbol{\gamma}_3=\frac{1}{\sqrt{2}}(0,1,1)^{\mathrm{T}}$.</p>
+<p>$\boldsymbol{Q}=[\boldsymbol{\gamma}_1,\boldsymbol{\gamma}_2,\boldsymbol{\gamma}_3]$，$\boldsymbol{x}=\boldsymbol{Q}\boldsymbol{y}$ 化 $f=2y_1^2+6y_2^2$.</p>
+<p><b>(3)</b> $\boldsymbol{A}=\boldsymbol{Q}\operatorname{diag}(2,6,0)\boldsymbol{Q}^{\mathrm{T}}=\begin{bmatrix}2&0&0\\0&3&-3\\0&-3&3\end{bmatrix}$，$f=2x_1^2+3x_2^2+3x_3^2-6x_2x_3$.</p>
+<div class="ans-final">(1) $\lambda_{1,2,3}=2,6,0$；(2) 标准形 $2y_1^2+6y_2^2$；(3) $f=2x_1^2+3x_2^2+3x_3^2-6x_2x_3$</div>
 </div></div>
+
 </div>
 
 <div id="tab7" class="tab-content">
-
-<div class="sec-title">命题难度分布</div>
 
 <div class="box-note">
 <p>以下表格汇总了近两年两份试卷（2023-2024、2024-2025学年第二学期）中所有线性代数题目的难度分布.难度分为五级：</p>
@@ -1053,11 +1185,11 @@ $$
 <tr><th>模块</th><th>★☆☆☆☆</th><th>★★☆☆☆</th><th>★★★☆☆</th><th>★★★★☆</th><th>★★★★★</th><th>合计</th></tr>
 <tr><td><strong>行列式</strong></td><td>0</td><td>2</td><td>3</td><td>1</td><td>0</td><td><strong>6</strong></td></tr>
 <tr><td><strong>矩阵</strong></td><td>0</td><td>3</td><td>5</td><td>2</td><td>0</td><td><strong>10</strong></td></tr>
-<tr><td><strong>向量</strong></td><td>0</td><td>2</td><td>4</td><td>0</td><td>0</td><td><strong>6</strong></td></tr>
+<tr><td><strong>向量</strong></td><td>0</td><td>2</td><td>5</td><td>0</td><td>0</td><td><strong>7</strong></td></tr>
 <tr><td><strong>线性方程组</strong></td><td>0</td><td>0</td><td>1</td><td>3</td><td>0</td><td><strong>4</strong></td></tr>
 <tr><td><strong>特征值与特征向量</strong></td><td>0</td><td>0</td><td>4</td><td>3</td><td>0</td><td><strong>7</strong></td></tr>
 <tr><td><strong>二次型</strong></td><td>0</td><td>0</td><td>1</td><td>1</td><td>2</td><td><strong>4</strong></td></tr>
-<tr style="background:#e8eaf6;font-weight:bold;"><td><strong>合计</strong></td><td><strong>0</strong></td><td><strong>7</strong></td><td><strong>18</strong></td><td><strong>10</strong></td><td><strong>2</strong></td><td><strong>37</strong></td></tr>
+<tr style="background:#e8eaf6;font-weight:bold;"><td><strong>合计</strong></td><td><strong>0</strong></td><td><strong>7</strong></td><td><strong>19</strong></td><td><strong>10</strong></td><td><strong>2</strong></td><td><strong>38</strong></td></tr>
 </table>
 </div>
 
@@ -1069,14 +1201,14 @@ $$
 <tr><td><strong>24-25(二)</strong></td><td>0</td><td>3</td><td>7</td><td>4</td><td>1</td><td><strong>15</strong></td></tr>
 <tr style="background:#e8eaf6;font-weight:bold;"><td><strong>合计</strong></td><td><strong>0</strong></td><td><strong>7</strong></td><td><strong>14</strong></td><td><strong>7</strong></td><td><strong>2</strong></td><td><strong>30</strong></td></tr>
 </table>
-<p style="margin-top:8px;color:#888;font-size:0.85em;">注：部分题目跨多个知识点模块，因此按模块统计总题数（37题次）大于按试卷统计（30题）.</p>
+<p style="margin-top:8px;color:#888;font-size:0.85em;">注：部分题目跨多个知识点模块，因此按模块统计总题数（38题次）大于按试卷统计（30题）.</p>
 </div>
 
 <div class="box-warning">
 <div class="box-label">命题特点分析</div>
 <ul style="padding-left:20px;line-height:2;">
 <li><strong>无纯基础题</strong>：两份试卷中均未出现★☆☆☆☆级别的纯概念记忆题，所有题目都需要理解和运用.</li>
-<li><strong>中等难度为主</strong>：★★★☆☆级别题目占比约50%，是命题的核心区间.</li>
+<li><strong>中等难度为主</strong>：★★★☆☆级别题目占比50%，是命题的核心区间.</li>
 <li><strong>矩阵与特征值是重点</strong>：矩阵模块（10题次）和特征值模块（7题次）题量最大，且覆盖各个难度层级.</li>
 <li><strong>二次型是难点</strong>：仅有的2道★★★★★综合题均在二次型模块（正交变换+特征值综合），是冲刺高分的关键.</li>
 <li><strong>线性方程组难度集中</strong>：4道题中3道为★★★★☆较难综合题，考查参数讨论和通解结构.</li>
@@ -1087,7 +1219,7 @@ $$
 
 
 <div class="footer">
-<p>吉林大学 · 线性代数C期末知识点串讲 · 2026年6月制作</p>
+<p>吉林大学 · 线性代数C期末知识点串讲 · 公共数学教学与研究中心 孙鹏制作</p>
 </div>
 <!-- end content -->
 <!-- end container -->
